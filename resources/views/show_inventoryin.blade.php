@@ -41,7 +41,21 @@
                                                     <input class="form-control field_size" name="to_date" type="date" placeholder="Enter date here" />
                                                     <span class="small text-danger">{{ $errors->first('to_date') }}</span>
                                                 </td>
-                                            </tr>                               
+                                            </tr> 
+                                            <tr>
+                                                <td>
+                                                    Category
+                                                </td>                    
+                                                <td>
+                                                <select class="custom-select category" id="category" name="category_id">
+                                                    <option value="">All</option>
+                                                    @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <span class="small text-danger">{{ $errors->first('category_id') }}</span>
+                                                </td>
+                                            </tr>                              
                                             <tr>
                                                 <td>
                                                     Item Category

@@ -158,6 +158,7 @@ class ReportController extends Controller
     {
         date_default_timezone_set('Asia/karachi');
         $data = array();
+        $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
         $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
         $data['locations'] = Location::orderBy('location', 'asc')->get();
         $data['invtypes'] = Inventorytype::where('status', 1)->orderBy('inventorytype_name', 'asc')->get();
@@ -213,6 +214,7 @@ class ReportController extends Controller
     {
         date_default_timezone_set('Asia/karachi');
         $data = array();
+        $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
         $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
         $data['locations'] = Location::orderBy('location', 'asc')->get();
         $data['invtypes'] = Inventorytype::where('status', 1)->orderBy('inventorytype_name', 'asc')->get();
