@@ -26,10 +26,24 @@
                                             @csrf                                   
                                             <tr>
                                                 <td>
+                                                    Category
+                                                </td>                    
+                                                <td>
+                                                <select class="custom-select field_size category" id="category" name="category_id">
+                                                    <option value="">All</option>
+                                                    @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <span class="small text-danger">{{ $errors->first('category_id') }}</span>
+                                                </td>
+                                            </tr>                              
+                                            <tr>
+                                                <td>
                                                     Item Category
                                                 </td>                    
                                                 <td>
-                                                    <select class="custom-select field_size subcategory" name="subcategory_id">
+                                                <select class="custom-select field_size subcategory" name="subcategory_id" data-reports="1">
                                                     <option value="">All</option>
                                                     @foreach ($subcategories as $subcategory)
                                                     <option value="{{ $subcategory->id }}">{{ $subcategory->sub_cat_name }}</option>

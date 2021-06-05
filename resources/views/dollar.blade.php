@@ -43,7 +43,7 @@
                                                 <td>{{ $dollar->year->year }}</td>
                                                 <td>{{ date('Y-m-d' ,strtotime($dollar->created_at)) }}</td>
                                                 <td class="text-center">
-                                                <form method="POST" action="{{ url('dollars/'.$dollar->id) }}" class="d-inline-block">
+                                                <form method="POST" action="{{ url('dollars/'.$dollar->id) }}" class="d-inline-block prompt_delete">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-primary btn-sm">

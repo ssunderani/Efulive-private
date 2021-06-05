@@ -38,7 +38,7 @@
                                                 <th>Make</th>
                                                 <th>Model</th>
                                                 <th>Location</th>
-                                                <th>Inventory Type</th>
+                                                <th>Initial Status</th>
                                                 <th>ActionBy</th>
                                                 <th>Remarks</th>
                                                 <th>ActionDate</th>

@@ -94,9 +94,9 @@
                                             </div>
                                             <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="small mb-1" for="invtype">Inventory Type</label>
+                                                <label class="small mb-1" for="invtype">Initial Status</label>
                                                 <select class="custom-select" id="invtype" name="inventorytype_id">
-                                                    <option value=0>Select Inventory type here</option>
+                                                    <option value=0>Select Initial Status here</option>
                                                     @foreach ($inventorytypes as $inventorytype)
                                                     @if($inventorytype->id == $inventory->inventorytype_id)
                                                     <option value="{{ $inventorytype->id }}" selected>{{ $inventorytype->inventorytype_name }}</option>
@@ -173,9 +173,9 @@
                                         <div class="form-row">
                                         <div class="col-md-4">
                                         <div class="form-group">
-                                                <label class="small mb-1" for="type">Device Type</label>
+                                                <label class="small mb-1" for="type">Current Condition</label>
                                                 <select class="custom-select" id="type" name="devicetype_id">
-                                                    <option value=0>Select Device Type here</option>
+                                                    <option value=0>Select Current Condition here</option>
                                                     @foreach ($devicetypes as $devicetype)
                                                     @if($devicetype->id == $inventory->devicetype_id)
                                                     <option value="{{ $devicetype->id }}" selected>{{ $devicetype->devicetype_name }}</option>
@@ -257,7 +257,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="Warrenty">Warrenty Period</label>
+                                                    <label class="small mb-1" for="Warrenty">Warrenty Period(Months)</label>
                                                     <input class="form-control py-2" id="Warrenty" name="warrenty_period" type="text" value="{{ $inventory->warrenty_period }}" placeholder="Enter Warrenty Period here" />
                                                     <span class="small text-danger">{{ $errors->first('warrenty_period') }}</span>
                                                 </div>

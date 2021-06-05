@@ -6,7 +6,7 @@
                     <div class="container">
                     <div class="row mt-4"> 
                         <div class="col-md-10 col-lg-10">
-                            <h1 class="">Add Device Type</h1>
+                            <h1 class="">Add Current Condition</h1>
                         </div>
                         <div class="col-md-2 col-lg-2 text-right">
                             <a href="{{ url('devicetype') }}" class="btn btn-success">View List</a>
@@ -28,14 +28,14 @@
                                             <div class="form-row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="small mb-1" for="inputFirstName">Device Type</label>
-                                                        <input class="form-control py-4" id="inputFirstName" type="text" name="devicetype_name" placeholder="Enter Devicetype here" Required="required" />
+                                                        <label class="small mb-1" for="inputFirstName">Current Condition</label>
+                                                        <input class="form-control py-4" id="inputFirstName" type="text" name="devicetype_name" placeholder="Enter Current Condition here" Required="required" />
                                                         <span class="small text-danger">{{ $errors->first('devicetype_name') }}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group mt-4 mb-0">
-                                            <input type="submit" name="add_devicetype" value="Add Device Type" class="btn btn-primary btn-block">
+                                            <input type="submit" name="add_devicetype" value="Add Current Condition" class="btn btn-primary btn-block">
                                             </div>
                                         </form>
                                     </div>

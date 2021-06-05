@@ -199,13 +199,13 @@
                                     </div>
                                     <!-- Device Type -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dtype" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                    Device Type
+                                    Current Condition
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
                                     <div class="collapse" id="dtype" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ url('add_devicetype') }}">Add Device Type</a>
-                                            <a class="nav-link" href="{{ url('devicetype') }}">List Device Types</a>
+                                            <a class="nav-link" href="{{ url('add_devicetype') }}">Add Current Condition</a>
+                                            <a class="nav-link" href="{{ url('devicetype') }}">List Current Conditions</a>
                                         </nav>
                                     </div>
                                     <!-- Item Nature -->
@@ -221,13 +221,13 @@
                                     </div>
                                     <!-- Inventory Type -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#invtype" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                    Inventory Type
+                                    Initial Status
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
                                     <div class="collapse" id="invtype" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ url('add_inventorytype') }}">Add Inventory Type</a>
-                                            <a class="nav-link" href="{{ url('inventorytype') }}">List Inventory Types</a>
+                                            <a class="nav-link" href="{{ url('add_inventorytype') }}">Add Initial Status</a>
+                                            <a class="nav-link" href="{{ url('inventorytype') }}">List Initial Status</a>
                                         </nav>
                                     </div>
                                     <!-- Role -->
@@ -466,11 +466,17 @@ $(document).ready(function(){
     }); 
     $(".category").on("change",function(){
         var id = $(this).val();
-        $.get("{{ url('subcat_by_category') }}/"+id, function(data){
-            
+        var report = $('.subcategory').data('reports');
             var subcategory = $('.subcategory');
             subcategory.empty();
+            if(report == 1){
+                subcategory.append('<option value="" class="o1">All</option>');
+            }
+            else{
             subcategory.append('<option value=0 class="o1">Select Sub Category here</option>');
+            }
+        $.get("{{ url('subcat_by_category') }}/"+id, function(data){
+            
                     $.each( data, function(index, value){
                         subcategory.append(
                             $('<option></option>').val(value.id).html(value.sub_cat_name)
@@ -620,6 +626,13 @@ $(".budget_items").hide();
             $(".budget_items").show();
         });    
     });      
+
+    $(".prompt_delete").on('submit', function(event){
+        var r = confirm("Are you sure You want to delete this item?");
+        if (r == false) {
+            event.preventDefault();
+        }        
+    });
 
 });
 </script> 

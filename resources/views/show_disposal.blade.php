@@ -46,7 +46,7 @@
 
                                             <tr>  
                                                 <td>
-                                                    Inventory Type
+                                                Initial Status
                                                 </td>                  
                                                 <td>
                                                     <select class="custom-select field_size" name="inventorytype_id">
@@ -105,7 +105,7 @@
                                                 <th>Make</th>
                                                 <th>Model</th>
                                                 <th>Location</th>
-                                                <th>Inventory Type</th>
+                                                <th>Initial Status</th>
                                                 <th>ActionBy</th>
                                                 <th>Remarks</th>
                                                 <th>ActionDate</th>

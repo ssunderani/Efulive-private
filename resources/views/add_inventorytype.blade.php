@@ -6,7 +6,7 @@
                     <div class="container">
                     <div class="row mt-4"> 
                         <div class="col-md-10 col-lg-10">
-                            <h1 class="">Add Inventory Type</h1>
+                            <h1 class="">Add Initial Status</h1>
                         </div>
                         <div class="col-md-2 col-lg-2 text-right">
                             <a href="{{ url('inventorytype') }}" class="btn btn-success">View List</a>
@@ -28,14 +28,14 @@
                                             <div class="form-row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="small mb-1" for="inputFirstName">Inventory Type</label>
-                                                        <input class="form-control py-4" id="inputFirstName" type="text" name="inventorytype_name" placeholder="Enter Inventory type here" Required="required" />
+                                                        <label class="small mb-1" for="inputFirstName">Initial Status</label>
+                                                        <input class="form-control py-4" id="inputFirstName" type="text" name="inventorytype_name" placeholder="Enter Initial Status here" Required="required" />
                                                         <span class="small text-danger">{{ $errors->first('inventorytype_name') }}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group mt-4 mb-0">
-                                            <input type="submit" name="add_inventorytype" value="Add Inventory Type" class="btn btn-primary btn-block">
+                                            <input type="submit" name="add_inventorytype" value="Add Initial Status" class="btn btn-primary btn-block">
                                             </div>
                                         </form>
                                     </div>

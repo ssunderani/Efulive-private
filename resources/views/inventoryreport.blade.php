@@ -35,7 +35,6 @@
                                                 <th>Product S#</th>
                                                 <th>Make</th>
                                                 <th>Model</th>
-                                                <th>Item</th>
                                                 <th>Purchase Date</th>
                                                 <th>Location</th>
                                                 <th>Date</th>
@@ -47,11 +46,10 @@
                                         @foreach ($inventories as $inventory)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
-                                                <td>{{ $inventory->subcategory->sub_cat_name }}</td>
+                                                <td>{{ empty($inventory->subcategory)?'':$inventory->subcategory->sub_cat_name }}</td>
                                                 <td>{{ $inventory->product_sn }}</td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ $inventory->subcategory_id?$inventory->subcategory->sub_cat_name:'' }}</td>
                                                 <td>{{ date('Y-m-d' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
                                                 <td>{{ date('Y-m-d' ,strtotime($inventory->created_at)) }}</td>
