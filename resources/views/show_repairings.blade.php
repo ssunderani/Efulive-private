@@ -94,11 +94,15 @@
                                                 <th>Product SN</th>
                                                 <th>Make</th>
                                                 <th>Model</th>
-                                                <th>Remarks</th>
+                                                <th>Issued to</th>
+                                                <th>Location</th>
+                                                <th>Repairing Date</th>
                                                 <th>Actual Price</th>
-                                                <th>Entered Amount</th>
-                                                <th>Total Amount</th>
-                                                <th>Action Date</th>
+                                                <th>Repairing Cost</th>
+                                                <th>Cumulative Cost</th>
+                                                <th>Initial Status</th>
+                                                <th>Current Condition</th>
+                                                <th>Remarks</th>
                                                 
                                             </tr>
                                         </thead>
@@ -115,11 +119,15 @@
                                                 <td>{{ empty($repair->item)?'':$repair->item->product_sn }}</td>
                                                 <td>{{ empty($repair->item->make)?'':$repair->item->make->make_name }}</td>
                                                 <td>{{ empty($repair->item->model)?'':$repair->item->model->model_name }}</td>
-                                                <td>{{ $repair->remarks }}</td>
+                                                <td>{{ empty($repair->item->user)?'':$repair->item->user->name }}</td>
+                                                <td>{{ empty($repair->item->location)?'':$repair->item->location->location }}</td>
+                                                <td>{{ date('Y-m-d' ,strtotime($repair->date)) }}</td>
                                                 <td class='text-align-right'>{{ number_format($repair->actual_price_value,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($repair->price_value,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($total,2) }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($repair->date)) }}</td>
+                                                <td>{{ empty($repair->item->inventorytype)?'':$repair->item->inventorytype->inventorytype_name }}</td>
+                                                <td>{{ empty($repair->item->devicetype)?'':$repair->item->devicetype->devicetype_name }}</td>
+                                                <td>{{ $repair->remarks }}</td>
                                                 
                                             </tr>
                                         @endforeach    

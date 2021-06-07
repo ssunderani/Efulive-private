@@ -31,6 +31,7 @@ class ReportController extends Controller
     {
         date_default_timezone_set('Asia/karachi');
         $data = array();
+        $inventory = array();
         $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
         $data['locations'] = Location::orderBy('location', 'asc')->get();
         $data['filters'] = array();
@@ -62,7 +63,7 @@ class ReportController extends Controller
                 $to = strtotime($fields['to_date'].'+1 day');
                 unset($fields['from_date']);
                 unset($fields['to_date']);
-                $data['inventories'] = Inventory::where([[$fields]])->where($key, $op, $val)
+                $inventory = Inventory::where([[$fields]])->where($key, $op, $val)
                                         ->whereBetween('updated_at', [$from, date('Y-m-d', $to)])
                                         ->whereNotIn('status', [0])
                                         ->orderBy('id', 'desc')->get();
@@ -70,7 +71,7 @@ class ReportController extends Controller
             else if(isset($fields['from_date']) && !isset($fields['to_date'])){
                 $from = $fields['from_date'];
                 unset($fields['from_date']);
-                $data['inventories'] = Inventory::where([[$fields]])->where($key, $op, $val)
+                $inventory = Inventory::where([[$fields]])->where($key, $op, $val)
                                         ->whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])
                                         ->whereNotIn('status', [0])
                                         ->orderBy('id', 'desc')->get();
@@ -78,16 +79,22 @@ class ReportController extends Controller
             else if(!isset($fields['from_date']) && isset($fields['to_date'])){
                 $to = strtotime($fields['to_date'].'+1 day');
                 unset($fields['to_date']);
-                $data['inventories'] = Inventory::where([[$fields]])->where($key, $op, $val)
+                $inventory = Inventory::where([[$fields]])->where($key, $op, $val)
                                         ->whereBetween('updated_at', ['', date('Y-m-d', $to)])
                                         ->whereNotIn('status', [0])
                                         ->orderBy('id', 'desc')->get();
             }
             else{
-                $data['inventories'] = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
+                $inventory = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
         }
-        //return $data;
+        foreach($inventory as $inv){
+            $user = Employee::where('emp_code', $inv->issued_to)->first();
+            if($user){
+                $inv['user'] = $user;
+            }
+        }
+        $data['inventories'] = $inventory;
         return view('show_inventorylist', $data);
     }
     public function balance_report(Request $request)
@@ -280,7 +287,7 @@ class ReportController extends Controller
                 $invs = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
             foreach($invs as $inv){
-                $inv->added_by = User::find($inv->added_by);
+                $inv->user = User::find($inv->issued_to);
                 $inv->issued_by = User::find($inv->issued_by);
                 $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
             }
@@ -353,6 +360,12 @@ class ReportController extends Controller
             unset($fields['_token']);
             $data['filters'] = $fields;
             $repairs = Repairing::where([[$fields]])->orderBy('id', 'desc')->get();
+        }
+        echo "<pre>";
+        print_r($repairs);
+        die;
+        foreach($repairs as $repair){
+            $repair->item->user = User::find($repair->item->issued_to);
         }
         $data['repairs'] = $repairs;
         return view('show_repairings', $data);

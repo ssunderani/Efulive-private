@@ -33,14 +33,14 @@
                                             <th>S.No</th>
                                                 <th>Item Category</th>
                                                 <th>Product S#</th>
-                                                <th>PO Number</th>
                                                 <th>Make</th>
                                                 <th>Model</th>
-                                                <th>Price</th>
-                                                <th>Purchase Date</th>
-                                                <th>Enter By</th>
+                                                <th>Issue to</th>
+                                                <th>Location</th>
                                                 <th>Issue By</th>
                                                 <th>Issue Date</th>
+                                                <th>Initial Status</th>
+                                                <th>Current Condition</th>
                                                 <th>Remarks</th>
                                             </tr>
                                         </thead>
@@ -55,11 +55,12 @@
                                                 <td>{{ $inventory->po_number }}</td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td class='text-align-right'>{{ number_format($inventory->item_price,2) }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->purchase_date)) }}</td>
-                                                <td>{{ empty($inventory->added_by)?'':$inventory->added_by->name }}</td>
+                                                <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>
+                                                <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
                                                 <td>{{ empty($inventory->issued_by)?'':$inventory->issued_by->name }}</td>
                                                 <td>{{ empty($inventory->issue_date)?'':date('Y-m-d' ,strtotime($inventory->issue_date->created_at)) }}</td>
+                                                <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>
+                                                <td>{{ empty($inventory->devicetype)?'':$inventory->devicetype->devicetype_name }}</td>
                                                 <td>{{ $inventory->remarks }}</td>
                                             </tr>
                                         @endforeach 

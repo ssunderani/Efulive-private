@@ -78,15 +78,18 @@
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>S.No</th>
-                                                <th>Sub Category</th>
-                                                <th>Product S#</th>
+                                            <th>S.No</th>
                                                 <th>Make</th>
                                                 <th>Model</th>
-                                                <th>Item</th>
+                                                <th>Product S#</th>
                                                 <th>Purchase Date</th>
+                                                <th>Sub Category</th>
+                                                <th>Price</th>
+                                                <th>Issued to</th>
                                                 <th>Location</th>
-                                                <th>Date</th>
+                                                <th>Initial Status</th>
+                                                <th>Current Condition</th>
+                                                <th>Remarks</th>
                                             </tr>
                                         </thead>
                                         
@@ -95,14 +98,17 @@
                                         @foreach ($inventories as $inventory)
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
-                                                <td>{{ $inventory->subcategory->sub_cat_name }}</td>
-                                                <td><a href="{{ url('item_detail/'.$inventory->id) }}">{{ $inventory->product_sn }}</a></td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ $inventory->subcategory_id?$inventory->subcategory->sub_cat_name:'' }}</td>
+                                                <td><a href="{{ url('item_detail/'.$inventory->id) }}">{{ $inventory->product_sn }}</a></td>
                                                 <td>{{ date('Y-m-d' ,strtotime($inventory->purchase_date)) }}</td>
+                                                <td>{{ empty($inventory->subcategory)?'':$inventory->subcategory->sub_cat_name }}</td>
+                                                <td>{{ number_format($inventory->item_price,2) }}</td>
+                                                <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>
                                                 <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->created_at)) }}</td>
+                                                <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>
+                                                <td>{{ empty($inventory->devicetype)?'':$inventory->devicetype->devicetype_name }}</td>
+                                                <td>{{ $inventory->remarks }}</td>
                                             </tr>
                                         @endforeach    
                                         </tbody>

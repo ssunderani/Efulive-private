@@ -156,7 +156,12 @@ class PDFController extends Controller
             else{
                 $inventories = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
-            //$inventories = Inventory::where([[$fields]])->orderBy('id', 'desc')->get();
+            foreach($inventories as $inv){
+                $user = Employee::where('emp_code', $inv->issued_to)->first();
+                if($user){
+                    $inv['user'] = $user;
+                }
+            }
             $pdf = PDF::loadView('inventoryreport', ['inventories'=>$inventories])->setPaper('a4', 'landscape');
             return $pdf->download('inventoryreport.pdf');
     }
@@ -287,7 +292,7 @@ class PDFController extends Controller
                 $inventories = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
             foreach($inventories as $inv){
-                $inv->added_by = User::find($inv->added_by);
+                $inv->user = User::find($inv->issued_to);
                 $inv->issued_by = User::find($inv->issued_by);
                 $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
             }
@@ -339,6 +344,9 @@ class PDFController extends Controller
         date_default_timezone_set('Asia/karachi');
         $fields = (array)json_decode($data);
         $repairs = Repairing::where([[$fields]])->orderBy('id', 'desc')->get();
+        foreach($repairs as $repair){
+            $repair->item->user = User::find($repair->item->issued_to);
+        }
             $pdf = PDF::loadView('repairingreport', ['repairs'=>$repairs])->setPaper('a4', 'landscape');
             return $pdf->download('asset_repairing_report.pdf');
     }
