@@ -51,7 +51,11 @@ class Inventory extends Model
         'process_generation',
         'display_type',
         'DVD_rom',
-        'RAM'
+        'RAM',
+        'current_location',
+        'current_consumer',
+        'warranty_end',
+        'tax'
     ];
 
     protected $with = [

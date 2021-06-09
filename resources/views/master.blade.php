@@ -633,6 +633,22 @@ $(".budget_items").hide();
             event.preventDefault();
         }        
     });
+    $(".calculatewarrantyend").on('blur', function(){
+        var p_date = $('.purchase_date').val();
+        var warrenty = $('.Warrenty').val();
+        if(p_date && warrenty){
+            var w_end = $('.warrentyend');
+            var res = p_date.split("-");
+            var num = parseInt(res[1])+parseInt(warrenty);
+            var d = new Date(res[0],num,res[2]);
+            var year = d.getFullYear();
+            var month = d.getMonth();
+            var date = d.getDate();
+            var result = year+'/'+month+'/'+date;
+            w_end.val(result);
+        }
+        
+    });
 
 });
 </script> 

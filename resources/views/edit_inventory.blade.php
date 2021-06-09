@@ -202,7 +202,7 @@
                                             </div>
                                             <div class="form-group">
                                                     <label class="small mb-1" for="p_date">Purchase Date</label>
-                                                    <input class="form-control py-2" id="p_date" name="purchase_date" type="date" value="{{ $inventory->purchase_date }}" placeholder="Enter purchase date here" />
+                                                    <input class="form-control py-2 purchase_date calculatewarrantyend" id="p_date" name="purchase_date" type="date" value="{{ $inventory->purchase_date }}" placeholder="Enter purchase date here" />
                                                     <span class="small text-danger">{{ $errors->first('purchase_date') }}</span>
                                             </div>
                                             
@@ -258,8 +258,31 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label class="small mb-1" for="Warrenty">Warrenty Period(Months)</label>
-                                                    <input class="form-control py-2" id="Warrenty" name="warrenty_period" type="text" value="{{ $inventory->warrenty_period }}" placeholder="Enter Warrenty Period here" />
+                                                    <input class="form-control py-2 Warrenty calculatewarrantyend" id="Warrenty" name="warrenty_period" type="number" value="{{ $inventory->warrenty_period }}" placeholder="Enter Warrenty Period here" />
                                                     <span class="small text-danger">{{ $errors->first('warrenty_period') }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="current_location">Current Location</label>
+                                                    <input class="form-control py-2" id="current_location" name="current_location" type="text" value="{{ $inventory->current_location }}" placeholder="Enter Current Location here" />
+                                                    <span class="small text-danger">{{ $errors->first('current_location') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="current_consumer">Current Consumer</label>
+                                                    <input class="form-control py-2" id="current_consumer" name="current_consumer" type="text" value="{{ $inventory->current_consumer }}" placeholder="Enter Current Consumer here" />
+                                                    <span class="small text-danger">{{ $errors->first('current_consumer') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="warrentyend">Warranty End</label>
+                                                    <input class="form-control py-2 warrentyend" id="warrentyend" name="warranty_end" type="text" value="{{ $inventory->warranty_end }}" placeholder="Enter Warranty End here" readonly />
+                                                    <span class="small text-danger">{{ $errors->first('warranty_end') }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -356,7 +379,6 @@
                                             </div>
                                         </div>
 
-
                                         <div class="form-row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
@@ -377,6 +399,15 @@
                                                     <label class="small mb-1" for="Insurance">Insurance</label>
                                                     <input class="form-control py-2" id="Insurance" name="insurance" type="text" value="{{ $inventory->insurance }}" placeholder="Enter Insurance here" />
                                                     <span class="small text-danger">{{ $errors->first('insurance') }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="tax">TAX</label>
+                                                    <input class="form-control py-2" id="tax" name="tax" type="text" value="{{ $inventory->tax }}" placeholder="Enter Tax here" />
+                                                    <span class="small text-danger">{{ $errors->first('tax') }}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -158,6 +158,10 @@ class InventoryController extends Controller
         $arr['display_type'] = $request->display_type;
         $arr['DVD_rom'] = $request->DVD_rom;
         $arr['RAM'] = $request->RAM;
+        $arr['current_location'] = $request->current_location;
+        $arr['current_consumer'] = $request->current_consumer;
+        $arr['warranty_end'] = $request->warranty_end;
+        $arr['tax'] = $request->tax;
         
         $update = Inventory::where('id', $id)->update($arr);
         if($update){
