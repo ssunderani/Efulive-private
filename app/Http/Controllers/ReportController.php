@@ -361,9 +361,7 @@ class ReportController extends Controller
             $data['filters'] = $fields;
             $repairs = Repairing::where([[$fields]])->orderBy('id', 'desc')->get();
         }
-        echo "<pre>";
-        print_r($repairs);
-        die;
+        
         foreach($repairs as $repair){
             $repair->item->user = User::find($repair->item->issued_to);
         }
