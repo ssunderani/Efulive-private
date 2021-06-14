@@ -21,6 +21,7 @@ use App\Employee;
 use App\Budgetitem as Budget;
 use App\Issue;
 use App\Repairing;
+use App\Disposal;
 class ReportController extends Controller
 {
     public function __construct()
@@ -372,8 +373,6 @@ class ReportController extends Controller
     {
         date_default_timezone_set('Asia/karachi');
         $data = array();
-        $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
-        $data['invtypes'] = Inventorytype::where('status', 1)->orderBy('inventorytype_name', 'asc')->get();
         $data['filters'] = array();
         if(empty($request->all())){
             $inventories = array();
@@ -387,34 +386,39 @@ class ReportController extends Controller
                 $to = strtotime($fields['to_date'].'+1 day');
                 unset($fields['from_date']);
                 unset($fields['to_date']);
-                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', [$from, date('Y-m-d', $to)])
-                                        ->whereNotIn('status', [0])
+                $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
                                         ->orderBy('id', 'desc')->get();
             }
             else if(isset($fields['from_date']) && !isset($fields['to_date'])){
                 $from = $fields['from_date'];
                 unset($fields['from_date']);
-                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])
-                                        ->whereNotIn('status', [0])
+                $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', strtotime('+1 day'))])
                                         ->orderBy('id', 'desc')->get();
             }
             else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
                 $to = strtotime($fields['to_date'].'+1 day');
                 unset($fields['to_date']);
-                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', ['', date('Y-m-d', $to)])
-                                        ->whereNotIn('status', [0])
+                $inventories = Disposal::whereBetween('dispose_date', ['', date('Y-m-d', $to)])
                                         ->orderBy('id', 'desc')->get();
             }
             else{
-                $inventories = Inventory::where([[$fields]])->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
+                $inventories = Disposal::orderBy('id', 'desc')->get();
             }
         }
         if(!empty($inventories)){
             foreach($inventories as $inventory){
-               $inventory->added_by = User::where('id',$inventory->added_by)->first();
+                $issue = Issue::where('inventory_id', $inventory->inventory_id)->orderBy('id', 'DESC')->first();
+                if($issue){
+                    $user = Employee::where('emp_code', $issue->employee_id)->first();
+                    if($user){
+                        $inventory->user = $user;
+                    }
+                }
+               
             }
         }
-        $data['inventories'] = $inventories;
+        $data['disposals'] = $inventories;
+        //return $data;
         return view('show_disposal', $data);
     }
     public function vendor_buying(Request $request)

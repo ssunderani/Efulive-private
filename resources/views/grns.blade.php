@@ -75,7 +75,7 @@
                                                 <a href="{{ url('generate-grn/'.$grn->id.'/0/'.date('Y-m-d')) }}">{{ $grn->grn_no }}</a>
                                                 @endif
                                                 </td>
-                                                <td>{{ date('Y-m-d' ,strtotime($grn->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($grn->created_at)) }}</td>
                                             </tr>
                                         @endforeach    
                                         </tbody>

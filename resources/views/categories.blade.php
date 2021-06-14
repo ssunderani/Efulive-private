@@ -42,7 +42,7 @@
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $category->category_name }}</td>
                                                 <td>{{ $category->threshold }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($category->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($category->created_at)) }}</td>
                                                 <td>{{ $category->status == 1?'Active':'Inactive' }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('category/'.$category->id) }}" class="btn btn-sm btn-success">

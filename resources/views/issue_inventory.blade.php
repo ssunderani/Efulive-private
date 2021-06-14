@@ -131,12 +131,12 @@
                                                 <td>{{ $inventory->product_sn }}</td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->purchase_date)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ $inventory->category_id?$inventory->category->category_name:'' }}</td>
                                                 <td>{{ $inventory->subcategory_id?$inventory->subcategory->sub_cat_name:'' }}</td>
                                                 <td class='text-align-right'>{{ number_format($inventory->item_price,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($inventory->dollar_rate,2) }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($inventory->created_at)) }}</td>
                                             </tr>
                                         @endforeach    
                                         </tbody>

@@ -23,7 +23,7 @@
 <table cellpadding="0" cellspacing="0" style="width:100%;">
             <tr class="text-center">
                 <td class="text-center">
-                    <h2><u>Inventory Bin Card Report</u><span class="font-14"><b> - <u>EFU Life Assurance Ltd.</u></b></span></h2>
+                    <h2><u>Asset Disposal Report Report</u><span class="font-14"><b> - <u>EFU Life Assurance Ltd.</u></b></span></h2>
                     
                     
                 </td>
@@ -33,32 +33,28 @@
                                     <thead>
                                             <tr>
                                                 <th>S.No</th>
-                                                <th>Item Category</th>
+                                                <th>Category</th>
+                                                <th>Sub Category</th>
                                                 <th>Product S#</th>
-                                                <th>Make</th>
-                                                <th>Model</th>
-                                                <th>Location</th>
-                                                <th>Initial Status</th>
-                                                <th>ActionBy</th>
+                                                <th>Dispose date</th>
+                                                <th>Handover date</th>
+                                                <th>Reason</th>
                                                 <th>Remarks</th>
-                                                <th>ActionDate</th>
                                             </tr>
                                         </thead>
                                         
                                         <tbody>
                                         <?php $i = 1; ?>
-                                        @foreach ($inventories as $inventory)
+                                        @foreach ($disposals as $disposal)
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
-                                                <td>{{ $inventory->subcategory_id?$inventory->subcategory->sub_cat_name:'' }}</td>
-                                                <td>{{ $inventory->product_sn }}</td>
-                                                <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
-                                                <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
-                                                <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>
-                                                <td>{{ empty($inventory->added_by)?'':$inventory->added_by->name }}</td>
-                                                <td>{{ $inventory->remarks }}</td>
-                                                <td>{{ date('Y-m-d', strtotime($inventory->updated_at)) }}</td>
+                                                <td>{{ !empty($disposal->category)?$disposal->category->category_name:'' }}</td>
+                                                <td>{{ !empty($disposal->subcategory)?$disposal->subcategory->sub_cat_name:'' }}</td>
+                                                <td>{{ !empty($disposal->inventory)?$disposal->inventory->product_sn:'' }}</td>
+                                                <td>{{ date('j-F-Y', strtotime($disposal->dispose_date)) }}</td>
+                                                <td>{{ date('j-F-Y', strtotime($disposal->handover_date)) }}</td>
+                                                <td>{{ !empty($disposal->disposalstatus)?$disposal->disposalstatus->d_status:'' }}</td>
+                                                <td>{{ $disposal->remarks }}</td>
                                             </tr>
                                         @endforeach 
                                         </tbody>

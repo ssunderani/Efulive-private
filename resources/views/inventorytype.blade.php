@@ -40,7 +40,7 @@
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
                                                 <td>{{ $inventorytype->inventorytype_name }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventorytype->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($inventorytype->created_at)) }}</td>
                                                 <td>{{ $inventorytype->status == 1?'Active':'Inactive' }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('inventorytype/'.$inventorytype->id) }}" class="btn btn-sm btn-success">

@@ -121,7 +121,7 @@
                                                 <td>{{ empty($repair->item->model)?'':$repair->item->model->model_name }}</td>
                                                 <td>{{ empty($repair->item->user)?'':$repair->item->user->name }}</td>
                                                 <td>{{ empty($repair->item->location)?'':$repair->item->location->location }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($repair->date)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($repair->date)) }}</td>
                                                 <td class='text-align-right'>{{ number_format($repair->actual_price_value,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($repair->price_value,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($total,2) }}</td>

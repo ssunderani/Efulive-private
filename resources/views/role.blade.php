@@ -38,7 +38,7 @@
                                             <tr>
                                                 <td class='text-align-right'>{{ $role->id }}</td>
                                                 <td>{{ $role->role }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($role->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($role->created_at)) }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('role/'.$role->id) }}" class="btn btn-sm btn-success">
                                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

@@ -30,7 +30,7 @@
                                     <table class="secondary-table">
                                     <thead>
                                             <tr>
-                                            <th>S.No</th>
+                                                <th>S.No</th>
                                                 <th>Item Category</th>
                                                 <th>Product S#</th>
                                                 <th>Make</th>
@@ -52,13 +52,12 @@
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $inventory->subcategory_id?$inventory->subcategory->sub_cat_name:'' }}</td>
                                                 <td>{{ $inventory->product_sn }}</td>
-                                                <td>{{ $inventory->po_number }}</td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
                                                 <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>
                                                 <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
                                                 <td>{{ empty($inventory->issued_by)?'':$inventory->issued_by->name }}</td>
-                                                <td>{{ empty($inventory->issue_date)?'':date('Y-m-d' ,strtotime($inventory->issue_date->created_at)) }}</td>
+                                                <td>{{ empty($inventory->issue_date)?'':date('j-F-Y' ,strtotime($inventory->issue_date->created_at)) }}</td>
                                                 <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>
                                                 <td>{{ empty($inventory->devicetype)?'':$inventory->devicetype->devicetype_name }}</td>
                                                 <td>{{ $inventory->remarks }}</td>

@@ -1,15 +1,16 @@
 @extends("master")
 
 @section("content")
+
 <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
                     <div class="row mt-4"> 
                         <div class="col-md-10 col-lg-10">
-                            <h1 class="">Locations</h1>
+                            <h1 class="">Disposal Items</h1>
                         </div>
                         <div class="col-md-2 col-lg-2 text-right">
-                            <a href="{{ url('add_location') }}" class="btn btn-success">Add<svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <a href="{{ url('add_disposal') }}" class="btn btn-success">Add<svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
 </svg></a>
                         </div>
@@ -26,26 +27,42 @@
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                <th>Name</th>
-                                                <th>Craeted at</th>
-                                                <th>Actions</th>
+                                                <th>S.No</th>
+                                                <th>Category</th>
+                                                <th>Sub Category</th>
+                                                <th>Product SN</th>
+                                                <th>Make</th>
+                                                <th>Model</th>
+                                                <th>Resaon</th>
+                                                <th>Dispose Date</th>
+                                                <th>Handover Date</th>
+                                                <th>Remarks</th>
+                                                <th>Actions</th> 
                                             </tr>
                                         </thead>
                                         
                                         <tbody>
-                                        @foreach ($locations as $location)
+                                        <?php $i = 1; ?>
+                                        @foreach ($disposals as $disposal)
+                                        
                                             <tr>
-                                                <td class='text-align-right'>{{ $location->id }}</td>
-                                                <td>{{ $location->location }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($location->created_at)) }}</td>
-                                                <td class="text-center">
-                                                <a href="{{ url('location/'.$location->id) }}" class="btn btn-sm btn-success">
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ empty($disposal->category)?'':$disposal->category->category_name }}</td>
+                                                <td>{{ empty($disposal->subcategory)?'':$disposal->subcategory->sub_cat_name }}</td>
+                                                <td>{{ empty($disposal->inventory)?'':$disposal->inventory->product_sn }}</td>
+                                                <td>{{ empty($disposal->inventory->make)?'':$disposal->inventory->make->make_name }}</td>
+                                                <td>{{ empty($disposal->inventory->model)?'':$disposal->inventory->model->model_name }}</td>
+                                                <td>{{ empty($disposal->disposalstatus)?'':$disposal->disposalstatus->d_status }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($disposal->dispose_date)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($disposal->handover_date)) }}</td>
+                                                <td>{{ $disposal->remarks }}</td>
+                                                <td>
+                                                <a href="{{ url('dispose/'.$disposal->id) }}" class="btn btn-sm btn-success">
                                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
 </svg>
                                                 </a>
-                                                <form method="POST" action="{{ url('location/'.$location->id) }}" class="d-inline-block prompt_delete">
+                                                <form method="POST" action="{{ url('dispose/'.$disposal->id) }}" class="d-inline-block prompt_delete">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-primary btn-sm">
@@ -57,7 +74,7 @@
                                                 </form>
                                                 </td>
                                             </tr>
-                                        @endforeach    
+                                        @endforeach   
                                         </tbody>
                                     </table>
                                 </div>

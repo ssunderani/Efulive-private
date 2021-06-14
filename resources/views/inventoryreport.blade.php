@@ -53,7 +53,7 @@
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
                                                 <td>{{ $inventory->product_sn }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->purchase_date)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ empty($inventory->subcategory)?'':$inventory->subcategory->sub_cat_name }}</td>
                                                 <td>{{ number_format($inventory->item_price,2) }}</td>
                                                 <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Inventory;
+use App\Issue;
 use App\Category;
 use App\Subcategory;
 use App\Location;
@@ -189,6 +190,18 @@ class InventoryController extends Controller
         //return $data;
         return view('inventorydetail', ['inventory' => $inventory]);
     }
+    public function single_item($id)
+    {
+        $inventory = Inventory::find($id);
+        $issue = Issue::where('inventory_id', $id)->orderBy('id', 'DESC')->first();
+        if($issue){
+            $user = Employee::where('emp_code', $issue->employee_id)->first();
+            if($user){
+                $inventory->user = $user;
+            }
+        }
+        return $inventory;
+    }
     public function check_product($pro)
     {
         $inventory = Inventory::where('product_sn', $pro)->first();
@@ -208,6 +221,11 @@ class InventoryController extends Controller
     public function get_inv_items($id)
     {
         $inventories = Inventory::where('subcategory_id',$id)->get();
+        return $inventories;
+    }
+    public function get_unassigned_items($id)
+    {
+        $inventories = Inventory::where('subcategory_id',$id)->where('issued_to', NULL)->whereIn('status', [1,2])->whereNotIn('devicetype_id', [1])->get();
         return $inventories;
     }
 }

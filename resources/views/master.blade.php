@@ -83,7 +83,7 @@
                                     <a class="nav-link" href="{{ url('balance_report') }}">Balance report</a>
                                     <a class="nav-link" href="{{ url('bin_card') }}">Bin Card report</a>
                                     <a class="nav-link" href="{{ url('asset_repairing') }}">Asset Repairing report</a>
-                                    <a class="nav-link" href="{{ url('disposal') }}">Type/Disposal report</a>
+                                    <a class="nav-link" href="{{ url('disposal') }}">Asset Disposal report</a>
                                     <a class="nav-link" href="{{ url('vendor_buying') }}">Average Vendor Buying</a>
                                 </nav>
                             </div>
@@ -261,6 +261,28 @@
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="{{ url('add_vendor') }}">Add Vendor</a>
                                             <a class="nav-link" href="{{ url('vendor') }}">List Vendors</a>
+                                        </nav>
+                                    </div>
+                                    <!-- Disposal Status -->
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#d_status" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Disposal Status
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="d_status" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('add_d_status') }}">Add Status</a>
+                                            <a class="nav-link" href="{{ url('disposalstatus') }}">List Status</a>
+                                        </nav>
+                                    </div>
+                                    <!-- Disposal -->
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dispose" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Asset Disposal
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="dispose" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('add_disposal') }}">Add Disposal</a>
+                                            <a class="nav-link" href="{{ url('dispose') }}">List Disposals</a>
                                         </nav>
                                     </div>
                                 </nav>
@@ -557,7 +579,6 @@ $(document).ready(function(){
             $('.a_price').val(data);
         });    
     });
-
     $(".subcategory").on("change",function(){
         var id = $(this).val();
         var repair_item = $('.repair_item');
@@ -567,6 +588,33 @@ $(document).ready(function(){
             console.log(data);
             $.each( data, function(index, value){
                 repair_item.append(
+                    $('<option></option>').val(value.id).html(value.product_sn)
+                );
+            });    
+        });    
+    }); 
+
+    $(".item_list").on("change",function(){
+        var id = $(this).val();
+        $.get("{{ url('single_item') }}/"+id, function(data){
+            if(data){
+                $(".p_date").val(data.purchase_date);
+                if(data.user){
+                    $(".department").val(data.user.department);
+                    $(".last_user").val(data.user.name);
+                }
+            }
+            console.log(data);
+        });    
+    });
+    $(".d_subcategory").on("change",function(){
+        var id = $(this).val();
+        var item_list = $('.item_list');
+        item_list.empty();
+        item_list.append('<option value=0 class="o1">Select Item here</option>');
+        $.get("{{ url('get_unassigned_items') }}/"+id, function(data){
+            $.each( data, function(index, value){
+                item_list.append(
                     $('<option></option>').val(value.id).html(value.product_sn)
                 );
             });    

@@ -49,12 +49,12 @@
                                                 <td>{{ $inventory->product_sn }}</td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->purchase_date)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ $inventory->category_id?$inventory->category->category_name:'' }}</td>
                                                 <td class='text-align-right'>{{ number_format($inventory->item_price,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($inventory->dollar_rate,2) }}</td>
                                                 <td>{{ $inventory->issued_to?$inventory->user->name:'' }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($inventory->created_at)) }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('inventory/'.$inventory->id) }}" class="btn btn-sm btn-success">
                                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

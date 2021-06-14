@@ -17,7 +17,7 @@
                        
                             <div class="card mt-3">
                             <div class="card-header bg-primary text-white">
-                            Bin Card
+                            Asset Disposal
                             </div>
                                 <div class="card-body">
                                 <table class="table table-borderless">
@@ -43,36 +43,6 @@
                                                     <span class="small text-danger">{{ $errors->first('to_date') }}</span>
                                                 </td>
                                             </tr>
-
-                                            <tr>  
-                                                <td>
-                                                Initial Status
-                                                </td>                  
-                                                <td>
-                                                    <select class="custom-select field_size" name="inventorytype_id">
-                                                    <option value="">All</option>
-                                                    @foreach ($invtypes as $invtype)
-                                                    <option value="{{ $invtype->id }}">{{ $invtype->inventorytype_name }}</option>
-                                                    @endforeach
-                                                    </select>
-                                                    <span class="small text-danger">{{ $errors->first('inventorytype_id') }}</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    Item Category
-                                                </td>                    
-                                                <td>
-                                                <select class="custom-select field_size" name="subcategory_id">
-                                                    <option value="">All</option>
-                                                    @foreach ($subcategories as $subcategory)
-                                                    <option value="{{ $subcategory->id }}">{{ $subcategory->sub_cat_name }}</option>
-                                                    @endforeach
-                                                    </select>
-                                                    <span class="small text-danger">{{ $errors->first('subcategory_id') }}</span>
-                                                </td>
-                                                
-                                            </tr>
                                             
                                             <tr>                    
                                                 <td colspan="2" class="text-right"><button type="submit" class="btn btn-primary">Show</button></td>
@@ -90,7 +60,7 @@
                     </div>
                         <div class="card mb-4 mt-5">
                             <div class="card-body">
-                            @if(empty($inventories))
+                            @if(empty($disposals))
                             @else
                             <a class="btn btn-danger mb-2 float-right" href="{{ url('disposalexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
@@ -100,32 +70,28 @@
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>
-                                                <th>Item Category</th>
+                                                <th>Category</th>
+                                                <th>Sub Category</th>
                                                 <th>Product S#</th>
-                                                <th>Make</th>
-                                                <th>Model</th>
-                                                <th>Location</th>
-                                                <th>Initial Status</th>
-                                                <th>ActionBy</th>
+                                                <th>Dispose date</th>
+                                                <th>Handover date</th>
+                                                <th>Reason</th>
                                                 <th>Remarks</th>
-                                                <th>ActionDate</th>
                                             </tr>
                                         </thead>
                                         
                                         <tbody>
                                         <?php $i = 1; ?>
-                                        @foreach ($inventories as $inventory)
+                                        @foreach ($disposals as $disposal)
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
-                                                <td>{{ $inventory->subcategory_id?$inventory->subcategory->sub_cat_name:'' }}</td>
-                                                <td><a href="{{ url('item_detail/'.$inventory->id) }}">{{ $inventory->product_sn }}</a></td>
-                                                <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
-                                                <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
-                                                <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>
-                                                <td>{{ empty($inventory->added_by)?'':$inventory->added_by->name }}</td>
-                                                <td>{{ $inventory->remarks }}</td>
-                                                <td>{{ date('Y-m-d', strtotime($inventory->updated_at)) }}</td>
+                                                <td>{{ !empty($disposal->category)?$disposal->category->category_name:'' }}</td>
+                                                <td>{{ !empty($disposal->subcategory)?$disposal->subcategory->sub_cat_name:'' }}</td>
+                                                <td><a href="{{ url('item_detail/'.$disposal->inventory_id) }}">{{ !empty($disposal->inventory)?$disposal->inventory->product_sn:'' }}</a></td>
+                                                <td>{{ date('j-F-Y', strtotime($disposal->dispose_date)) }}</td>
+                                                <td>{{ date('j-F-Y', strtotime($disposal->handover_date)) }}</td>
+                                                <td>{{ !empty($disposal->disposalstatus)?$disposal->disposalstatus->d_status:'' }}</td>
+                                                <td>{{ $disposal->remarks }}</td>
                                             </tr>
                                         @endforeach    
                                         </tbody>

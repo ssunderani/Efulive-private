@@ -57,6 +57,8 @@ Route::resource('/dollars', DollarController::class);
 Route::resource('/types', TypeController::class);
 Route::resource('/years', YearController::class);
 Route::resource('/budget', BudgetController::class);
+Route::resource('/disposalstatus', DisposalstatusController::class);
+Route::resource('/dispose', DisposalController::class);
 
 /* Forms */
 Route::get('/add_category', [FormController::class, 'add_category'])->middleware('role:1');
@@ -102,6 +104,8 @@ Route::get('/pkr_by_year/{id}', [FormController::class, 'pkr_by_year']);
 Route::get('/budget_by_year', 'BudgetController@budget_by_year');
 Route::post('/summary_by_year', 'BudgetController@summary_by_year');
 Route::get('/lock_budget/{id}', 'BudgetController@lock_budget');
+Route::get('/add_d_status', [FormController::class, 'add_d_status']);
+Route::get('/add_disposal', [FormController::class, 'add_disposal']);
 
 Route::post('/issue', 'FormController@submitt_issue');
 Route::post('/submit_gin', 'FormController@submit_gin');
@@ -122,11 +126,13 @@ Route::get('itemexport/{data}','PDFController@itemexport');
 Route::get('/show_inventory_list', 'ReportController@show_inventory');
 Route::get('inventoryexport/{data}','PDFController@inventoryexport');
 Route::get('/item_detail/{id}', 'InventoryController@item_detail');
+Route::get('/single_item/{id}', 'InventoryController@single_item');
 Route::get('/balance_report', 'ReportController@balance_report');
 Route::get('/balanceexport/{data}','PDFController@balanceexport');
 Route::get('/check_product/{pro}', 'InventoryController@check_product');
 Route::get('/get_price/{id}', 'InventoryController@get_price');
 Route::get('/get_inv_items/{id}', 'InventoryController@get_inv_items');
+Route::get('/get_unassigned_items/{id}', 'InventoryController@get_unassigned_items');
 Route::get('/get_budget_items/{year_id}/{inv_id}/{dept_id}', 'BudgetController@get_budget_items');
 
 Route::get('/edit_logs', 'ReportController@edit_logs');

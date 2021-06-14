@@ -43,7 +43,7 @@
                                                 <td class='text-align-right'>{{ $i++ }}</td>
                                                 <td>{{ $subcategory->sub_cat_name }}</td>
                                                 <td>{{ $subcategory->threshold }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($subcategory->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($subcategory->created_at)) }}</td>
                                                 <td>{{ $subcategory->status == 1?'Active':'Inactive' }}</td>
                                                 <td>{{ $subcategory->category->category_name }}</td>
                                                 <td class="text-center">

@@ -43,7 +43,7 @@
                                                 <td>{{ $store->store_name }}</td>
                                                 <td>{{ $store->location != null?$store->location->location:'' }}</td>
                                                 <td>{{ $store->user }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($store->created_at)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($store->created_at)) }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('store/'.$store->id) }}" class="btn btn-sm btn-success">
                                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

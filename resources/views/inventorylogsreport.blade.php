@@ -56,7 +56,7 @@
                                                 <td>{{ $inventory->product_sn }}</td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ date('Y-m-d' ,strtotime($inventory->purchase_date)) }}</td>
+                                                <td>{{ date('j-F-Y' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ $inventory->po_number }}</td>
                                                 <td>{{ empty($inventory->vendor)?'':$inventory->vendor->vendor_name }}</td>
                                                 <td>{{ $inventory->warrenty_period }}</td>

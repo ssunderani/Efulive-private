@@ -28,6 +28,7 @@ use App\Year;
 use App\Dollar;
 use App\Type;
 use App\Budgetitem as Budget;
+use App\Disposalstatus;
 class FormController extends Controller
 {
     public function __construct()
@@ -75,6 +76,17 @@ class FormController extends Controller
     }
     public function add_type(){
         return view('add_type');
+    }
+    public function add_d_status(){
+        return view('add_d_status');
+    }
+    public function add_disposal(){
+        $data = array();
+        $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
+        //$data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
+        //$data['inventories'] = Inventory::where('issued_to', NULL)->whereIn('status', [1,2])->orderBy('id', 'desc')->get();
+        $data['statuses'] = Disposalstatus::all();
+        return view('add_disposal', $data);
     }
     public function add_budget(){
         $data = array();
