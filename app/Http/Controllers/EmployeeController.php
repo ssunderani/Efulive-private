@@ -29,7 +29,7 @@ class EmployeeController extends Controller
             'designation' => 'required',
             'hod' => 'required',
             'status' => 'required',
-            'email' => 'required|unique:employees'
+            'email' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);

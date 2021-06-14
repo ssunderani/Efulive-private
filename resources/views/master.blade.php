@@ -692,7 +692,7 @@ $(".budget_items").hide();
             var year = d.getFullYear();
             var month = d.getMonth();
             var date = d.getDate();
-            var result = year+'/'+month+'/'+date;
+            var result = month+'/'+date+'/'+year;
             w_end.val(result);
         }
         

@@ -225,6 +225,24 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
+                                                    <label class="small mb-1" for="rate">Dollar Rate</label>
+                                                    <input class="form-control py-2 t_seperator" id="rate" name="dollar_rate" type="number" value="{{ $inventory->dollar_rate }}" placeholder="Enter dollar rate here" />
+                                                    <span class="small text-danger">{{ $errors->first('dollar_rate') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="tax">TAX(%)</label>
+                                                    <input class="form-control py-2" id="tax" name="tax" type="text" value="{{ $inventory->tax }}" placeholder="Enter Tax(%) here" />
+                                                    <span class="small text-danger">{{ $errors->first('tax') }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
                                                     <label class="small mb-1" for="challan">Delivery Challan</label>
                                                     <input class="form-control py-2" id="challan" name="delivery_challan" type="text" value="{{ $inventory->delivery_challan }}" placeholder="Enter Delivery Challan here" />
                                                     <span class="small text-danger">{{ $errors->first('delivery_challan') }}</span>
@@ -235,24 +253,6 @@
                                                     <label class="small mb-1" for="challan_date">Delivery Challan Date</label>
                                                     <input class="form-control py-2" id="challan_date" name="delivery_challan_date" type="date" value="{{ $inventory->delivery_challan_date }}" placeholder="Enter Delivery Challan Date here" />
                                                     <span class="small text-danger">{{ $errors->first('delivery_challan_date') }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="form-row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label class="small mb-1" for="rate">Dollar Rate</label>
-                                                    <input class="form-control py-2 t_seperator" id="rate" name="dollar_rate" type="number" value="{{ $inventory->dollar_rate }}" placeholder="Enter dollar rate here" />
-                                                    <span class="small text-danger">{{ $errors->first('dollar_rate') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label class="small mb-1" for="po">PO Number</label>
-                                                    <input class="form-control py-2" id="po" name="po_number" type="text" value="{{ $inventory->po_number }}" placeholder="Enter PO Number here" />
-                                                    <span class="small text-danger">{{ $errors->first('po_number') }}</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -405,11 +405,12 @@
                                         <div class="form-row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="tax">TAX</label>
-                                                    <input class="form-control py-2" id="tax" name="tax" type="text" value="{{ $inventory->tax }}" placeholder="Enter Tax here" />
-                                                    <span class="small text-danger">{{ $errors->first('tax') }}</span>
+                                                    <label class="small mb-1" for="po">PO Number</label>
+                                                    <input class="form-control py-2" id="po" name="po_number" type="text" value="{{ $inventory->po_number }}" placeholder="Enter PO Number here" />
+                                                    <span class="small text-danger">{{ $errors->first('po_number') }}</span>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                         <hr />
                                         <div class="form-row mt-5">

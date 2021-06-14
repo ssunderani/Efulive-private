@@ -80,7 +80,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                     <label class="small mb-1" for="email">Email Address</label>
-                                                        <input class="form-control" id="email" name="email" type="text" placeholder="Enter Email here" readonly />
+                                                        <input class="form-control" id="email" name="email" type="text" placeholder="Enter Email here" />
                                                         <span class="small text-danger">{{ $errors->first('email') }}</span>
                                                     </div>
                                                 </div>
