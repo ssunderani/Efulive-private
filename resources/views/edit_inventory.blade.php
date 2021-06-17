@@ -225,16 +225,16 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="rate">Dollar Rate</label>
-                                                    <input class="form-control py-2 t_seperator" id="rate" name="dollar_rate" type="number" value="{{ $inventory->dollar_rate }}" placeholder="Enter dollar rate here" />
-                                                    <span class="small text-danger">{{ $errors->first('dollar_rate') }}</span>
+                                                    <label class="small mb-1" for="tax">TAX(%)</label>
+                                                    <input class="form-control py-2" id="tax" name="tax" type="text" value="{{ $inventory->tax }}" placeholder="Enter Tax(%) here" />
+                                                    <span class="small text-danger">{{ $errors->first('tax') }}</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="tax">TAX(%)</label>
-                                                    <input class="form-control py-2" id="tax" name="tax" type="text" value="{{ $inventory->tax }}" placeholder="Enter Tax(%) here" />
-                                                    <span class="small text-danger">{{ $errors->first('tax') }}</span>
+                                                    <label class="small mb-1" for="rate">Dollar Rate</label>
+                                                    <input class="form-control py-2 t_seperator" id="rate" name="dollar_rate" type="number" value="{{ $inventory->dollar_rate }}" placeholder="Enter dollar rate here" />
+                                                    <span class="small text-danger">{{ $errors->first('dollar_rate') }}</span>
                                                 </div>
                                             </div>
                                         </div>

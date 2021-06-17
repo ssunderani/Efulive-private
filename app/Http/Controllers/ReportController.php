@@ -239,9 +239,12 @@ class ReportController extends Controller
         }
         else{
             $fields = array_filter($request->all());
-            $key = null; 
-            $op = null; 
-            $val = null; 
+            // $key = null; 
+            // $op = null; 
+            // $val = null; 
+                $key = 'issued_to'; 
+                $op = '>'; 
+                $val = 0; 
             unset($fields['_token']);
             if(!isset($fields['issued_to'])){
                 $key = 'issued_to'; 

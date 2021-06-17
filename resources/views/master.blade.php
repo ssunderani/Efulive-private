@@ -63,6 +63,17 @@
                                     <a class="nav-link" href="{{ url('transfer_inventory') }}">Transfer Inventory</a>
                                     <a class="nav-link" href="{{ url('return_inventory') }}">Return Inventory</a>
                                     <a class="nav-link" href="{{ url('repair') }}">Asset Repairing</a>
+                                    <!-- Disposal -->
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dispose" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Asset Disposal
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="dispose" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('add_disposal') }}">Add Disposal</a>
+                                            <a class="nav-link" href="{{ url('dispose') }}">List Disposals</a>
+                                        </nav>
+                                    </div>
                                 </nav>
                             </div>
                             
@@ -274,17 +285,7 @@
                                             <a class="nav-link" href="{{ url('disposalstatus') }}">List Status</a>
                                         </nav>
                                     </div>
-                                    <!-- Disposal -->
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dispose" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                    Asset Disposal
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="dispose" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ url('add_disposal') }}">Add Disposal</a>
-                                            <a class="nav-link" href="{{ url('dispose') }}">List Disposals</a>
-                                        </nav>
-                                    </div>
+                                    
                                 </nav>
                             </div>
                             @endif
