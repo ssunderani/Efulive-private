@@ -160,7 +160,7 @@ class FormController extends Controller
         return view('add_vendor');
     }
     public function issue_inventory(){
-        $inventory = Inventory::where('issued_to', NULL)->whereIn('status', [1,2])->orderBy('id', 'desc')->get();
+        $inventory = Inventory::where('issued_to', NULL)->whereIn('status', [1,2])->whereNotIn('devicetype_id', [1])->orderBy('id', 'desc')->get();
         $year = Year::where('locked', null)->orderBy('year', 'asc')->get();
         $categories = Category::where('status',1)->orderBy('category_name', 'asc')->get();
         return view('issue_inventory', ['years'=> $year,'inventories' => $inventory, 'categories' => $categories]);
@@ -243,7 +243,7 @@ class FormController extends Controller
         }
     }
     public function issue_with_gin(){
-        $inventory = Inventory::where('issued_to', NULL)->whereIn('status', [1,2])->orderBy('id', 'desc')->get();
+        $inventory = Inventory::where('issued_to', NULL)->whereIn('status', [1,2])->whereNotIn('devicetype_id', [1])->orderBy('id', 'desc')->get();
         $year = Year::where('locked', null)->orderBy('year', 'asc')->get();
         $categories = Category::where('status',1)->orderBy('category_name', 'asc')->get();
         return view('issuewithgin', ['years'=> $year,'inventories' => $inventory, 'categories' => $categories]);
