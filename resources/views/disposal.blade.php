@@ -33,7 +33,7 @@
                                                 <th>Product SN</th>
                                                 <th>Make</th>
                                                 <th>Model</th>
-                                                <th>Resaon</th>
+                                                <th>Reason</th>
                                                 <th>Dispose Date</th>
                                                 <th>Handover Date</th>
                                                 <th>Remarks</th>
@@ -54,7 +54,7 @@
                                                 <td>{{ empty($disposal->inventory->model)?'':$disposal->inventory->model->model_name }}</td>
                                                 <td>{{ empty($disposal->disposalstatus)?'':$disposal->disposalstatus->d_status }}</td>
                                                 <td>{{ date('j-F-Y' ,strtotime($disposal->dispose_date)) }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($disposal->handover_date)) }}</td>
+                                                <td>{{ $disposal->handover_date == null?'Null':date('j-F-Y' ,strtotime($disposal->handover_date)) }}</td>
                                                 <td>{{ $disposal->remarks }}</td>
                                                 <td>
                                                 <a href="{{ url('dispose/'.$disposal->id) }}" class="btn btn-sm btn-success">

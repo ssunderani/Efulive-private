@@ -239,12 +239,9 @@ class ReportController extends Controller
         }
         else{
             $fields = array_filter($request->all());
-            // $key = null; 
-            // $op = null; 
-            // $val = null; 
-                $key = 'issued_to'; 
-                $op = '>'; 
-                $val = 0; 
+            $key = null; 
+            $op = null; 
+            $val = null; 
             unset($fields['_token']);
             if(!isset($fields['issued_to'])){
                 $key = 'issued_to'; 
@@ -291,7 +288,7 @@ class ReportController extends Controller
                 $invs = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
             foreach($invs as $inv){
-                $inv->user = User::find($inv->issued_to);
+                $inv->user = Employee::where('emp_code', $inv->issued_to)->first();
                 $inv->issued_by = User::find($inv->issued_by);
                 $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
             }

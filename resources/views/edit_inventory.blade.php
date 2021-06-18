@@ -281,7 +281,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label class="small mb-1" for="warrentyend">Warranty End</label>
-                                                    <input class="form-control py-2 warrentyend" id="warrentyend" name="warranty_end" type="text" value="{{ $inventory->warranty_end }}" placeholder="Enter Warranty End here" readonly />
+                                                    <input class="form-control py-2 warrentyend" id="warrentyend" name="warranty_end" type="text" value="{{ date('j-F-Y' ,strtotime($inventory->warranty_end)) }}" placeholder="Enter Warranty End here" readonly />
                                                     <span class="small text-danger">{{ $errors->first('warranty_end') }}</span>
                                                 </div>
                                             </div>

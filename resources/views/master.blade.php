@@ -636,6 +636,7 @@ $(".budget_items").hide();
         var year_id = $(this).val();
         var inv_id = $('.invid').val();
         var dept_id = $('#dept_id').val();
+        console.log(year_id+' : '+inv_id+' : '+dept_id);
         $.get("{{ url('get_budget_items') }}/"+year_id+"/"+inv_id+"/"+dept_id, function(data){
             $(".items_list").empty();
             if(data == "0"){
