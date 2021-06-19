@@ -43,6 +43,18 @@
                                                     <span class="small text-danger">{{ $errors->first('to_date') }}</span>
                                                 </td>
                                             </tr>
+                                            <tr>  
+                                                <td>
+                                                    Handover / Not Handover
+                                                </td>                  
+                                                <td>
+                                                <select class="custom-select" id="handover" name="handover">
+                                                    <option value="">All</option>
+                                                    <option value="1">Handover</option>
+                                                    <option value="2">Not Handover</option>
+                                                </select>
+                                                </td>
+                                            </tr>
                                             
                                             <tr>                    
                                                 <td colspan="2" class="text-right"><button type="submit" class="btn btn-primary">Show</button></td>
@@ -70,12 +82,13 @@
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>
-                                                <th>Category</th>
                                                 <th>Sub Category</th>
+                                                <th>Previous Location</th>
                                                 <th>Product S#</th>
-                                                <th>Dispose date</th>
-                                                <th>Handover date</th>
-                                                <th>Reason</th>
+                                                <th>Disposal Status</th>
+                                                <th>Purchase Date</th>
+                                                <th>Disposal Date</th>
+                                                <th>Handed Over Date</th>
                                                 <th>Remarks</th>
                                             </tr>
                                         </thead>
@@ -85,12 +98,13 @@
                                         @foreach ($disposals as $disposal)
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
-                                                <td>{{ !empty($disposal->category)?$disposal->category->category_name:'' }}</td>
                                                 <td>{{ !empty($disposal->subcategory)?$disposal->subcategory->sub_cat_name:'' }}</td>
+                                                <td>{{ !empty($disposal->inventory->location)?$disposal->inventory->location->location:'' }}</td>
                                                 <td><a href="{{ url('item_detail/'.$disposal->inventory_id) }}">{{ !empty($disposal->inventory)?$disposal->inventory->product_sn:'' }}</a></td>
-                                                <td>{{ date('j-F-Y', strtotime($disposal->dispose_date)) }}</td>
-                                                <td>{{ date('j-F-Y', strtotime($disposal->handover_date)) }}</td>
                                                 <td>{{ !empty($disposal->disposalstatus)?$disposal->disposalstatus->d_status:'' }}</td>
+                                                <td>{{ !empty($disposal->inventory)?date('j-F-Y', strtotime($disposal->inventory->purchase_date)):'' }}</td>
+                                                <td>{{ date('j-F-Y', strtotime($disposal->dispose_date)) }}</td>
+                                                <td>{{ $disposal->handover_date == null?'Null':date('j-F-Y' ,strtotime($disposal->handover_date)) }}</td>
                                                 <td>{{ $disposal->remarks }}</td>
                                             </tr>
                                         @endforeach    

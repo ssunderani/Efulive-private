@@ -379,6 +379,7 @@ class ReportController extends Controller
         }
         else{
             $fields = array_filter($request->all());
+            
             unset($fields['_token']);
             $data['filters'] = $fields;
             if(isset($fields['from_date']) && isset($fields['to_date'])){
@@ -386,8 +387,22 @@ class ReportController extends Controller
                 $to = strtotime($fields['to_date'].'+1 day');
                 unset($fields['from_date']);
                 unset($fields['to_date']);
+                if(isset($fields['handover'])){
+                    if($fields['handover'] == 1){
+                        $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
+                        ->whereNotNull('handover_date')
+                        ->orderBy('id', 'desc')->get();
+                    }
+                    else{
+                        $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
+                        ->whereNull('handover_date')
+                        ->orderBy('id', 'desc')->get();
+                    }
+                }
+                else{
                 $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
                                         ->orderBy('id', 'desc')->get();
+                }
             }
             else if(isset($fields['from_date']) && !isset($fields['to_date'])){
                 $from = $fields['from_date'];
@@ -402,7 +417,17 @@ class ReportController extends Controller
                                         ->orderBy('id', 'desc')->get();
             }
             else{
-                $inventories = Disposal::orderBy('id', 'desc')->get();
+                if(isset($fields['handover'])){
+                    if($fields['handover'] == 1){
+                        $inventories = Disposal::whereNotNull('handover_date')->orderBy('id', 'desc')->get();
+                    }
+                    else{
+                        $inventories = Disposal::whereNull('handover_date')->orderBy('id', 'desc')->get();
+                    }
+                }
+                else{
+                    $inventories = Disposal::orderBy('id', 'desc')->get();
+                }
             }
         }
         if(!empty($inventories)){
