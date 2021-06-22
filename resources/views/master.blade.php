@@ -98,8 +98,7 @@
                                     <a class="nav-link" href="{{ url('vendor_buying') }}">Average Vendor Buying</a>
                                 </nav>
                             </div>
-                            @endif
-                            @if(Auth::user()->role_id == 1)
+                            
                             <!-- User Management -->
                             
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -109,6 +108,7 @@
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                @if(Auth::user()->role_id == 1)
                                     <!-- Category -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categories" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                         Categories
@@ -274,6 +274,8 @@
                                             <a class="nav-link" href="{{ url('vendor') }}">List Vendors</a>
                                         </nav>
                                     </div>
+                                    @endif
+                                    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                                     <!-- Disposal Status -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#d_status" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     Disposal Status
@@ -285,7 +287,7 @@
                                             <a class="nav-link" href="{{ url('disposalstatus') }}">List Status</a>
                                         </nav>
                                     </div>
-                                    
+                                    @endif
                                 </nav>
                             </div>
                             @endif
