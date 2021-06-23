@@ -52,7 +52,7 @@
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="inventories" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
+                                <nav class="sb-sidenav-menu-nested nav accordion">
                                     <a class="nav-link" href="{{ url('add_inventory') }}">Add</a>
                                     <a class="nav-link" href="{{ url('add_with_grn') }}">Add with GRN</a>
                                     <a class="nav-link" href="{{ url('pendings') }}">Pending GRNs</a>
@@ -100,12 +100,13 @@
                             </div>
                             
                             <!-- User Management -->
-                            
+                            @if(Auth::user()->role_id == 1)
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 Setup
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
+                            @endif
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 @if(Auth::user()->role_id == 1)
@@ -274,9 +275,7 @@
                                             <a class="nav-link" href="{{ url('vendor') }}">List Vendors</a>
                                         </nav>
                                     </div>
-                                    @endif
-                                    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
-                                    <!-- Disposal Status -->
+                                   <!-- Disposal Status -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#d_status" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     Disposal Status
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
