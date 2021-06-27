@@ -18,6 +18,8 @@ use App\Issue;
 use App\Vendor;
 use App\Repairing;
 use App\Disposal;
+use App\Dispatchin;
+use App\Dispatchout;
 class PDFController extends Controller
 {
     public function generatePDF()
@@ -454,5 +456,87 @@ class PDFController extends Controller
         $inventories = $array;
         $pdf = PDF::loadView('vendorbuyingreport', ['inventories'=>$inventories])->setPaper('a4', 'landscape');
         return $pdf->download('vendor_buying_report.pdf');
+    }
+    public function dispatchinexport($data)
+    {
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', [$from, date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', ['', date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Dispatchin::orderBy('id', 'desc')->get();
+            }
+        
+        if(!empty($inventories)){
+            foreach($inventories as $inventory){
+                
+                    $user = Employee::where('emp_code', $inventory->inventory->issued_to)->first();
+                    if($user){
+                        $inventory->user = $user;
+                    }
+               
+            }
+        }
+        $pdf = PDF::loadView('dispatchinreport', ['dispatches'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
+        return $pdf->download('dispatchin_report.pdf');
+    }
+    public function dispatchoutexport($data)
+    {
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', [$from, date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', ['', date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Dispatchout::orderBy('id', 'desc')->get();
+            }
+        
+        if(!empty($inventories)){
+            foreach($inventories as $inventory){
+                
+                    $user = Employee::where('emp_code', $inventory->inventory->issued_to)->first();
+                    if($user){
+                        $inventory->user = $user;
+                    }
+               
+            }
+        }
+        $pdf = PDF::loadView('dispatchoutreport', ['dispatches'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
+        return $pdf->download('dispatchout_report.pdf');
     }
 }

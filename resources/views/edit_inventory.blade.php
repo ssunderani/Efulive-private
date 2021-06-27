@@ -243,16 +243,16 @@
                                         <div class="form-row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="challan">Delivery Challan</label>
-                                                    <input class="form-control py-2" id="challan" name="delivery_challan" type="text" value="{{ $inventory->delivery_challan }}" placeholder="Enter Delivery Challan here" />
-                                                    <span class="small text-danger">{{ $errors->first('delivery_challan') }}</span>
+                                                    <label class="small mb-1" for="ccost">Current Cost</label>
+                                                    <input class="form-control py-2" id="ccost" name="current_cost" type="text" value="{{ $inventory->current_cost }}" placeholder="Enter Current Cost here" />
+                                                    <span class="small text-danger">{{ $errors->first('current_cost') }}</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="challan_date">Delivery Challan Date</label>
-                                                    <input class="form-control py-2" id="challan_date" name="delivery_challan_date" type="date" value="{{ $inventory->delivery_challan_date }}" placeholder="Enter Delivery Challan Date here" />
-                                                    <span class="small text-danger">{{ $errors->first('delivery_challan_date') }}</span>
+                                                    <label class="small mb-1" for="po">PO Number</label>
+                                                    <input class="form-control py-2" id="po" name="po_number" type="text" value="{{ $inventory->po_number }}" placeholder="Enter PO Number here" />
+                                                    <span class="small text-danger">{{ $errors->first('po_number') }}</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -405,9 +405,16 @@
                                         <div class="form-row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="po">PO Number</label>
-                                                    <input class="form-control py-2" id="po" name="po_number" type="text" value="{{ $inventory->po_number }}" placeholder="Enter PO Number here" />
-                                                    <span class="small text-danger">{{ $errors->first('po_number') }}</span>
+                                                    <label class="small mb-1" for="challan">Delivery Challan</label>
+                                                    <input class="form-control py-2" id="challan" name="delivery_challan" type="text" value="{{ $inventory->delivery_challan }}" placeholder="Enter Delivery Challan here" />
+                                                    <span class="small text-danger">{{ $errors->first('delivery_challan') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="challan_date">Delivery Challan Date</label>
+                                                    <input class="form-control py-2" id="challan_date" name="delivery_challan_date" type="date" value="{{ $inventory->delivery_challan_date }}" placeholder="Enter Delivery Challan Date here" />
+                                                    <span class="small text-danger">{{ $errors->first('delivery_challan_date') }}</span>
                                                 </div>
                                             </div>
                                             

@@ -59,6 +59,8 @@ Route::resource('/years', YearController::class);
 Route::resource('/budget', BudgetController::class);
 Route::resource('/disposalstatus', DisposalstatusController::class);
 Route::resource('/dispose', DisposalController::class);
+Route::resource('/dispatchin', DispatchinController::class);
+Route::resource('/dispatchout', DispatchoutController::class);
 
 /* Forms */
 Route::get('/add_category', [FormController::class, 'add_category'])->middleware('role:1');
@@ -106,6 +108,8 @@ Route::post('/summary_by_year', 'BudgetController@summary_by_year');
 Route::get('/lock_budget/{id}', 'BudgetController@lock_budget');
 Route::get('/add_d_status', [FormController::class, 'add_d_status']);
 Route::get('/add_disposal', [FormController::class, 'add_disposal']);
+Route::get('/add_dispatchin', [FormController::class, 'add_dispatchin']);
+Route::get('/add_dispatchout', [FormController::class, 'add_dispatchout']);
 
 Route::post('/issue', 'FormController@submitt_issue');
 Route::post('/submit_gin', 'FormController@submit_gin');
@@ -133,6 +137,7 @@ Route::get('/check_product/{pro}', 'InventoryController@check_product');
 Route::get('/get_price/{id}', 'InventoryController@get_price');
 Route::get('/get_inv_items/{id}', 'InventoryController@get_inv_items');
 Route::get('/get_unassigned_items/{id}', 'InventoryController@get_unassigned_items');
+Route::get('/get_assigned_items/{id}', 'InventoryController@get_assigned_items');
 Route::get('/get_budget_items/{year_id}/{inv_id}/{dept_id}', 'BudgetController@get_budget_items');
 
 Route::get('/edit_logs', 'ReportController@edit_logs');
@@ -146,7 +151,11 @@ Route::get('/bincardexport/{data}','PDFController@bincardexport');
 Route::get('/asset_repairing', 'ReportController@asset_repairing');
 Route::get('/repairingexport/{data}','PDFController@repairingexport');
 Route::get('/disposal', 'ReportController@disposal');
+Route::get('/dispatchin_report', 'ReportController@dispatchin_report');
+Route::get('/dispatchout_report', 'ReportController@dispatchout_report');
 Route::get('/disposalexport/{data}','PDFController@disposalexport');
+Route::get('/dispatchinexport/{data}','PDFController@dispatchinexport');
+Route::get('/dispatchoutexport/{data}','PDFController@dispatchoutexport');
 Route::get('/vendor_buying', 'ReportController@vendor_buying');
 Route::get('/vendor_buyingexport/{data}','PDFController@vendor_buyingexport');
 

@@ -74,6 +74,28 @@
                                             <a class="nav-link" href="{{ url('dispose') }}">List Disposals</a>
                                         </nav>
                                     </div>
+                                    <!-- Dispatch IN -->
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#din" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Dispatch IN
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="din" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('add_dispatchin') }}">Add Dispatch IN</a>
+                                            <a class="nav-link" href="{{ url('dispatchin') }}">List Dispatch IN</a>
+                                        </nav>
+                                    </div>
+                                    <!-- Dispatch OUT -->
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dout" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Dispatch OUT
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="dout" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{ url('add_dispatchout') }}">Add Dispatch OUT</a>
+                                            <a class="nav-link" href="{{ url('dispatchout') }}">List Dispatch OUT</a>
+                                        </nav>
+                                    </div>
                                 </nav>
                             </div>
                             
@@ -95,6 +117,8 @@
                                     <a class="nav-link" href="{{ url('bin_card') }}">Bin Card report</a>
                                     <a class="nav-link" href="{{ url('asset_repairing') }}">Asset Repairing report</a>
                                     <a class="nav-link" href="{{ url('disposal') }}">Asset Disposal report</a>
+                                    <a class="nav-link" href="{{ url('dispatchin_report') }}">Dispatch IN report</a>
+                                    <a class="nav-link" href="{{ url('dispatchout_report') }}">Dispatch OUT report</a>
                                     <a class="nav-link" href="{{ url('vendor_buying') }}">Average Vendor Buying</a>
                                 </nav>
                             </div>
@@ -621,7 +645,28 @@ $(document).ready(function(){
                 );
             });    
         });    
-    });  
+    }); 
+    $(".dinout_subcategory").on("change",function(){
+        var id = $(this).val();
+        var action = $(this).data("action");
+        var url;
+        var item_list = $('.item_list');
+        item_list.empty();
+        item_list.append('<option value=0 class="o1">Select Item here</option>');
+        if(action == 'in'){
+            url = "{{ url('get_assigned_items') }}/"+id;
+        }
+        else{
+            url = "{{ url('get_inv_items') }}/"+id;
+        }
+        $.get(url, function(data){
+            $.each( data, function(index, value){
+                item_list.append(
+                    $('<option></option>').val(value.id).html(value.product_sn)
+                );
+            });    
+        });    
+    });   
 
     $(".t_seperator").focusout(function(){
         var value = $(this).val();

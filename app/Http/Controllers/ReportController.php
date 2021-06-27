@@ -22,6 +22,8 @@ use App\Budgetitem as Budget;
 use App\Issue;
 use App\Repairing;
 use App\Disposal;
+use App\Dispatchin;
+use App\Dispatchout;
 class ReportController extends Controller
 {
     public function __construct()
@@ -521,5 +523,108 @@ class ReportController extends Controller
         
         $data['inventories'] = $array;
         return view('show_vendorbuying', $data);
+    }
+
+    public function dispatchin_report(Request $request)
+    {
+        date_default_timezone_set('Asia/karachi');
+        $data = array();
+        $data['filters'] = array();
+        if(empty($request->all())){
+            $inventories = array();
+        }
+        else{
+            $fields = array_filter($request->all());
+            
+            unset($fields['_token']);
+            $data['filters'] = $fields;
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', [$from, date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', ['', date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Dispatchin::orderBy('id', 'desc')->get();
+            }
+        }
+        if(!empty($inventories)){
+            foreach($inventories as $inventory){
+                
+                    $user = Employee::where('emp_code', $inventory->inventory->issued_to)->first();
+                    if($user){
+                        $inventory->user = $user;
+                    }
+               
+            }
+        }
+        $data['dispatch'] = $inventories;
+        //return $data;
+        return view('show_dispatchin', $data);
+    }
+    public function dispatchout_report(Request $request)
+    {
+        date_default_timezone_set('Asia/karachi');
+        $data = array();
+        $data['filters'] = array();
+        if(empty($request->all())){
+            $inventories = array();
+        }
+        else{
+            $fields = array_filter($request->all());
+            
+            unset($fields['_token']);
+            $data['filters'] = $fields;
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', [$from, date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', ['', date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Dispatchout::orderBy('id', 'desc')->get();
+            }
+        }
+        if(!empty($inventories)){
+            foreach($inventories as $inventory){
+                
+                    $user = Employee::where('emp_code', $inventory->inventory->issued_to)->first();
+                    if($user){
+                        $inventory->user = $user;
+                    }
+               
+            }
+        }
+        $data['dispatch'] = $inventories;
+        //return $data;
+        return view('show_dispatchout', $data);
     }
 }

@@ -163,6 +163,7 @@ class InventoryController extends Controller
         $arr['current_consumer'] = $request->current_consumer;
         $arr['warranty_end'] = $request->warranty_end;
         $arr['tax'] = $request->tax;
+        $arr['current_cost'] = $request->current_cost;
         
         $update = Inventory::where('id', $id)->update($arr);
         if($update){
@@ -226,6 +227,11 @@ class InventoryController extends Controller
     public function get_unassigned_items($id)
     {
         $inventories = Inventory::where('subcategory_id',$id)->where('issued_to', NULL)->whereIn('status', [1,2])->whereNotIn('devicetype_id', [1])->get();
+        return $inventories;
+    }
+    public function get_assigned_items($id)
+    {
+        $inventories = Inventory::where('subcategory_id',$id)->whereNotNull('issued_to')->whereNotIn('devicetype_id', [2])->get();
         return $inventories;
     }
 }

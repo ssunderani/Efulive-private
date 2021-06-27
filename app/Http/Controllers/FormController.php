@@ -88,6 +88,16 @@ class FormController extends Controller
         $data['statuses'] = Disposalstatus::all();
         return view('add_disposal', $data);
     }
+    public function add_dispatchin(){
+        $data = array();
+        $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
+        return view('add_dispatchin', $data);
+    }
+    public function add_dispatchout(){
+        $data = array();
+        $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
+        return view('add_dispatchout', $data);
+    }
     public function add_budget(){
         $data = array();
         $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();

@@ -55,7 +55,8 @@ class Inventory extends Model
         'current_location',
         'current_consumer',
         'warranty_end',
-        'tax'
+        'tax',
+        'current_cost'
     ];
 
     protected $with = [
