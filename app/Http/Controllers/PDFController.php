@@ -390,8 +390,10 @@ class PDFController extends Controller
                 
                 }
             }
-            $pdf = PDF::loadView('disposalreport', ['disposals'=>$inventories])->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('disposalreport', ['disposals'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
             return $pdf->download('disposal_report.pdf');
+            // $data = ["disposals"=>$inventories , 'filters'=>$data];
+            // return view('disposalreport', $data);
     }
     public function vendor_buyingexport($data) 
     {
