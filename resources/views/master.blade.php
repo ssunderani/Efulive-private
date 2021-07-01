@@ -653,12 +653,12 @@ $(document).ready(function(){
         var item_list = $('.item_list');
         item_list.empty();
         item_list.append('<option value=0 class="o1">Select Item here</option>');
-        if(action == 'in'){
+        //if(action == 'in'){
             url = "{{ url('get_assigned_items') }}/"+id;
-        }
-        else{
-            url = "{{ url('get_inv_items') }}/"+id;
-        }
+        // }
+        // else{
+        //     url = "{{ url('get_inv_items') }}/"+id;
+        // }
         $.get(url, function(data){
             $.each( data, function(index, value){
                 item_list.append(
