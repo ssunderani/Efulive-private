@@ -85,7 +85,7 @@
                                         @foreach ($dispatch as $disp)
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
-                                                <td>{{ date('j-F-Y', strtotime($disp->dispatchin_date)) }}</td>
+                                                <td>{{ date('j-F-Y', strtotime($disp->dispatchout_date)) }}</td>
                                                 <td>{{ !empty($disp->subcategory)?$disp->subcategory->sub_cat_name:'' }}</td>
                                                 <td><a href="{{ url('item_detail/'.$disp->inventory_id) }}">{{ !empty($disp->inventory)?$disp->inventory->product_sn:'' }}</a></td>
                                                 <td>{{ !empty($disp->user)?$disp->user->branch:'' }}</td>

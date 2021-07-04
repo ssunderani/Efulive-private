@@ -40,8 +40,9 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                     <p style="font-size: 12px;"><b>From Date:</b>{{ empty($from)?'-':date('j-F-Y', strtotime($from)) }} <b>To Date:</b>{{ empty($to)?'-':date('j-F-Y', strtotime($to)) }}</p>
                 </td>
                 <td style="width:15%;">
-                <p><b>Username:</b>{{ Auth::user()->name }}</p>
-                <p style="line-height: 0px;"><b>Printed</b></p>
+                <p style="font-size: 12px;"><b>Username:</b>{{ Auth::user()->name }}</p>
+                <p style="font-size: 12px;"><b>Printed:</b></p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('j-F-Y h:i:sa') }}</p>
                 </td>
             </tr>
         </table> <br> 
@@ -64,7 +65,7 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                                         @foreach ($dispatches as $disp)
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
-                                                <td>{{ date('j-F-Y', strtotime($disp->dispatchin_date)) }}</td>
+                                                <td>{{ date('j-F-Y', strtotime($disp->dispatchout_date)) }}</td>
                                                 <td>{{ !empty($disp->subcategory)?$disp->subcategory->sub_cat_name:'' }}</td>
                                                 <td>{{ !empty($disp->inventory)?$disp->inventory->product_sn:'' }}</td>
                                                 <td>{{ !empty($disp->user)?$disp->user->branch:'' }}</td>

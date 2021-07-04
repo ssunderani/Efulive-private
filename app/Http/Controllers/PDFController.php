@@ -357,29 +357,53 @@ class PDFController extends Controller
     {
         date_default_timezone_set('Asia/karachi');
         $fields = (array)json_decode($data);
-                if(isset($fields['from_date']) && isset($fields['to_date'])){
-                    $from = $fields['from_date'];
-                    $to = strtotime($fields['to_date'].'+1 day');
-                    unset($fields['from_date']);
-                    unset($fields['to_date']);
+        if(isset($fields['from_date']) && isset($fields['to_date'])){
+            $from = $fields['from_date'];
+            $to = strtotime($fields['to_date'].'+1 day');
+            unset($fields['from_date']);
+            unset($fields['to_date']);
+            if(isset($fields['handover'])){
+                if($fields['handover'] == 1){
                     $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
-                                            ->orderBy('id', 'desc')->get();
-                }
-                else if(isset($fields['from_date']) && !isset($fields['to_date'])){
-                    $from = $fields['from_date'];
-                    unset($fields['from_date']);
-                    $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', strtotime('+1 day'))])
-                                            ->orderBy('id', 'desc')->get();
-                }
-                else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
-                    $to = strtotime($fields['to_date'].'+1 day');
-                    unset($fields['to_date']);
-                    $inventories = Disposal::whereBetween('dispose_date', ['', date('Y-m-d', $to)])
-                                            ->orderBy('id', 'desc')->get();
+                    ->whereNotNull('handover_date')
+                    ->orderBy('id', 'desc')->get();
                 }
                 else{
-                    $inventories = Disposal::orderBy('id', 'desc')->get();
+                    $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
+                    ->whereNull('handover_date')
+                    ->orderBy('id', 'desc')->get();
                 }
+            }
+            else{
+            $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
+                                    ->orderBy('id', 'desc')->get();
+            }
+        }
+        else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+            $from = $fields['from_date'];
+            unset($fields['from_date']);
+            $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                    ->orderBy('id', 'desc')->get();
+        }
+        else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+            $to = strtotime($fields['to_date'].'+1 day');
+            unset($fields['to_date']);
+            $inventories = Disposal::whereBetween('dispose_date', ['', date('Y-m-d', $to)])
+                                    ->orderBy('id', 'desc')->get();
+        }
+        else{
+            if(isset($fields['handover'])){
+                if($fields['handover'] == 1){
+                    $inventories = Disposal::whereNotNull('handover_date')->orderBy('id', 'desc')->get();
+                }
+                else{
+                    $inventories = Disposal::whereNull('handover_date')->orderBy('id', 'desc')->get();
+                }
+            }
+            else{
+                $inventories = Disposal::orderBy('id', 'desc')->get();
+            }
+        }
             if(!empty($inventories)){
                 foreach($inventories as $inventory){
                     $issue = Issue::where('inventory_id', $inventory->inventory_id)->orderBy('id', 'DESC')->first();
