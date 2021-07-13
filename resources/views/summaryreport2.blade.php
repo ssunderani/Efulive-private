@@ -43,12 +43,21 @@
  $grand_r_p = 0; 
  $grand_r_qty = 0;
  ?>       
-<div class="text-center">
-<h2 style="padding:0; margin:0;"><u>Budget Summary Report</u></h2>
-                    <p style="padding:0; margin:0;" class="font-14"><b>EFU Life Assurance Ltd.</b></p>
+<table cellpadding="0" cellspacing="0" style="width:100%;">
+           
+            <tr class="text-center">
+                <td class="text-center" style="width:85%; padding-left: 100px;">
+                    <h2>EFULife Assurance Ltd.</h2>
+                    <h2 style="font-weight:normal; line-height:1px;">Budget Summary Report</h2>
                     <p style="padding:0; margin:0;" class="font-14"><b>Proposed IT Budget - {{ $year }}</b></p>
-</div>
-
+                </td>
+                <td style="width:15%;">
+                <p style="font-size: 12px;"><b>Username:</b>{{ Auth::user()->name }}</p>
+                <p style="font-size: 12px;"><b>Printed:</b></p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('j-F-Y h:i:sa') }}</p>
+                </td>
+            </tr>
+        </table> <br> 
 @foreach($types as $key=>$type)   
                         <div class="card mb-4 mt-3">
                             <div class="card-body">

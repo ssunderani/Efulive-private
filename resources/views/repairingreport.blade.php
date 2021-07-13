@@ -28,6 +28,17 @@
                     
                 </td>
             </tr>
+            <tr class="text-center">
+                <td class="text-center" style="width:85%; padding-left: 100px;">
+                    <h2>EFULife Assurance Ltd.</h2>
+                    <h2 style="font-weight:normal; line-height:1px;">Inventory Asset Repairing Report</h2>
+                </td>
+                <td style="width:15%;">
+                <p style="font-size: 12px;"><b>Username:</b>{{ Auth::user()->name }}</p>
+                <p style="font-size: 12px;"><b>Printed:</b></p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('j-F-Y h:i:sa') }}</p>
+                </td>
+            </tr>
         </table> <br> 
                                     <table class="secondary-table">
                                     <thead>

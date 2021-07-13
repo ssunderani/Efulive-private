@@ -339,7 +339,7 @@ class PDFController extends Controller
                     $inventory->added_by = User::where('id',$inventory->added_by)->first();
                 }
             }
-            $pdf = PDF::loadView('bincardreport', ['inventories'=>$inventories])->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('bincardreport', ['inventories'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
             return $pdf->download('bin_card_report.pdf');
     }
     public function repairingexport($data) 
