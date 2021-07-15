@@ -248,7 +248,7 @@ class PDFController extends Controller
                 $inv->added_by = User::find($inv->added_by);
             }
             
-            $pdf = PDF::loadView('inventoryinreport', ['inventories'=>$inventories])->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('inventoryinreport', ['inventories'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
             return $pdf->download('inventory_in_report.pdf');
     }
     public function inventoryoutexport($data) 
@@ -295,7 +295,7 @@ class PDFController extends Controller
                 $inventories = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
             foreach($inventories as $inv){
-                $inv->user = User::find($inv->issued_to);
+                $inv->user = Employee::where('emp_code', $inv->issued_to)->first();
                 $inv->issued_by = User::find($inv->issued_by);
                 $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
             }
