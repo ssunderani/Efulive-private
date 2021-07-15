@@ -299,7 +299,7 @@ class PDFController extends Controller
                 $inv->issued_by = User::find($inv->issued_by);
                 $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
             }
-            $pdf = PDF::loadView('inventoryoutreport', ['inventories'=>$inventories])->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('inventoryoutreport', ['inventories'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
             return $pdf->download('inventory_out_report.pdf');
     }
 
