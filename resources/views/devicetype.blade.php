@@ -40,7 +40,7 @@
                                             <tr>
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $devicetype->devicetype_name }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($devicetype->created_at)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($devicetype->created_at)) }}</td>
                                                 <td>{{ $devicetype->status == 1?'Active':'Inactive' }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('devicetype/'.$devicetype->id) }}" class="btn btn-sm btn-success">

@@ -260,7 +260,7 @@
                                                 <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>
                                                 <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
                                                 <td>{{ empty($inventory->issued_by)?'':$inventory->issued_by->name }}</td>
-                                                <td>{{ empty($inventory->issue_date)?'':date('j-F-Y' ,strtotime($inventory->issue_date->created_at)) }}</td>
+                                                <td>{{ empty($inventory->issue_date)?'':date('d-M-Y' ,strtotime($inventory->issue_date->created_at)) }}</td>
                                                 <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>
                                                 <td>{{ empty($inventory->devicetype)?'':$inventory->devicetype->devicetype_name }}</td>
                                                 <td>{{ $inventory->remarks }}</td>

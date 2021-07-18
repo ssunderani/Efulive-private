@@ -52,7 +52,7 @@
                                                 <td>{{ empty($dispatch->inventory->make)?'':$dispatch->inventory->make->make_name }}</td>
                                                 <td>{{ empty($dispatch->inventory->model)?'':$dispatch->inventory->model->model_name }}</td>
                                                 <td>{{ $dispatch->insured }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($dispatch->dispatchout_date)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($dispatch->dispatchout_date)) }}</td>
                                                 <td>{{ $dispatch->remarks }}</td>
                                                 <td>
                                                 <a href="{{ url('dispatchout/'.$dispatch->id) }}" class="btn btn-sm btn-success">

@@ -54,7 +54,7 @@
                 <td style="width:15%;">
                 <p style="font-size: 12px;"><b>Username:</b>{{ Auth::user()->name }}</p>
                 <p style="font-size: 12px;"><b>Printed:</b></p>
-                <p style="line-height: 0px; font-size: 12px;">{{ date('j-F-Y h:i:sa') }}</p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('d-M-Y h:i:sa') }}</p>
                 </td>
             </tr>
         </table> <br> 

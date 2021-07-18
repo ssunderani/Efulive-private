@@ -107,7 +107,7 @@
                                                 <td><a href="{{ url('item_detail/'.$inventory->id) }}">{{ $inventory->product_sn }}</a></td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($inventory->purchase_date)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ $inventory->po_number }}</td>
                                                 <td>{{ empty($inventory->vendor)?'':$inventory->vendor->vendor_name }}</td>
                                                 <td>{{ $inventory->warrenty_period }}</td>

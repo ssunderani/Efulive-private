@@ -40,7 +40,7 @@
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
                                                 <td>{{ $itemnature->itemnature_name }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($itemnature->created_at)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($itemnature->created_at)) }}</td>
                                                 <td>{{ $itemnature->status == 1?'Active':'Inactive' }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('itemnature/'.$itemnature->id) }}" class="btn btn-sm btn-success">

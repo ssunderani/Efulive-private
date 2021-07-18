@@ -38,7 +38,7 @@
                                             <tr>
                                                 <td>{{ $branch->id }}</td>
                                                 <td>{{ $branch->branch_name }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($branch->created_at)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($branch->created_at)) }}</td>
                                                 <td class="text-center">
                                                 <a href="{{ url('branch/'.$branch->id) }}" class="btn btn-sm btn-success">
                                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

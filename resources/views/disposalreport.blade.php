@@ -37,7 +37,7 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                 <td class="text-center" style="width:85%; padding-left: 100px;">
                     <h2>EFULife Assurance Ltd.</h2>
                     <h2 style="font-weight:normal; line-height:1px;">IT Equipment Disposal</h2>
-                    <p style="font-size: 12px;"><b>From Date:</b>{{ empty($from)?'-':date('j-F-Y', strtotime($from)) }} <b>To Date:</b>{{ empty($to)?'-':date('j-F-Y', strtotime($to)) }}</p>
+                    <p style="font-size: 12px;"><b>From Date:</b>{{ empty($from)?'-':date('d-M-Y', strtotime($from)) }} <b>To Date:</b>{{ empty($to)?'-':date('d-M-Y', strtotime($to)) }}</p>
                 </td>
                 <td style="width:15%;">
                 <p><b>Username:</b>{{ Auth::user()->name }}</p>
@@ -49,11 +49,13 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                                     <thead>
                                             <tr>
                                                 <th>S.No</th>
-                                                <th>Item</th>
+                                                <th>Sub Category</th>
+                                                <th>Previous Location</th>
                                                 <th>Product S#</th>
-                                                <th>User/Location</th>
                                                 <th>Disposal Status</th>
                                                 <th>Purchase Date</th>
+                                                <th>Disposal Date</th>
+                                                <th>Handed Over Date</th>
                                                 <th>Remarks</th>
                                             </tr>
                                         </thead>
@@ -64,10 +66,12 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
                                                 <td>{{ !empty($disposal->subcategory)?$disposal->subcategory->sub_cat_name:'' }}</td>
-                                                <td>{{ !empty($disposal->inventory)?$disposal->inventory->product_sn:'' }}</td>
                                                 <td>{{ !empty($disposal->inventory->location)?$disposal->inventory->location->location:'' }}</td>
+                                                <td>{{ !empty($disposal->inventory)?$disposal->inventory->product_sn:'' }}</td>
                                                 <td>{{ !empty($disposal->disposalstatus)?$disposal->disposalstatus->d_status:'' }}</td>
-                                                <td>{{ !empty($disposal->inventory)?date('j-F-Y', strtotime($disposal->inventory->purchase_date)):'' }}</td>
+                                                <td>{{ !empty($disposal->inventory)?date('d-M-Y', strtotime($disposal->inventory->purchase_date)):'' }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($disposal->dispose_date)) }}</td>
+                                                <td>{{ $disposal->handover_date == null?'Null':date('d-M-Y' ,strtotime($disposal->handover_date)) }}</td>
                                                 <td>{{ $disposal->remarks }}</td>
                                             </tr>
                                         @endforeach 

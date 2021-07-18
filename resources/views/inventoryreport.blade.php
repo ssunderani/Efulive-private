@@ -30,7 +30,7 @@
                 <td style="width:15%;">
                 <p style="font-size: 12px;"><b>Username:</b>{{ Auth::user()->name }}</p>
                 <p style="font-size: 12px;"><b>Printed:</b></p>
-                <p style="line-height: 0px; font-size: 12px;">{{ date('j-F-Y h:i:sa') }}</p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('d-M-Y h:i:sa') }}</p>
                 </td>
             </tr>
         </table>  <br> 
@@ -60,7 +60,7 @@
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
                                                 <td>{{ $inventory->product_sn }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($inventory->purchase_date)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ empty($inventory->subcategory)?'':$inventory->subcategory->sub_cat_name }}</td>
                                                 <td>{{ number_format($inventory->item_price,2) }}</td>
                                                 <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>

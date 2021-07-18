@@ -36,7 +36,7 @@
                 <td style="width:15%;">
                 <p style="font-size: 12px;"><b>Username:</b>{{ Auth::user()->name }}</p>
                 <p style="font-size: 12px;"><b>Printed:</b></p>
-                <p style="line-height: 0px; font-size: 12px;">{{ date('j-F-Y h:i:sa') }}</p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('d-M-Y h:i:sa') }}</p>
                 </td>
             </tr>
         </table> <br> 
@@ -44,8 +44,8 @@
                                     <thead>
                                             <tr>
                                                 <th>S.No</th>
-                                                <th>Item Category</th>
-                                                <th>Product SN</th>
+                                                <th>Sub Category</th>
+                                                <th>Product S#</th>
                                                 <th>Make</th>
                                                 <th>Model</th>
                                                 <th>Issued to</th>
@@ -74,7 +74,7 @@
                                                 <td>{{ empty($repair->item->model)?'':$repair->item->model->model_name }}</td>
                                                 <td>{{ empty($repair->item->user)?'':$repair->item->user->name }}</td>
                                                 <td>{{ empty($repair->item->location)?'':$repair->item->location->location }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($repair->date)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($repair->date)) }}</td>
                                                 <td class='text-align-right'>{{ number_format($repair->actual_price_value,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($repair->price_value,2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($total,2) }}</td>

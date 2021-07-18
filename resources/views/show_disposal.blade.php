@@ -102,9 +102,9 @@
                                                 <td>{{ !empty($disposal->inventory->location)?$disposal->inventory->location->location:'' }}</td>
                                                 <td><a href="{{ url('item_detail/'.$disposal->inventory_id) }}">{{ !empty($disposal->inventory)?$disposal->inventory->product_sn:'' }}</a></td>
                                                 <td>{{ !empty($disposal->disposalstatus)?$disposal->disposalstatus->d_status:'' }}</td>
-                                                <td>{{ !empty($disposal->inventory)?date('j-F-Y', strtotime($disposal->inventory->purchase_date)):'' }}</td>
-                                                <td>{{ date('j-F-Y', strtotime($disposal->dispose_date)) }}</td>
-                                                <td>{{ $disposal->handover_date == null?'Null':date('j-F-Y' ,strtotime($disposal->handover_date)) }}</td>
+                                                <td>{{ !empty($disposal->inventory)?date('d-M-Y', strtotime($disposal->inventory->purchase_date)):'' }}</td>
+                                                <td>{{ date('d-M-Y', strtotime($disposal->dispose_date)) }}</td>
+                                                <td>{{ $disposal->handover_date == null?'Null':date('d-M-Y' ,strtotime($disposal->handover_date)) }}</td>
                                                 <td>{{ $disposal->remarks }}</td>
                                             </tr>
                                         @endforeach    

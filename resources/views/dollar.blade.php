@@ -41,7 +41,7 @@
                                                 <td class='text-align-right'>{{ $i++ }}</td>
                                                 <td class='text-align-right'>{{ number_format($dollar->pkr_val,2) }}</td>
                                                 <td>{{ $dollar->year->year }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($dollar->created_at)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($dollar->created_at)) }}</td>
                                                 <td class="text-center">
                                                 <form method="POST" action="{{ url('dollars/'.$dollar->id) }}" class="d-inline-block prompt_delete">
                                                 @method('DELETE')

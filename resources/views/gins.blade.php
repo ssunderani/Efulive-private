@@ -75,7 +75,7 @@
                                                 <a href="{{ url('generate-gin/'.$gin->id.'/0/'.date('Y-m-d')) }}">{{ $gin->gin_no }}</a>
                                                 @endif
                                                 </td>
-                                                <td>{{ date('j-F-Y' ,strtotime($gin->created_at)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($gin->created_at)) }}</td>
                                             </tr>
                                         @endforeach    
                                         </tbody>

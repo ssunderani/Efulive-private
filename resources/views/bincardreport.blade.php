@@ -31,12 +31,12 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                 <td class="text-center" style="width:85%; padding-left: 100px;">
                     <h2>EFULife Assurance Ltd.</h2>
                     <h2 style="font-weight:normal; line-height:1px;">Inventory Bin Card Report</h2>
-                    <p style="font-size: 12px;"><b>From Date:</b>{{ empty($from)?'-':date('j-F-Y', strtotime($from)) }} <b>To Date:</b>{{ empty($to)?'-':date('j-F-Y', strtotime($to)) }}</p>
+                    <p style="font-size: 12px;"><b>From Date:</b>{{ empty($from)?'-':date('d-M-Y', strtotime($from)) }} <b>To Date:</b>{{ empty($to)?'-':date('d-M-Y', strtotime($to)) }}</p>
                 </td>
                 <td style="width:15%;">
                 <p style="font-size: 12px;"><b>Username:</b>{{ Auth::user()->name }}</p>
                 <p style="font-size: 12px;"><b>Printed:</b></p>
-                <p style="line-height: 0px; font-size: 12px;">{{ date('j-F-Y h:i:sa') }}</p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('d-M-Y h:i:sa') }}</p>
                 </td>
             </tr>
         </table> <br> 

@@ -52,7 +52,7 @@
                                                 <td>{{ empty($dispatch->inventory->make)?'':$dispatch->inventory->make->make_name }}</td>
                                                 <td>{{ empty($dispatch->inventory->model)?'':$dispatch->inventory->model->model_name }}</td>
                                                 <td>{{ $dispatch->memo }}</td>
-                                                <td>{{ date('j-F-Y' ,strtotime($dispatch->dispatchin_date)) }}</td>
+                                                <td>{{ date('d-M-Y' ,strtotime($dispatch->dispatchin_date)) }}</td>
                                                 <td>{{ $dispatch->remarks }}</td>
                                                 <td>
                                                 <a href="{{ url('dispatchin/'.$dispatch->id) }}" class="btn btn-sm btn-success">
