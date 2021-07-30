@@ -158,6 +158,7 @@ Route::get('/dispatchinexport/{data}','PDFController@dispatchinexport');
 Route::get('/dispatchoutexport/{data}','PDFController@dispatchoutexport');
 Route::get('/vendor_buying', 'ReportController@vendor_buying');
 Route::get('/vendor_buyingexport/{data}','PDFController@vendor_buyingexport');
-
 Route::get('/activeinactive/{id}/{data}','UserController@activeinactive');
 
+Route::get('/reorder-level','ReportController@reorder_level');
+Route::get('/reorderexport/{data}','PDFController@reorderexport');

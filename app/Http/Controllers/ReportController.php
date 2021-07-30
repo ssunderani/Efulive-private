@@ -24,6 +24,7 @@ use App\Repairing;
 use App\Disposal;
 use App\Dispatchin;
 use App\Dispatchout;
+use App\Year;
 class ReportController extends Controller
 {
     public function __construct()
@@ -626,5 +627,33 @@ class ReportController extends Controller
         $data['dispatch'] = $inventories;
         //return $data;
         return view('show_dispatchout', $data);
+    }
+
+    public function reorder_level(Request $request){
+        $budget = array();
+        $data = array();
+        $data['filters'] = array();
+        $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
+        $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
+        $year = Year::where('year', date('Y'))->first();
+        if(empty($year)){ return $data; }
+        if(empty($request->all())){
+            $budget = array();
+        }
+        else{
+            $fields = array_filter($request->all());            
+            unset($fields['_token']);
+            $data['filters'] = $fields;
+            $records = Budget::where([[$fields]])->where('year_id', $year->id)->get();
+            foreach($records as $record){
+                if($record->qty <= $record->subcategory->threshold){
+                    $budget[] = $record;
+                }
+            }
+            
+        }
+        $data['reorders'] = $budget;
+        //return $data;
+        return view('show_reorders', $data);
     }
 }

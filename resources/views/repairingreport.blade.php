@@ -21,13 +21,7 @@
 </head>
 <body>
 <table cellpadding="0" cellspacing="0" style="width:100%;">
-            <tr class="text-center">
-                <td class="text-center">
-                    <h2><u>Inventory Asset Repairing Report</u><span class="font-14"><b> - <u>EFU Life Assurance Ltd.</u></b></span></h2>
-                    
-                    
-                </td>
-            </tr>
+            
             <tr class="text-center">
                 <td class="text-center" style="width:85%; padding-left: 100px;">
                     <h2>EFULife Assurance Ltd.</h2>

@@ -563,4 +563,22 @@ class PDFController extends Controller
         $pdf = PDF::loadView('dispatchoutreport', ['dispatches'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
         return $pdf->download('dispatchout_report.pdf');
     }
+    
+    public function reorderexport($data){
+        $fields = (array)json_decode($data);
+        $budget = array();
+        $record = array();
+        $year = Year::where('year', date('Y'))->first();
+        
+            $records = Budget::where([[$fields]])->where('year_id', $year->id)->get();
+            foreach($records as $record){
+                if($record->qty <= $record->subcategory->threshold){
+                    $budget[] = $record;
+                }
+            }
+        $record['reorders'] = $budget;
+        //return $data;
+        $pdf = PDF::loadView('reorderlevel_report', $record);
+        return $pdf->download('reorderlevel_report.pdf');
+    }
 }

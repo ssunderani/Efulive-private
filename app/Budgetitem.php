@@ -11,7 +11,7 @@ class Budgetitem extends Model
     protected $with = [
         'year:id,year',
         'category:id,category_name',
-        'subcategory:id,sub_cat_name',
+        'subcategory:id,sub_cat_name,threshold',
         'type:id,type'
     ];
 
