@@ -11,7 +11,7 @@ class Repairing extends Model
     protected $with = [
         'category:id,category_name',
         'subcategory:id,sub_cat_name',
-        'item:id,product_sn,make_id,model_id',
+        'item:id,product_sn,make_id,model_id,location_id,issued_to',
     ];
 
     public function category()

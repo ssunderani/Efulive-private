@@ -363,11 +363,11 @@ class ReportController extends Controller
             $fields = array_filter($request->all());
             unset($fields['_token']);
             $data['filters'] = $fields;
-            $repairs = Repairing::where([[$fields]])->orderBy('id', 'desc')->get();
+            $repairs = Repairing::where([[$fields]])->orderBy('item_id', 'desc')->get();
         }
         
         foreach($repairs as $repair){
-            $repair->item->user = User::find($repair->item->issued_to);
+            $repair->item->user = Employee::where('emp_code', $repair->item->issued_to)->first();
         }
         $data['repairs'] = $repairs;
         return view('show_repairings', $data);

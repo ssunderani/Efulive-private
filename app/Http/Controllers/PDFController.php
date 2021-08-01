@@ -346,9 +346,9 @@ class PDFController extends Controller
     {
         date_default_timezone_set('Asia/karachi');
         $fields = (array)json_decode($data);
-        $repairs = Repairing::where([[$fields]])->orderBy('id', 'desc')->get();
+        $repairs = Repairing::where([[$fields]])->orderBy('item_id', 'desc')->get();
         foreach($repairs as $repair){
-            $repair->item->user = User::find($repair->item->issued_to);
+            $repair->item->user = Employee::where('emp_code', $repair->item->issued_to)->first();
         }
             $pdf = PDF::loadView('repairingreport', ['repairs'=>$repairs])->setPaper('a4', 'landscape');
             return $pdf->download('asset_repairing_report.pdf');

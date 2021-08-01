@@ -42,6 +42,7 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                 <td style="width:15%;">
                 <p><b>Username:</b>{{ Auth::user()->name }}</p>
                 <p style="line-height: 0px;"><b>Printed</b></p>
+                <p style="line-height: 0px; font-size: 12px;">{{ date('d-M-Y h:i:sa') }}</p>
                 </td>
             </tr>
         </table> <br> 
