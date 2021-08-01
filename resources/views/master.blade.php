@@ -746,5 +746,19 @@ $(".budget_items").hide();
         
     });
 
+    $(".deptout").on("change",function(){
+        var id = $(this).val();
+        var empout = $('.empout');
+        empout.empty();
+        empout.append('<option value="" class="o1">All</option>');
+        $.get("{{ url('employees_by_dept') }}/"+id, function(data){
+            $.each( data, function(index, value){
+                empout.append(
+                    $('<option></option>').val(value.emp_code).html(value.name)
+                );
+            });
+        });    
+    });
+
 });
 </script> 

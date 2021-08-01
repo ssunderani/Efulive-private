@@ -196,10 +196,24 @@
                                             </tr>
                                             <tr>  
                                                 <td>
+                                                    Departments
+                                                </td>                  
+                                                <td>
+                                                <select class="custom-select field_size deptout" id="deptout" name="dept_id">
+                                                    <option value="0">All</option>
+                                                    @foreach ($departments as $id=>$department)
+                                                    <option value="{{ $id }}">{{ $department }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <span class="small text-danger">{{ $errors->first('dept_id') }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>  
+                                                <td>
                                                     Users
                                                 </td>                  
                                                 <td>
-                                                <select class="custom-select field_size" id="emp" name="issued_to">
+                                                <select class="custom-select field_size empout" id="empout" name="issued_to">
                                                     <option value="">All</option>
                                                     @foreach ($employees as $employee)
                                                     <option value="{{ $employee->emp_code }}">{{ $employee->emp_code.' - '.$employee->name }}</option>

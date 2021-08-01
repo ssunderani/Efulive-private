@@ -25,6 +25,7 @@ use App\Disposal;
 use App\Dispatchin;
 use App\Dispatchout;
 use App\Year;
+use DB;
 class ReportController extends Controller
 {
     public function __construct()
@@ -222,7 +223,7 @@ class ReportController extends Controller
         return view('show_inventoryin', $data);
     }
     public function inventory_out(Request $request)
-    {
+    {      
         date_default_timezone_set('Asia/karachi');
         $data = array();
         $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
@@ -235,7 +236,12 @@ class ReportController extends Controller
         $data['itemnatures'] = Itemnature::where('status',1)->orderBy('itemnature_name', 'asc')->get();
         $data['vendors'] = Vendor::orderBy('vendor_name', 'asc')->get();
         $data['filters'] = array();
-
+        $depts = array();
+        $departments = DB::table('employees')->select('dept_id', 'department')->get();
+        foreach($departments as $d){
+            $depts[$d->dept_id] = $d->department;
+        }
+        $data['departments'] = $depts;
         $invs = array();
         if(empty($request->all())){
             $data['inventories'] = array();
