@@ -256,6 +256,7 @@ class PDFController extends Controller
         date_default_timezone_set('Asia/karachi');
             $fields = (array)json_decode($data);
             $dept_id = $fields['dept_id']??null; 
+            unset($fields['dept_id']);
             $key = $fields['inout'][0]; 
             $op = $fields['inout'][1]; 
             $val = $fields['inout'][2];
