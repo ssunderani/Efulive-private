@@ -642,7 +642,7 @@ class ReportController extends Controller
         $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
         $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
         $year = Year::where('year', date('Y'))->first();
-        if(!empty($year)){
+        
         if(empty($request->all())){
             $budget = array();
         }
@@ -650,7 +650,7 @@ class ReportController extends Controller
             $fields = array_filter($request->all());            
             unset($fields['_token']);
             $data['filters'] = $fields;
-            $records = Budget::where([[$fields]])->where('year_id', $year->id)->get();
+            $records = Budget::where([[$fields]])->get();
             foreach($records as $record){
                 if($record->qty <= $record->subcategory->threshold){
                     $budget[] = $record;
@@ -658,7 +658,6 @@ class ReportController extends Controller
             }
             
         }
-    }
         $data['reorders'] = $budget;
         //return $data;
         return view('show_reorders', $data);
