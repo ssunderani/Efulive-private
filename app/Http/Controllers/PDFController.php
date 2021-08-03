@@ -568,9 +568,8 @@ class PDFController extends Controller
         $fields = (array)json_decode($data);
         $budget = array();
         $record = array();
-        $year = Year::where('year', date('Y'))->first();
         
-            $records = Budget::where([[$fields]])->where('year_id', $year->id)->get();
+            $records = Budget::where([[$fields]])->get();
             foreach($records as $record){
                 if($record->qty <= $record->subcategory->threshold){
                     $budget[] = $record;
