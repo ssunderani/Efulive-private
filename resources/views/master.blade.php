@@ -120,6 +120,7 @@
                                     <a class="nav-link" href="{{ url('dispatchin_report') }}">Dispatch IN report</a>
                                     <a class="nav-link" href="{{ url('dispatchout_report') }}">Dispatch OUT report</a>
                                     <a class="nav-link" href="{{ url('vendor_buying') }}">Average Vendor Buying</a>
+                                    <a class="nav-link" href="{{ url('reorder-level') }}">Reorder Level</a>
                                 </nav>
                             </div>
                             
@@ -754,7 +755,7 @@ $(".budget_items").hide();
         $.get("{{ url('employees_by_dept') }}/"+id, function(data){
             $.each( data, function(index, value){
                 empout.append(
-                    $('<option></option>').val(value.emp_code).html(value.name)
+                    $('<option></option>').val(value.emp_code).html(value.emp_code+' - '+value.name)
                 );
             });
         });    

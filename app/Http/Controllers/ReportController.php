@@ -237,7 +237,7 @@ class ReportController extends Controller
         $data['vendors'] = Vendor::orderBy('vendor_name', 'asc')->get();
         $data['filters'] = array();
         $depts = array();
-        $departments = DB::table('employees')->select('dept_id', 'department')->get();
+        $departments = DB::table('employees')->select('dept_id', 'department')->orderBy('department', 'asc')->get();
         foreach($departments as $d){
             $depts[$d->dept_id] = $d->department;
         }
