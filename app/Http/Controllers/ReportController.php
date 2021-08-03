@@ -642,7 +642,7 @@ class ReportController extends Controller
         $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
         $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
         $year = Year::where('year', date('Y'))->first();
-        if(empty($year)){ return $data; }
+        if(empty($year)){ return view('show_reorders', $data); }
         if(empty($request->all())){
             $budget = array();
         }
