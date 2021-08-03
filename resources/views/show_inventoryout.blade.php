@@ -199,8 +199,8 @@
                                                     Departments
                                                 </td>                  
                                                 <td>
-                                                <select class="custom-select field_size deptout" id="deptout">
-                                                    <option value="0">All</option>
+                                                <select class="custom-select field_size deptout" id="deptout" name="dept_id">
+                                                    <option value="">All</option>
                                                     @foreach ($departments as $id=>$department)
                                                     <option value="{{ $id }}">{{ $department }}</option>
                                                     @endforeach

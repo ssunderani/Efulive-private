@@ -34,14 +34,14 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
 ?>
 <table cellpadding="0" cellspacing="0" style="width:100%;">
             <tr class="text-center">
-                <td class="text-center" style="width:85%; padding-left: 100px;">
+                <td class="text-center" style="width:80%; padding-left: 100px;">
                     <h2>EFULife Assurance Ltd.</h2>
                     <h2 style="font-weight:normal; line-height:1px;">IT Equipment Disposal</h2>
                     <p style="font-size: 12px;"><b>From Date:</b>{{ empty($from)?'-':date('d-M-Y', strtotime($from)) }} <b>To Date:</b>{{ empty($to)?'-':date('d-M-Y', strtotime($to)) }}</p>
                 </td>
-                <td style="width:15%;">
+                <td style="width:20%;">
                 <p><b>Username:</b>{{ Auth::user()->name }}</p>
-                <p style="line-height: 0px;"><b>Printed</b></p>
+                <p style="line-height: 0px; position:relative;"><b>Printed</b></p><br>
                 <p style="line-height: 0px; font-size: 12px;">{{ date('d-M-Y h:i:sa') }}</p>
                 </td>
             </tr>

@@ -250,7 +250,9 @@ class ReportController extends Controller
             $fields = array_filter($request->all());
             $key = null; 
             $op = null; 
-            $val = null; 
+            $val = null;
+            $dept_id = $fields['dept_id']??null; 
+            unset($fields['dept_id']);
             unset($fields['_token']);
             if(!isset($fields['issued_to'])){
                 $key = 'issued_to'; 
@@ -296,10 +298,17 @@ class ReportController extends Controller
             else{
                 $invs = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
+            $items = array();
             foreach($invs as $inv){
                 $inv->user = Employee::where('emp_code', $inv->issued_to)->first();
                 $inv->issued_by = User::find($inv->issued_by);
                 $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
+                if($dept_id == $inv->user->dept_id){
+                    $items[] = $inv;
+                }
+            }
+            if($dept_id){
+                $invs = $items;
             }
             $data['inventories'] = $invs;
         }

@@ -255,6 +255,7 @@ class PDFController extends Controller
     {
         date_default_timezone_set('Asia/karachi');
             $fields = (array)json_decode($data);
+            $dept_id = $fields['dept_id']??null; 
             $key = $fields['inout'][0]; 
             $op = $fields['inout'][1]; 
             $val = $fields['inout'][2];
@@ -294,10 +295,17 @@ class PDFController extends Controller
             else{
                 $inventories = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
+            $items = array();
             foreach($inventories as $inv){
                 $inv->user = Employee::where('emp_code', $inv->issued_to)->first();
                 $inv->issued_by = User::find($inv->issued_by);
                 $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
+            if($dept_id == $inv->user->dept_id){
+                    $items[] = $inv;
+                }
+            }
+            if($dept_id){
+                $inventories = $items;
             }
             $pdf = PDF::loadView('inventoryoutreport', ['inventories'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
             return $pdf->download('inventory_out_report.pdf');
