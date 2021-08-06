@@ -43,7 +43,7 @@
                                                     Item Category
                                                 </td>                    
                                                 <td>
-                                                <select class="custom-select field_size subcategory" name="subcategory_id" data-reports="1">
+                                                <select class="custom-select field_size subcategory" name="id" data-reports="1">
                                                     <option value="">All</option>
                                                     @foreach ($subcategories as $subcategory)
                                                     <option value="{{ $subcategory->id }}">{{ $subcategory->sub_cat_name }}</option>
@@ -71,7 +71,8 @@
                             <div class="card-body">
                             @if(empty($reorders))
                             @else
-                            <a class="btn btn-danger mb-2 float-right" href="{{ url('reorderexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-danger mb-2 float-right" href="{{ url('reorderexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>   
+
                             @endif
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -80,7 +81,8 @@
                                                 <th>S.No</th>
                                                 <th>Item</th>
                                                 <th>Reorder Level</th>
-                                                <th>Qty. in Stock</th>                           
+                                                <th>Qty. in Stock</th>  
+                                                <th>Issued in Last 3 months</th>                         
                                             </tr>
                                         </thead>
                                         
@@ -89,11 +91,12 @@
                                         @foreach ($reorders as $reorder)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
-                                                <td>{{ empty($reorder->subcategory)?'':$reorder->subcategory->sub_cat_name }}</td>
-                                                <td>{{ empty($reorder->subcategory)?'':$reorder->subcategory->threshold }}</td>
-                                                <td>{{ $reorder->qty }}</td>
+                                                <td>{{ $reorder->sub_cat_name }}</td>
+                                                <td style="text-align:center;">{{ $reorder->threshold }}</td>
+                                                <td style="text-align:center;">{{ $reorder->in_stock }}</td>
+                                                <td style="text-align:center;">{{ $reorder->issued_count }}</td>
                                             </tr>
-                                        @endforeach    
+                                        @endforeach   
                                         </tbody>
                                     </table>
                                 </div>

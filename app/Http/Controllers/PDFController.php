@@ -574,17 +574,25 @@ class PDFController extends Controller
     }
     
     public function reorderexport($data){
+        date_default_timezone_set('Asia/karachi');
         $fields = (array)json_decode($data);
-        $budget = array();
-        $record = array();
-        
-            $records = Budget::where([[$fields]])->get();
-            foreach($records as $record){
-                if($record->qty <= $record->subcategory->threshold){
-                    $budget[] = $record;
-                }
+        $from = date('Y-m-d', strtotime('-3 months'));
+        $to = date('Y-m-d', strtotime('+1 day'));
+        $records = array();
+        $subcategories = Subcategory::where([[$fields]])->where('status',1)->get();
+        foreach($subcategories as $subcategory){
+            $items_in_stock = Inventory::where('subcategory_id', $subcategory->id)->where('issued_to', null)->count();
+            $subcategory->in_stock = $items_in_stock;
+            $subcategory->issued_count = 0;
+            $inventories = Inventory::where('subcategory_id', $subcategory->id)->whereNotNull('issued_to')->get();
+            foreach($inventories as $inv){
+                $subcategory->issued_count += Issue::where('inventory_id', $inv->id)->whereBetween('updated_at', [$from, $to])->count();
             }
-        $record['reorders'] = $budget;
+        if($items_in_stock <= $subcategory->threshold){
+            $records[] = $subcategory;
+        }
+        }
+        $record['reorders'] = $records;
         //return $data;
         $pdf = PDF::loadView('reorderlevel_report', $record);
         return $pdf->download('reorderlevel_report.pdf');

@@ -232,7 +232,7 @@ class ReportController extends Controller
         $data['invtypes'] = Inventorytype::where('status', 1)->orderBy('inventorytype_name', 'asc')->get();
         $data['makes'] = Makee::where('status',1)->orderBy('make_name', 'asc')->get();
         $data['stores'] = Store::orderBy('store_name', 'asc')->get();
-        $data['employees'] = Employee::orderBy('name', 'asc')->get();
+        $data['employees'] = Employee::orderBy('emp_code', 'asc')->get();
         $data['itemnatures'] = Itemnature::where('status',1)->orderBy('itemnature_name', 'asc')->get();
         $data['vendors'] = Vendor::orderBy('vendor_name', 'asc')->get();
         $data['filters'] = array();
@@ -650,25 +650,32 @@ class ReportController extends Controller
         $data['filters'] = array();
         $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
         $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
-        $year = Year::where('year', date('Y'))->first();
-        
         if(empty($request->all())){
-            $budget = array();
+            $records = array();
         }
         else{
             $fields = array_filter($request->all());            
             unset($fields['_token']);
             $data['filters'] = $fields;
-            $records = Budget::where([[$fields]])->get();
-            foreach($records as $record){
-                if($record->qty <= $record->subcategory->threshold){
-                    $budget[] = $record;
+            $from = date('Y-m-d', strtotime('-3 months'));
+            $to = date('Y-m-d', strtotime('+1 day'));
+            $records = array();
+            $subcategories = Subcategory::where([[$fields]])->where('status',1)->get();
+            foreach($subcategories as $subcategory){
+                $items_in_stock = Inventory::where('subcategory_id', $subcategory->id)->where('issued_to', null)->count();
+                $subcategory->in_stock = $items_in_stock;
+                $subcategory->issued_count = 0;
+                $inventories = Inventory::where('subcategory_id', $subcategory->id)->whereNotNull('issued_to')->get();
+                foreach($inventories as $inv){
+                    $subcategory->issued_count += Issue::where('inventory_id', $inv->id)->whereBetween('updated_at', [$from, $to])->count();
                 }
+            if($items_in_stock <= $subcategory->threshold){
+                $records[] = $subcategory;
             }
-            
-        }
-        $data['reorders'] = $budget;
-        //return $data;
+            }
+        } 
+        $data['reorders'] = $records;
+        //return $subcategories;
         return view('show_reorders', $data);
     }
 }
