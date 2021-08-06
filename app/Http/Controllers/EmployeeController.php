@@ -95,7 +95,7 @@ class EmployeeController extends Controller
             $find = Employee::orderBy('emp_code', 'asc')->get();
         }
         else{
-            $find = Employee::where('dept_id', $dept_id)->orderBy('name', 'asc')->get();
+            $find = Employee::where('dept_id', $dept_id)->orderBy('emp_code', 'asc')->get();
         }
         return $find??0;
     }
