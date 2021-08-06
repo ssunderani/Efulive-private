@@ -232,7 +232,7 @@ class ReportController extends Controller
         $data['invtypes'] = Inventorytype::where('status', 1)->orderBy('inventorytype_name', 'asc')->get();
         $data['makes'] = Makee::where('status',1)->orderBy('make_name', 'asc')->get();
         $data['stores'] = Store::orderBy('store_name', 'asc')->get();
-        $data['employees'] = Employee::orderBy('emp_code', 'asc')->get();
+        $data['employees'] = Employee::orderBy('name', 'asc')->get();
         $data['itemnatures'] = Itemnature::where('status',1)->orderBy('itemnature_name', 'asc')->get();
         $data['vendors'] = Vendor::orderBy('vendor_name', 'asc')->get();
         $data['filters'] = array();
