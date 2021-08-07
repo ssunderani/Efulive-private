@@ -662,10 +662,10 @@ class ReportController extends Controller
             $records = array();
             $subcategories = Subcategory::where([[$fields]])->where('status',1)->get();
             foreach($subcategories as $subcategory){
-                $items_in_stock = Inventory::where('subcategory_id', $subcategory->id)->where('issued_to', null)->count();
+                $items_in_stock = Inventory::where('subcategory_id', $subcategory->id)->where('issued_to', null)->whereNotIn('devicetype_id', [1])->count();
                 $subcategory->in_stock = $items_in_stock;
                 $subcategory->issued_count = 0;
-                $inventories = Inventory::where('subcategory_id', $subcategory->id)->whereNotNull('issued_to')->get();
+                $inventories = Inventory::where('subcategory_id', $subcategory->id)->whereNotNull('issued_to')->whereNotIn('devicetype_id', [1])->get();
                 foreach($inventories as $inv){
                     $subcategory->issued_count += Issue::where('inventory_id', $inv->id)->whereBetween('updated_at', [$from, $to])->count();
                 }
