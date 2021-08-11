@@ -75,7 +75,8 @@
                             <div class="card-body">
                             @if(empty($budgets))
                             @else
-                            <a class="btn btn-danger mb-1 float-right" href="{{ url('itemexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mb-1 ml-1 float-right" href="{{ url('export_budget/'.json_encode($filters)) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mb-1 float-right" href="{{ url('itemexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
                             <span class="text-danger">{{ $errors->first('inv_id') }}</span>
                                 <div class="table-responsive">
@@ -112,7 +113,7 @@
                                         ?>
                                         @foreach ($budgets as $budget)
                                             <tr>
-                                                <td class='text-align-right'>{{ $i++ }}</td>
+                                                <td class='text-align-right'>{{ $budget->id }}</td>
                                                 <td>{{ $budget->type_id?$budget->type->type:'' }}</td>
                                                 <td>{{ $budget->subcategory_id?$budget->subcategory->sub_cat_name:'' }}</td>
                                                 <td>{{ $budget->department }}</td>

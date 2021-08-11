@@ -60,16 +60,17 @@ class ItemsExport implements FromCollection, WithHeadings
             unset($item->type,$item->subcategory,$item->category,$item->year);
             $unit_b_d += $item->unit_price_dollar;
             $unit_b_p += $item->unit_price_pkr;
-            $total_b_d += $item->total_price_dollar;
-            $total_b_p += $item->total_price_pkr;
+            $total_b_d += $item->unit_price_dollar*$item->qty;
+            $total_b_p += $item->unit_price_pkr*$item->qty;
             $qty += $item->qty;
             $t_consume += $item->consumed;
             $t_rem += $item->remaining;  
             
+            
+            $item->total_price_dollar = ($item->unit_price_dollar*$item->qty).'$';
+            $item->total_price_pkr = 'Rs'.($item->unit_price_pkr*$item->qty);
             $item->unit_price_dollar .= '$';
             $item->unit_price_pkr = 'Rs'.$item->unit_price_pkr;
-            $item->total_price_dollar .= '$';
-            $item->total_price_pkr = 'Rs'.$item->total_price_pkr;
         }
         $items[] = (object)[
             '',
