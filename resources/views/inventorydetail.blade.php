@@ -101,9 +101,15 @@
                                             </tr>
                                             <tr>  
                                                 <td>
-                                                    Device Type
+                                                    Current Condition
                                                 </td>                  
                                                 <td>{{ empty($inventory->devicetype)?'':$inventory->devicetype->devicetype_name }}</td>
+                                            </tr>
+                                            <tr>  
+                                                <td>
+                                                    Current Consumer
+                                                </td>                  
+                                                <td>{{ $inventory->current_consumer }}</td>
                                             </tr>
                                             <tr>  
                                                 <td>

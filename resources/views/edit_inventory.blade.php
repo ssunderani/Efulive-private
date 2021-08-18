@@ -174,7 +174,7 @@
                                         <div class="col-md-4">
                                         <div class="form-group">
                                                 <label class="small mb-1" for="type">Current Condition</label>
-                                                <select class="custom-select" id="type" name="devicetype_id">
+                                                <select class="custom-select" id="type" name="devicetype_id" disabled>
                                                     <option value=0>Select Current Condition here</option>
                                                     @foreach ($devicetypes as $devicetype)
                                                     @if($devicetype->id == $inventory->devicetype_id)
