@@ -60,7 +60,8 @@ $grand_r = 0;
                         <div class="col-md-3 col-lg-3">
                             @if(empty($types))
                             @else
-                            <a class="btn btn-danger mt-3 mb-1 float-right" href="{{ url('budgetexport/'.$filter) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mt-3 mb-1 ml-1 float-right" href="{{ url('budgetexport/'.$filter) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mt-3 mb-1 float-right" href="{{ url('export_summary/'.$filter) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
                     </div>  
                     </div>
