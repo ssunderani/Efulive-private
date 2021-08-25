@@ -77,7 +77,8 @@
                             <div class="card-body">
                             @if(empty($inventories))
                             @else
-                            <a class="btn btn-danger mb-2 float-right" href="{{ url('editlogsexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger ml-1 mb-2 float-right" href="{{ url('editlogsexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mb-2 float-right" href="{{ url('export_editlogs/'.json_encode($filters)) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

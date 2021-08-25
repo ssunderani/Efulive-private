@@ -167,3 +167,5 @@ Route::get('/reorderexport/{data}','PDFController@reorderexport');
 /* For Excel */
 Route::get('export_summary/{year}', 'ExcelController@export_summary');
 Route::get('export_budget/{data}', 'ExcelController@export_budget');
+Route::get('export_inventory/{data}', 'ExcelController@export_inventory');
+Route::get('export_editlogs/{data}', 'ExcelController@export_editlogs');

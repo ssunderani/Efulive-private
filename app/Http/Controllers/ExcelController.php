@@ -22,11 +22,11 @@ use App\Dispatchout;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BudgetExport;
 use App\Exports\ItemsExport;
+use App\Exports\InventoryExport;
+use App\Exports\EditlogsExport;
 class ExcelController extends Controller
 {
-    // public function export_budget_summary($year){
-    //     return Excel::download(new BudgetExport($year), 'budget.xlsx');
-    // }
+    
     public function export_budget($data){
         $filters = json_decode($data);
         $year = Year::find($filters->yearid);
@@ -124,8 +124,114 @@ $grand_r_t_p = 0;
             $record[] = (object)array('Grand Total',$grand_u_d,$grand_u_p,$grand_t_d,$grand_t_p,$grand_qty,$grand_c,$grand_c_u_d,$grand_c_u_p,$grand_r_t_d,$grand_r_t_p,$grand_r);   
             
         }
-        //return $record;
         $year = Year::find($data);
         return Excel::download(new BudgetExport(json_encode($record)), 'Summaryreport_'.$year->year.'.xlsx');
+    }
+    public function export_inventory($data){
+        $fields = (array)json_decode($data);
+            $key = $fields['inout'][0]; 
+            $op = $fields['inout'][1]; 
+            $val = $fields['inout'][2];
+            unset($fields['inout']); 
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Inventory::where([[$fields]])->where($key, $op, $val)
+                                        ->whereBetween('updated_at', [$from, date('Y-m-d', $to)])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Inventory::where([[$fields]])->where($key, $op, $val)
+                                        ->whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_date']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Inventory::where([[$fields]])->where($key, $op, $val)
+                                        ->whereBetween('updated_at', ['', date('Y-m-d', $to)])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
+            }
+            $record = array();
+            foreach($inventories as $inv){
+                $user = Employee::where('emp_code', $inv->issued_to)->first();
+                if($user){
+                    $inv['user'] = $user;
+                }
+                $record[] = (object)array(
+                    'make' => $inv->make_id?$inv->make->make_name:'',
+                    'model' => $inv->model_id?$inv->model->model_name:'',
+                    'product_sn' => $inv->product_sn,
+                    'purchase_date' => date('d-M-Y' ,strtotime($inv->purchase_date)),
+                    'subcategory' => empty($inv->subcategory)?'':$inv->subcategory->sub_cat_name,
+                    'item_price' => $inv->item_price,
+                    'user' => empty($inv->user)?'':$inv->user->name,
+                    'location' => empty($inv->location)?'':$inv->location->location,
+                    'inventorytype' => empty($inv->inventorytype)?'':$inv->inventorytype->inventorytype_name,
+                    'devicetype' => empty($inv->devicetype)?'':$inv->devicetype->devicetype_name,
+                    'remarks' => $inv->remarks
+                );
+            }
+            
+        return Excel::download(new InventoryExport(json_encode($record)), 'inventoryreport.xlsx');
+    }
+    public function export_editlogs($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', [$from, date('Y-m-d', $to)])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_date']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', ['', date('Y-m-d', $to)])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Inventory::where([[$fields]])->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
+            }
+            $record = array();
+            foreach($inventories as $inv){
+                $record[] = (object)array(
+                    'subcategory' => empty($inv->subcategory)?'':$inv->subcategory->sub_cat_name,
+                    'product_sn' => $inv->product_sn,
+                    'make' => $inv->make_id?$inv->make->make_name:'',
+                    'model' => $inv->model_id?$inv->model->model_name:'',
+                    'purchase_date' => date('d-M-Y' ,strtotime($inv->purchase_date)),
+                    'po_number' => $inv->po_number,
+                    'vendor' => empty($inv->vendor)?'':$inv->vendor->vendor_name,
+                    'warrenty_period' => $inv->warrenty_period,
+                    'remarks' => $inv->remarks,
+                    'item_price' => $inv->item_price,
+                    'itemnature_name' => empty($inv->itemnature)?'':$inv->itemnature->itemnature_name
+                    
+                );
+            }
+            
+            return Excel::download(new EditlogsExport(json_encode($record)), 'inventoryeditlogsreport.xlsx');
     }
 }

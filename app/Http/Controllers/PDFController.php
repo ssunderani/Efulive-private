@@ -210,7 +210,7 @@ class PDFController extends Controller
             else{
                 $inventories = Inventory::where([[$fields]])->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
             }
-            $pdf = PDF::loadView('inventorylogsreport', ['inventories'=>$inventories])->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('inventorylogsreport', ['inventories'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
             return $pdf->download('inventory_editlogs_report.pdf');
     }
     public function inventoryinexport($data) 
