@@ -129,7 +129,7 @@ class InventoryController extends Controller
         $arr['model_id'] = $request->model_id;
         $arr['make_id'] = $request->make_id;
         $arr['vendor_id'] = $request->vendor_id;
-        $arr['devicetype_id'] = $request->devicetype_id;
+        //$arr['devicetype_id'] = $request->devicetype_id;
         $arr['inventorytype_id'] = $request->inventorytype_id;
         $arr['itemnature_id'] = $request->itemnature_id;
         $arr['purchase_date'] = $request->purchase_date;
