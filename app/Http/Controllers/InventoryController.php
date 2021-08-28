@@ -229,9 +229,10 @@ class InventoryController extends Controller
         $inventories = Inventory::where('subcategory_id',$id)->where('issued_to', NULL)->whereIn('status', [1,2])->whereNotIn('devicetype_id', [1])->get();
         return $inventories;
     }
-    public function get_assigned_items($id)
+    public function get_assigned_items($id,$action)
     {
-        $inventories = Inventory::where('subcategory_id',$id)->whereNotNull('issued_to')->whereNotIn('devicetype_id', [2])->get();
+        $d_id = $action == 'in'?2:3;
+        $inventories = Inventory::where('subcategory_id',$id)->whereNotNull('issued_to')->whereNotIn('devicetype_id', [$d_id])->get();
         return $inventories;
     }
 }
