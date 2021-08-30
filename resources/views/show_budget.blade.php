@@ -115,7 +115,7 @@
                                             <tr>
                                                 <td class='text-align-right'>{{ $budget->id }}</td>
                                                 <td>{{ $budget->type_id?$budget->type->type:'' }}</td>
-                                                <td>{{ $budget->subcategory_id?$budget->subcategory->sub_cat_name:'' }}</td>
+                                                <td>{{ empty($budget->subcategory)?'':$budget->subcategory->sub_cat_name }}</td>
                                                 <td>{{ $budget->department }}</td>
                                                 <td>{{ $budget->description }}</td>
                                                 <td class='text-align-right'>{{ $budget->qty }}</td>
