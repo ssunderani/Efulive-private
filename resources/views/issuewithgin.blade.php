@@ -153,7 +153,6 @@
                     
                     <div class="col-md-12 col-lg-12">
                     <div class="form-group">
-                        <!-- <label class="small mb-1" for="year">Year</label> -->
                         <select class="custom-select issue_year" id="year" name="year_id" required>
                         <option value="">Select Year here</option>
                         @foreach ($years as $year)

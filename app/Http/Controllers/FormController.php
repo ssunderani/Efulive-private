@@ -145,6 +145,8 @@ class FormController extends Controller
         $data['devicetypes'] = Devicetype::where('status',1)->orderBy('devicetype_name', 'asc')->get();
         $data['itemnatures'] = Itemnature::where('status',1)->orderBy('itemnature_name', 'asc')->get();
         $data['inventorytypes'] = Inventorytype::where('status',1)->orderBy('inventorytype_name', 'asc')->get();
+        $data['types'] = Type::orderBy('type', 'asc')->get();
+        $data['years'] = Year::where('locked', null)->orderBy('year', 'asc')->get();
         return view('add_inventory', $data);
     }
     public function add_with_grn(){
@@ -161,6 +163,8 @@ class FormController extends Controller
         $data['devicetypes'] = Devicetype::where('status',1)->orderBy('devicetype_name', 'asc')->get();
         $data['itemnatures'] = Itemnature::where('status',1)->orderBy('itemnature_name', 'asc')->get();
         $data['inventorytypes'] = Inventorytype::where('status',1)->orderBy('inventorytype_name', 'asc')->get();
+        $data['types'] = Type::orderBy('type', 'asc')->get();
+        $data['years'] = Year::where('locked', null)->orderBy('year', 'asc')->get();
         return view('addwithgrn', $data);
     }
     public function add_make(){

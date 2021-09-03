@@ -111,12 +111,44 @@
                                             </div>
                                         </div>
                                         <div class="form-row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-4">
                                             <div class="form-group">
                                                         <label class="small mb-1" for="pro">Product S/N</label>
                                                         <input class="form-control py-2 pro" id="pro" name="product_sn" type="text" value="{{ $inventory->product_sn }}" placeholder="Enter product s/n here" />
                                                         <span class="small text-danger pro_msg">{{ $errors->first('product_sn') }}</span>
                                                     </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="type">Budget Type</label>
+                                                <select class="custom-select" id="type" name="type_id">
+                                                    <option value=0>Select Budget type here</option>
+                                                    @foreach ($types as $type)
+                                                    @if($type->id == $inventory->type_id)
+                                                    <option value="{{ $type->id }}" selected>{{ $type->type }}</option>
+                                                    @else
+                                                    <option value="{{ $type->id }}">{{ $type->type }}</option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                <span class="small text-danger">{{ $errors->first('type_id') }}</span>
+                                            </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="year">Year</label>
+                                                <select class="custom-select" id="year" name="year_id">
+                                                <option value=0>Select Year here</option>
+                                                @foreach ($years as $year)
+                                                @if($year->id == $inventory->year_id)
+                                                <option value="{{ $year->id }}" selected>{{ $year->year }}</option>
+                                                @else
+                                                <option value="{{ $year->id }}">{{ $year->year }}</option>
+                                                @endif
+                                                @endforeach
+                                                </select>
+                                                <span class="small text-danger">{{ $errors->first('year_id') }}</span>
+                                            </div>
                                             </div>
                                         </div>
                                         <div class="form-row">

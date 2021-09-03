@@ -21,6 +21,8 @@ use App\Makee;
 use App\Vendor;
 use App\Employee;
 use App\Budgetitem as Budget;
+use App\Type;
+use App\Year;
 class InventoryController extends Controller
 {
     public function __construct()
@@ -99,6 +101,8 @@ class InventoryController extends Controller
         $data['devicetypes'] = Devicetype::where('status',1)->orderBy('devicetype_name', 'asc')->get();
         $data['itemnatures'] = Itemnature::where('status',1)->orderBy('itemnature_name', 'asc')->get();
         $data['inventorytypes'] = Inventorytype::where('status',1)->orderBy('inventorytype_name', 'asc')->get();
+        $data['types'] = Type::orderBy('type', 'asc')->get();
+        $data['years'] = Year::where('locked', null)->orderBy('year', 'asc')->get();
         $inventory = Inventory::find($id);
         $inventory->item_price = number_format($inventory->item_price);
         $inventory->dollar_rate = number_format($inventory->dollar_rate);
@@ -164,6 +168,8 @@ class InventoryController extends Controller
         $arr['warranty_end'] = $request->warranty_end;
         $arr['tax'] = $request->tax;
         $arr['current_cost'] = $request->current_cost;
+        $arr['year_id'] = $request->year_id;
+        $arr['type_id'] = $request->type_id;
         
         $update = Inventory::where('id', $id)->update($arr);
         if($update){

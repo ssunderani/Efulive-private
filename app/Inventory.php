@@ -34,6 +34,7 @@ class Inventory extends Model
         'verification',
         'issued_to',
         'year_id',
+        'type_id',
         'added_by',
         'issued_by',
         'status',
