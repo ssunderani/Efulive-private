@@ -675,13 +675,15 @@ $(document).ready(function(){
         //alert(num_parts.join("."));
     });
     
-$(".budget_items").hide();    
-    $(".issue_year").on("change",function(){
-        var year_id = $(this).val();
-        var inv_id = $('.invid').val();
+$(".budget_items").hide();   
+    // $(".issue_year").on("change",function(){
+        // var year_id = $(this).val();
+        // var inv_id = $('.invid').val();
+    $(".invid").click(function(){
+        var inv_id = $("input[type='radio']:checked").val();
         var dept_id = $('#dept_id').val();
-        console.log(year_id+' : '+inv_id+' : '+dept_id);
-        $.get("{{ url('get_budget_items') }}/"+year_id+"/"+inv_id+"/"+dept_id, function(data){
+        console.log(inv_id+' : '+dept_id);
+        $.get("{{ url('get_budget_items') }}/"+inv_id+"/"+dept_id, function(data){
             $(".items_list").empty();
             if(data == "0"){
                 $(".items_list").append(`

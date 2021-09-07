@@ -184,7 +184,6 @@ class FormController extends Controller
         $validator = Validator::make($request->all(), [
             'inv_id' => 'required',
             'employee_code' => 'required',
-            'year_id' => 'required',
             'budget_id' => 'required'
         ]);
         if ($validator->fails()) {
@@ -193,11 +192,6 @@ class FormController extends Controller
         $employee = Employee::where('emp_code',$request->employee_code)->first();
         $dept_id = $employee->dept_id;
         
-            $budget = Budget::where('dept_id', $dept_id)->where('year_id', $request->year_id)->whereIn('id', $request->budget_id)->get(); 
-        
-            if(empty($budget)){
-                return redirect()->back()->with('msg','Budget not available in this employee`s department');
-            }
         //echo "<pre>";
         $itemnames = null;
         $itemsin = null;
@@ -205,7 +199,12 @@ class FormController extends Controller
         $loggedin_user = Auth::id();
         foreach($request->inv_id as $id){
             $inventory = Inventory::find($id);
-            $budgets = Budget::where('dept_id', $dept_id)->where('year_id', $request->year_id)->where('subcategory_id', $inventory->subcategory_id)->whereIn('id', $request->budget_id)->get();
+            $budget = Budget::where('dept_id', $dept_id)->where('year_id', $inventory->year_id)->whereIn('id', $request->budget_id)->get(); 
+        
+            if(empty($budget)){
+                return redirect()->back()->with('msg','Budget not available in this employee`s department');
+            }
+            $budgets = Budget::where('dept_id', $dept_id)->where('year_id', $inventory->year_id)->where('subcategory_id', $inventory->subcategory_id)->whereIn('id', $request->budget_id)->get();
               
                 if(count($budgets) == 0){
                     $itemnames .= $inventory->subcategory->sub_cat_name.', ';
@@ -237,8 +236,8 @@ class FormController extends Controller
                                'remaining' => $budget->remaining-1
                                 );
                     $b_update = Budget::where('id',$budget->id)->update($b_fields);
-                    $update = Inventory::where('id',$id)->update(['issued_to'=>$request->employee_code, 'year_id'=>$request->year_id, 'issued_by'=>$loggedin_user]);
-                    $insert = Issue::create(['employee_id'=>$request->employee_code, 'inventory_id'=>$id, 'year_id'=>$request->year_id, 'remarks'=>$request->remarks]);
+                    $update = Inventory::where('id',$id)->update(['issued_to'=>$request->employee_code, 'issued_by'=>$loggedin_user]);
+                    $insert = Issue::create(['employee_id'=>$request->employee_code, 'inventory_id'=>$id, 'year_id'=>$inventory->year_id, 'remarks'=>$request->remarks]);
                     }
                 }
         }
@@ -267,7 +266,6 @@ class FormController extends Controller
         $validator = Validator::make($request->all(), [
             'inv_id' => 'required',
             'employee_code' => 'required',
-            'year_id' => 'required',
             'budget_id' => 'required'
         ]);
         if ($validator->fails()) {
@@ -276,10 +274,6 @@ class FormController extends Controller
         $employee = Employee::where('emp_code',$request->employee_code)->first();
         $dept_id = $employee->dept_id;
         
-            $budget = Budget::where('dept_id', $dept_id)->where('year_id', $request->year_id)->whereIn('id', $request->budget_id)->get(); 
-            if(empty($budget)){
-                return redirect()->back()->with('msg','Budget not available in this employee`s department');
-            }
         
         $itemnames = null;
         $itemsin = null;
@@ -287,7 +281,11 @@ class FormController extends Controller
         $loggedin_user = Auth::id();
         foreach($request->inv_id as $id){
             $inventory = Inventory::find($id);
-            $budgets = Budget::where('dept_id', $dept_id)->where('year_id', $request->year_id)->where('subcategory_id', $inventory->subcategory_id)->whereIn('id', $request->budget_id)->get();
+            $budget = Budget::where('dept_id', $dept_id)->where('year_id', $inventory->year_id)->whereIn('id', $request->budget_id)->get(); 
+            if(empty($budget)){
+                return redirect()->back()->with('msg','Budget not available in this employee`s department');
+            }
+            $budgets = Budget::where('dept_id', $dept_id)->where('year_id', $inventory->year_id)->where('subcategory_id', $inventory->subcategory_id)->whereIn('id', $request->budget_id)->get();
             if(count($budgets) == 0){
                 $itemnames .= $inventory->subcategory->sub_cat_name.', ';
             }
@@ -316,8 +314,8 @@ class FormController extends Controller
                            'remaining' => $budget->remaining-1
                             );
                 $b_update = Budget::where('id',$budget->id)->update($b_fields);
-                $update = Inventory::where('id',$id)->update(['issued_to'=>$request->employee_code, 'year_id'=>$request->year_id, 'issued_by'=>$loggedin_user, 'status'=>3]);
-                $insert = Issue::create(['employee_id'=>$request->employee_code, 'inventory_id'=>$id, 'year_id'=>$request->year_id, 'remarks'=>$request->remarks]);
+                $update = Inventory::where('id',$id)->update(['issued_to'=>$request->employee_code, 'issued_by'=>$loggedin_user, 'status'=>3]);
+                $insert = Issue::create(['employee_id'=>$request->employee_code, 'inventory_id'=>$id, 'year_id'=>$inventory->year_id, 'remarks'=>$request->remarks]);
                 }
             }
         }

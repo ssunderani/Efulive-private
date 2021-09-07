@@ -220,9 +220,9 @@ class BudgetController extends Controller
         }    
     }
 
-    public function get_budget_items($year_id,$inv_id,$dept_id){
+    public function get_budget_items($inv_id,$dept_id){
         $inv = Inventory::find($inv_id);
-        $budgets = Budget::where('year_id', $year_id)
+        $budgets = Budget::where('year_id', $inv->year_id)
                     ->where('category_id',$inv->category_id)
                     ->where('subcategory_id',$inv->subcategory_id)
                     ->where('dept_id',$dept_id)

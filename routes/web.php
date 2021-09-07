@@ -138,7 +138,7 @@ Route::get('/get_price/{id}', 'InventoryController@get_price');
 Route::get('/get_inv_items/{id}', 'InventoryController@get_inv_items');
 Route::get('/get_unassigned_items/{id}', 'InventoryController@get_unassigned_items');
 Route::get('/get_assigned_items/{id}/{action}', 'InventoryController@get_assigned_items');
-Route::get('/get_budget_items/{year_id}/{inv_id}/{dept_id}', 'BudgetController@get_budget_items');
+Route::get('/get_budget_items/{inv_id}/{dept_id}', 'BudgetController@get_budget_items');
 Route::get('/employees_by_dept/{dept_id}', 'EmployeeController@employees_by_dept');
 
 Route::get('/edit_logs', 'ReportController@edit_logs');

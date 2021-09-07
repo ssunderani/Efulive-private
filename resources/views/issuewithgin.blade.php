@@ -151,7 +151,7 @@
                         </div>    
                     </div>
                     
-                    <div class="col-md-12 col-lg-12">
+                    <!-- <div class="col-md-12 col-lg-12">
                     <div class="form-group">
                         <select class="custom-select issue_year" id="year" name="year_id" required>
                         <option value="">Select Year here</option>
@@ -161,7 +161,7 @@
                         </select>
                         <span class="small text-danger">{{ $errors->first('year_id') }}</span>
                     </div>
-                    </div>
+                    </div> -->
 
                     <div class="card mb-4 mt-3 budget_items">
                             <div class="card-body">
