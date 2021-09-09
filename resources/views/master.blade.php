@@ -676,11 +676,11 @@ $(document).ready(function(){
     });
     
 $(".budget_items").hide();   
-    // $(".issue_year").on("change",function(){
-        // var year_id = $(this).val();
-        // var inv_id = $('.invid').val();
-    $(".invid").click(function(){
-        var inv_id = $("input[type='radio']:checked").val();
+    $(".issue_year").on("change",function(){
+        var year_id = $(this).val();
+        var inv_id = $('.invid').val();
+    // $(".invid").click(function(){
+    //     var inv_id = $("input[type='radio']:checked").val();
         var dept_id = $('#dept_id').val();
         console.log(inv_id+' : '+dept_id);
         $.get("{{ url('get_budget_items') }}/"+inv_id+"/"+dept_id, function(data){

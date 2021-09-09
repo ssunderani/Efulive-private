@@ -124,8 +124,8 @@
                                             <tr>
                                                 <td>
                                                 <div class="form-check">
-                                                    <input type="radio" class="form-check-input invid" id="exampleCheck1" name='inv_id[]' value="{{ $inventory->id }}">
-                                                    <label class="form-check-label" for="exampleCheck1">{{ $i++ }}</label>
+                                                    <input type="radio" class="form-check-input invid" name='inv_id[]' value="{{ $inventory->id }}">
+                                                    <label class="form-check-label" for="">{{ $i++ }}</label>
                                                 </div>
                                                 </td>
                                                 <td>{{ $inventory->product_sn }}</td>
@@ -151,7 +151,7 @@
                         </div>    
                     </div>
                     
-                    <!-- <div class="col-md-12 col-lg-12">
+                    <div class="col-md-12 col-lg-12">
                     <div class="form-group">
                         <select class="custom-select issue_year" id="year" name="year_id" required>
                         <option value="">Select Year here</option>
@@ -161,7 +161,7 @@
                         </select>
                         <span class="small text-danger">{{ $errors->first('year_id') }}</span>
                     </div>
-                    </div> -->
+                    </div>
 
 
 
