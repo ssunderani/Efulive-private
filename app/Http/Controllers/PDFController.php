@@ -84,16 +84,16 @@ class PDFController extends Controller
                 $consumed_price_pkr = 0;
                 $remaining_price_dollar = 0;
                 $remaining_price_pkr = 0; 
-                $fetch = Inventory::where('category_id', $cat->id)->where('year_id', $data)->get();               
+                $fetch = Inventory::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->get();               
                 foreach($fetch as $get){
-                    $consumed_price_dollar += $get->item_price/$get->dollar_rate;
+                    $consumed_price_dollar += round($get->item_price)/round($get->dollar_rate);
                     $consumed_price_pkr += $get->item_price;
                 }
                 
                 $cat['total_price_dollar'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('total_price_dollar');
                 $cat['total_price_pkr'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('total_price_pkr');
                 $cat['qty'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('qty');
-                $cat['consumed'] = Inventory::where('category_id', $cat->id)->where('year_id', $data)->count();
+                $cat['consumed'] = Inventory::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->count();
                 $cat['consumed_price_dollar'] = $consumed_price_dollar;
                 $cat['consumed_price_pkr'] = $consumed_price_pkr;
                 $cat['remaining_price_dollar'] = ($cat->total_price_dollar-$consumed_price_dollar);
