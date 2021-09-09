@@ -73,7 +73,7 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                                                 <td>{{ empty($inventory->added_by)?'':$inventory->added_by->name }}</td>
                                                 <td>{{ $inventory->remarks }}</td>
                                                 <td>{{ date('Y-m-d', strtotime($inventory->updated_at)) }}</td>
-                                                <td class='text-align-right'>{{ number_format($inventory->item_price,2) }}</td>
+                                                <td class='text-align-right'>{{ number_format(round($inventory->item_price),2) }}</td>
                                                 <td>{{ empty($inventory->repairing)?'':$inventory->repairing->price_value }}</td>
                                                 <td>{{ empty($inventory->repairing)?'':$inventory->repairing->remarks }}</td>
                                             </tr>

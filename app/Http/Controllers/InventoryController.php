@@ -104,7 +104,7 @@ class InventoryController extends Controller
         $data['types'] = Type::orderBy('type', 'asc')->get();
         $data['years'] = Year::where('locked', null)->orderBy('year', 'asc')->get();
         $inventory = Inventory::find($id);
-        $inventory->item_price = number_format($inventory->item_price);
+        $inventory->item_price = number_format(round($inventory->item_price));
         $inventory->dollar_rate = number_format($inventory->dollar_rate);
         $data['inventory'] = $inventory;
         return view('edit_inventory', $data);
@@ -223,7 +223,7 @@ class InventoryController extends Controller
     public function get_price($id)
     {
         $inventory = Inventory::find($id);
-        return number_format($inventory->item_price);
+        return number_format(round($inventory->item_price));
     }
     public function get_inv_items($id)
     {

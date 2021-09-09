@@ -71,8 +71,8 @@ $grand_r_t_p = 0;
                 $remaining_price_pkr = 0; 
                 $fetch = Inventory::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->get();               
                 foreach($fetch as $get){
-                    $consumed_price_dollar += $get->item_price/$get->dollar_rate;
-                    $consumed_price_pkr += $get->item_price; 
+                    $consumed_price_dollar += round($get->item_price)/$get->dollar_rate;
+                    $consumed_price_pkr += round($get->item_price); 
                 }
                 $cat['unit_price_dollar'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('unit_price_dollar');
                 $cat['unit_price_pkr'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('unit_price_pkr');
@@ -172,7 +172,7 @@ $grand_r_t_p = 0;
                     'product_sn' => $inv->product_sn,
                     'purchase_date' => date('d-M-Y' ,strtotime($inv->purchase_date)),
                     'subcategory' => empty($inv->subcategory)?'':$inv->subcategory->sub_cat_name,
-                    'item_price' => $inv->item_price,
+                    'item_price' => round($inv->item_price),
                     'user' => empty($inv->user)?'':$inv->user->name,
                     'location' => empty($inv->location)?'':$inv->location->location,
                     'inventorytype' => empty($inv->inventorytype)?'':$inv->inventorytype->inventorytype_name,
@@ -224,7 +224,7 @@ $grand_r_t_p = 0;
                     'vendor' => empty($inv->vendor)?'':$inv->vendor->vendor_name,
                     'warrenty_period' => $inv->warrenty_period,
                     'remarks' => $inv->remarks,
-                    'item_price' => $inv->item_price,
+                    'item_price' => round($inv->item_price),
                     'itemnature_name' => empty($inv->itemnature)?'':$inv->itemnature->itemnature_name
                     
                 );
@@ -278,7 +278,7 @@ $grand_r_t_p = 0;
                 'vendor' => empty($inv->vendor)?'':$inv->vendor->vendor_name,
                 'warrenty_period' => $inv->warrenty_period,
                 'remarks' => $inv->remarks,
-                'item_price' => $inv->item_price,
+                'item_price' => round($inv->item_price),
                 'itemnature_name' => empty($inv->itemnature)?'':$inv->itemnature->itemnature_name
                 
             );

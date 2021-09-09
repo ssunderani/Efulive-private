@@ -68,7 +68,7 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                                                 <td>{{ $inventory->product_sn }}</td>
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
-                                                <td class='text-align-right'>{{ number_format($inventory->item_price,2) }}</td>
+                                                <td class='text-align-right'>{{ number_format(round($inventory->item_price),2) }}</td>
                                                 <td>{{ $inventory->po_number }}</td>
                                                 <td></td>
                                                 <td>{{ empty($inventory->vendor)?'':$inventory->vendor->vendor_name }}</td>

@@ -87,7 +87,7 @@ class PDFController extends Controller
                 $fetch = Inventory::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->get();               
                 foreach($fetch as $get){
                     $consumed_price_dollar += round($get->item_price)/round($get->dollar_rate);
-                    $consumed_price_pkr += $get->item_price;
+                    $consumed_price_pkr += round($get->item_price);
                 }
                 
                 $cat['total_price_dollar'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('total_price_dollar');

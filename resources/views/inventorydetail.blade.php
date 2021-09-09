@@ -127,7 +127,7 @@
                                                 <td>
                                                     Price
                                                 </td>                  
-                                                <td>{{ number_format($inventory->item_price,2) }}</td>
+                                                <td>{{ number_format(round($inventory->item_price),2) }}</td>
                                             </tr> 
                                             <tr>  
                                                 <td>

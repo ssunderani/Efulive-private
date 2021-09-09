@@ -104,7 +104,7 @@
                                                 <td><a href="{{ url('item_detail/'.$inventory->id) }}">{{ $inventory->product_sn }}</a></td>
                                                 <td>{{ date('d-M-Y' ,strtotime($inventory->purchase_date)) }}</td>
                                                 <td>{{ empty($inventory->subcategory)?'':$inventory->subcategory->sub_cat_name }}</td>
-                                                <td>{{ number_format($inventory->item_price,2) }}</td>
+                                                <td>{{ number_format(round($inventory->item_price),2) }}</td>
                                                 <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>
                                                 <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
                                                 <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>

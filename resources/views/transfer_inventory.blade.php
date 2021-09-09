@@ -261,7 +261,7 @@
                                                 <td>{{ $inventory->category_id?$inventory->category->category_name:'' }}</td>
                                                 <td class='text-align-right'>{{ $inventory->user->emp_code }}</td>
                                                 <td>{{ $inventory->user->name }}</td>
-                                                <td class='text-align-right'>{{ number_format($inventory->item_price,2) }}</td>
+                                                <td class='text-align-right'>{{ number_format(round($inventory->item_price),2) }}</td>
                                                 <td class='text-align-right'>{{ number_format($inventory->dollar_rate,2) }}</td>
                                                 <td>{{ date('d-M-Y' ,strtotime($inventory->created_at)) }}</td>
                                             </tr>

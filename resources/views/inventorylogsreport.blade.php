@@ -72,7 +72,7 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                                                 <td>{{ empty($inventory->vendor)?'':$inventory->vendor->vendor_name }}</td>
                                                 <td>{{ $inventory->warrenty_period }}</td>
                                                 <td>{{ $inventory->remarks }}</td>
-                                                <td class='text-align-right'>{{ number_format($inventory->item_price,2) }}</td>
+                                                <td class='text-align-right'>{{ number_format(round($inventory->item_price),2) }}</td>
                                                 <td>{{ empty($inventory->itemnature)?'':$inventory->itemnature->itemnature_name }}</td>
                                             </tr>
                                         @endforeach 
