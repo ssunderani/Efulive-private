@@ -24,6 +24,7 @@ use App\Exports\BudgetExport;
 use App\Exports\ItemsExport;
 use App\Exports\InventoryExport;
 use App\Exports\EditlogsExport;
+use App\Exports\InventoryinExport;
 class ExcelController extends Controller
 {
     
@@ -263,26 +264,25 @@ $grand_r_t_p = 0;
         else{
             $inventories = Inventory::where([[$fields]])->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
         }
-        foreach($inventories as $inv){
-            $inv->added_by = User::find($inv->added_by);
-        }
         $record = array();
         foreach($inventories as $inv){
+            $inv->added_by = User::find($inv->added_by);
             $record[] = (object)array(
                 'subcategory' => empty($inv->subcategory)?'':$inv->subcategory->sub_cat_name,
                 'product_sn' => $inv->product_sn,
                 'make' => $inv->make_id?$inv->make->make_name:'',
                 'model' => $inv->model_id?$inv->model->model_name:'',
-                'purchase_date' => date('d-M-Y' ,strtotime($inv->purchase_date)),
-                'po_number' => $inv->po_number,
-                'vendor' => empty($inv->vendor)?'':$inv->vendor->vendor_name,
-                'warrenty_period' => $inv->warrenty_period,
-                'remarks' => $inv->remarks,
                 'item_price' => round($inv->item_price),
-                'itemnature_name' => empty($inv->itemnature)?'':$inv->itemnature->itemnature_name
+                'po_number' => $inv->po_number,
+                'dc_number' => '',
+                'vendor' => empty($inv->vendor)?'':$inv->vendor->vendor_name,
+                'initial_status' => empty($inv->inventorytype)?'':$inv->inventorytype->inventorytype_name,
+                'current_condition' => empty($inv->devicetype)?'':$inv->devicetype->devicetype_name,
+                'remarks' => $inv->remarks,
+                'enter_by' => empty($inv->added_by)?'':$inv->added_by->name
                 
             );
         }
-        return Excel::download(new EditlogsExport(json_encode($record)), 'inventoryinreport.xlsx');
+        return Excel::download(new InventoryinExport(json_encode($record)), 'inventoryinreport.xlsx');
     }
 }
