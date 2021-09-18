@@ -27,6 +27,7 @@ use App\Exports\EditlogsExport;
 use App\Exports\InventoryinExport;
 use App\Exports\InventoryoutExport;
 use App\Exports\BalanceExport;
+use App\Exports\BincardExport;
 class ExcelController extends Controller
 {
     
@@ -376,5 +377,56 @@ $grand_r_t_p = 0;
                 );
             }
         return Excel::download(new BalanceExport(json_encode($record)), 'balancereport.xlsx');
+    }
+    public function export_bincard($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', [$from, date('Y-m-d', $to)])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_date']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Inventory::where([[$fields]])->whereBetween('updated_at', ['', date('Y-m-d', $to)])
+                                        ->whereNotIn('status', [0])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Inventory::where([[$fields]])->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
+            }
+            $record = array();
+            if(!empty($inventories)){
+                foreach($inventories as $inv){
+                    $inv->repairing = Repairing::where('item_id',$inv->id)->first();
+                    $inv->added_by = User::where('id',$inv->added_by)->first();
+                    $record[] = (object)array(
+                        'subcategory' => empty($inv->subcategory)?'':$inv->subcategory->sub_cat_name,
+                        'product_sn' => $inv->product_sn,
+                        'make' => $inv->make_id?$inv->make->make_name:'',
+                        'model' => $inv->model_id?$inv->model->model_name:'',
+                        'location' => empty($inv->location)?'':$inv->location->location,
+                        'initial_status' => empty($inv->inventorytype)?'':$inv->inventorytype->inventorytype_name,
+                        'remarks' => $inv->remarks,
+                        'action_date' => date('Y-m-d', strtotime($inv->updated_at)),
+                        'actual_price' => number_format(round($inv->item_price),2),
+                        'cost_price' => empty($inv->repairing)?'':$inv->repairing->price_value,
+                        'repaiting_remarks' => empty($inv->repairing)?'':$inv->repairing->remarks
+                    );
+                }
+            }
+            return Excel::download(new BincardExport(json_encode($record)), 'bincardreport.xlsx');
     }
 }
