@@ -25,6 +25,8 @@ use App\Exports\ItemsExport;
 use App\Exports\InventoryExport;
 use App\Exports\EditlogsExport;
 use App\Exports\InventoryinExport;
+use App\Exports\InventoryoutExport;
+use App\Exports\BalanceExport;
 class ExcelController extends Controller
 {
     
@@ -284,5 +286,95 @@ $grand_r_t_p = 0;
             );
         }
         return Excel::download(new InventoryinExport(json_encode($record)), 'inventoryinreport.xlsx');
+    }
+    public function export_inventoryout($data){
+        date_default_timezone_set('Asia/karachi');
+            $fields = (array)json_decode($data);
+            $dept_id = $fields['dept_id']??null; 
+            unset($fields['dept_id']);
+            $key = $fields['inout'][0]; 
+            $op = $fields['inout'][1]; 
+            $val = $fields['inout'][2];
+            unset($fields['inout']); 
+            if(isset($fields['from_issuance']) || isset($fields['to_issuance'])){
+
+                if(isset($fields['from_issuance']) && isset($fields['to_issuance'])){
+                    $from = $fields['from_issuance'];
+                    $to = strtotime($fields['to_issuance'].'+1 day');
+                    unset($fields['from_issuance']);
+                    unset($fields['to_issuance']);
+                    $issue = Issue::whereBetween('updated_at', [$from, date('Y-m-d', $to)])
+                                            ->select('inventory_id')
+                                            ->orderBy('id', 'desc')->get();
+                }
+                else if(isset($fields['from_issuance']) && !isset($fields['to_issuance'])){
+                    $from = $fields['from_issuance'];
+                    unset($fields['from_issuance']);
+                    $issue = Issue::whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                            ->select('inventory_id')
+                                            ->orderBy('id', 'desc')->get();
+                }
+                else if(!isset($fields['from_issuance']) && isset($fields['to_issuance'])){
+                    $to = strtotime($fields['to_issuance'].'+1 day');
+                    unset($fields['to_issuance']);
+                    $issue = Issue::whereBetween('updated_at', ['', date('Y-m-d', $to)])
+                                            ->select('inventory_id')
+                                            ->orderBy('id', 'desc')->get();
+                }
+
+                $ids = array();
+                foreach($issue as $iss){
+                    $ids[] = $iss->inventory_id;
+                }
+                $inventories = Inventory::where([[$fields]])->where($key, $op, $val)->whereIn('id', $ids)->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Inventory::where([[$fields]])->where($key, $op, $val)->whereNotIn('status', [0])->orderBy('id', 'desc')->get();
+            }
+            $items = array();
+            foreach($inventories as $inv){
+                $inv->user = Employee::where('emp_code', $inv->issued_to)->first();
+                $inv->issued_by = User::find($inv->issued_by);
+                $inv->issue_date = Issue::where('inventory_id', $inv->id)->select('created_at')->orderBy('id', 'desc')->first();
+            if($dept_id == $inv->user->dept_id){
+                    $items[] = $inv;
+                }
+            }
+            if($dept_id){
+                $inventories = $items;
+            }
+            $record = array();
+        foreach($inventories as $inv){
+            $record[] = (object)array(
+                'subcategory' => empty($inv->subcategory)?'':$inv->subcategory->sub_cat_name,
+                'product_sn' => $inv->product_sn,
+                'make' => $inv->make_id?$inv->make->make_name:'',
+                'model' => $inv->model_id?$inv->model->model_name:'',
+                'issued_to' => empty($inv->user)?'':$inv->user->name,
+                'location' => empty($inv->location)?'':$inv->location->location,
+                'issued_by' => empty($inv->issued_by)?'':$inv->issued_by->name,
+                'issued_date' => empty($inv->issue_date)?'':date('d-M-Y' ,strtotime($inv->issue_date->created_at)),
+                'initial_status' => empty($inv->inventorytype)?'':$inv->inventorytype->inventorytype_name,
+                'current_condition' => empty($inv->devicetype)?'':$inv->devicetype->devicetype_name,
+                'remarks' => $inv->remarks,
+            );
+        }
+        return Excel::download(new InventoryoutExport(json_encode($record)), 'inventoryoutreport.xlsx');
+    }
+    public function export_balance($data){
+        $fields = (array)json_decode($data);
+        $record = array();
+        $subcategories = Subcategory::where('status',1)->get();
+            foreach($subcategories as $subcat){
+                $subcat->rem = Inventory::where([[$fields]])->where('subcategory_id', $subcat->id)->where('issued_to', NULL)->count();
+                $subcat->out = Inventory::where([[$fields]])->where('subcategory_id', $subcat->id)->whereNotNull('issued_to')->count();
+                $record[] = (object)array(
+                    'subcategory' => $subcat->sub_cat_name,
+                    'in' => ($subcat->rem+$subcat->out),
+                    'out' => $subcat->out,
+                    'balance' => $subcat->rem
+                );
+            }
+        return Excel::download(new BalanceExport(json_encode($record)), 'balancereport.xlsx');
     }
 }
