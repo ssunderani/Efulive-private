@@ -28,6 +28,7 @@ use App\Exports\InventoryinExport;
 use App\Exports\InventoryoutExport;
 use App\Exports\BalanceExport;
 use App\Exports\BincardExport;
+use App\Exports\AssetrepairingExport;
 class ExcelController extends Controller
 {
     
@@ -428,5 +429,31 @@ $grand_r_t_p = 0;
                 }
             }
             return Excel::download(new BincardExport(json_encode($record)), 'bincardreport.xlsx');
+    }
+    public function export_assetrepairing($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+        $repairs = Repairing::where([[$fields]])->orderBy('item_id', 'desc')->get();
+        $record = array();
+        foreach($repairs as $repair){
+            $total = $repair->actual_price_value+$repair->price_value;
+            $repair->item->user = Employee::where('emp_code', $repair->item->issued_to)->first();
+            $record[] = (object)array(
+                'subcategory' => empty($repair->subcategory)?'':$repair->subcategory->sub_cat_name,
+                'product_sn' => empty($repair->item)?'':$repair->item->product_sn,
+                'make' => empty($repair->item->make)?'':$repair->item->make->make_name,
+                'model' => empty($repair->item->model)?'':$repair->item->model->model_name,
+                'issued_to' => empty($repair->item->user)?'':$repair->item->user->name,
+                'location' => empty($repair->item->location)?'':$repair->item->location->location,
+                'repairing_date' => date('d-M-Y' ,strtotime($repair->date)),
+                'actual_price' => number_format($repair->actual_price_value,2),
+                'repairing_cost' => number_format($repair->price_value,2),
+                'cumulative_cost' => number_format($total,2),
+                'initial_status' => empty($repair->item->inventorytype)?'':$repair->item->inventorytype->inventorytype_name,
+                'current_condition' => empty($repair->item->devicetype)?'':$repair->item->devicetype->devicetype_name,
+                'remarks' => $repair->remarks
+            );
+        }
+        return Excel::download(new AssetrepairingExport(json_encode($record)), 'assetrepairingreport.xlsx');    
     }
 }
