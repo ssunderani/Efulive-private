@@ -29,6 +29,8 @@ use App\Exports\InventoryoutExport;
 use App\Exports\BalanceExport;
 use App\Exports\BincardExport;
 use App\Exports\AssetrepairingExport;
+use App\Exports\DisposalExport;
+use App\Exports\DispatchinExport;
 class ExcelController extends Controller
 {
     
@@ -371,6 +373,7 @@ $grand_r_t_p = 0;
                 $subcat->rem = Inventory::where([[$fields]])->where('subcategory_id', $subcat->id)->where('issued_to', NULL)->count();
                 $subcat->out = Inventory::where([[$fields]])->where('subcategory_id', $subcat->id)->whereNotNull('issued_to')->count();
                 $record[] = (object)array(
+                    'category' => $subcat->category->category_name??'',
                     'subcategory' => $subcat->sub_cat_name,
                     'in' => ($subcat->rem+$subcat->out),
                     'out' => $subcat->out,
@@ -455,5 +458,129 @@ $grand_r_t_p = 0;
             );
         }
         return Excel::download(new AssetrepairingExport(json_encode($record)), 'assetrepairingreport.xlsx');    
+    }
+    public function export_disposal($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+        if(isset($fields['from_date']) && isset($fields['to_date'])){
+            $from = $fields['from_date'];
+            $to = strtotime($fields['to_date'].'+1 day');
+            unset($fields['from_date']);
+            unset($fields['to_date']);
+            if(isset($fields['handover'])){
+                if($fields['handover'] == 1){
+                    $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
+                    ->whereNotNull('handover_date')
+                    ->orderBy('id', 'desc')->get();
+                }
+                else{
+                    $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
+                    ->whereNull('handover_date')
+                    ->orderBy('id', 'desc')->get();
+                }
+            }
+            else{
+            $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', $to)])
+                                    ->orderBy('id', 'desc')->get();
+            }
+        }
+        else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+            $from = $fields['from_date'];
+            unset($fields['from_date']);
+            $inventories = Disposal::whereBetween('dispose_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                    ->orderBy('id', 'desc')->get();
+        }
+        else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+            $to = strtotime($fields['to_date'].'+1 day');
+            unset($fields['to_date']);
+            $inventories = Disposal::whereBetween('dispose_date', ['', date('Y-m-d', $to)])
+                                    ->orderBy('id', 'desc')->get();
+        }
+        else{
+            if(isset($fields['handover'])){
+                if($fields['handover'] == 1){
+                    $inventories = Disposal::whereNotNull('handover_date')->orderBy('id', 'desc')->get();
+                }
+                else{
+                    $inventories = Disposal::whereNull('handover_date')->orderBy('id', 'desc')->get();
+                }
+            }
+            else{
+                $inventories = Disposal::orderBy('id', 'desc')->get();
+            }
+        }
+        $record = array();
+            if(!empty($inventories)){
+                foreach($inventories as $inv){
+                    $issue = Issue::where('inventory_id', $inv->inventory_id)->orderBy('id', 'DESC')->first();
+                    if($issue){
+                        $user = Employee::where('emp_code', $issue->employee_id)->first();
+                        if($user){
+                            $inv->user = $user;
+                        }
+                    }
+                    $record[] = (object)array(
+                        'subcategory' => !empty($inv->subcategory)?$inv->subcategory->sub_cat_name:'',
+                        'location' => !empty($inv->inventory->location)?$inv->inventory->location->location:'',
+                        'product_sn' => !empty($inv->inventory)?$inv->inventory->product_sn:'',
+                        'disposal_status' => !empty($inv->disposalstatus)?$inv->disposalstatus->d_status:'',
+                        'purchase_date' => !empty($inv->inventory)?date('d-M-Y', strtotime($inv->inventory->purchase_date)):'',
+                        'disposal_date' => date('d-M-Y' ,strtotime($inv->dispose_date)),
+                        'handover_date' => $inv->handover_date == null?'Null':date('d-M-Y' ,strtotime($inv->handover_date)),
+                        'remarks' => $inv->remarks
+                    );
+                }
+            }
+            return Excel::download(new DisposalExport(json_encode($record)), 'assetdisposalreport.xlsx'); 
+    }
+    public function export_dispatchin($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', [$from, date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Dispatchin::whereBetween('dispatchin_date', ['', date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Dispatchin::orderBy('id', 'desc')->get();
+            }
+            $record = array();
+        if(!empty($inventories)){
+            foreach($inventories as $inv){
+                if(!empty($inv->inventory)){
+                    $user = Employee::where('emp_code', $inv->inventory->issued_to)->first();
+                    if($user){
+                        $inv->user = $user;
+                    }
+                }
+                $record[] = (object)array(
+                    'date_in' => date('d-M-Y', strtotime($inv->dispatchin_date)),
+                    'subcategory' => !empty($inv->subcategory)?$inv->subcategory->sub_cat_name:'',
+                    'product_sn' => !empty($inv->inventory)?$inv->inventory->product_sn:'',
+                    'assigned_to' => !empty($inv->user)?$inv->user->name:'',
+                    'branch' => !empty($disp->user)?$disp->user->branch:'',
+                    'br_code' => !empty($disp->user)?$disp->user->branch_id:'',
+                    'make' => !empty($disp->inventory->make)?$disp->inventory->make->make_name:'',
+                    'model' => !empty($disp->inventory->model)?$disp->inventory->model->model_name:'',
+                    'accessories' => !empty($disp->inventory)?$disp->inventory->other_accessories:''
+                );
+            }
+        }
+        return Excel::download(new DispatchinExport(json_encode($record)), 'dispatchinreport.xlsx'); 
     }
 }

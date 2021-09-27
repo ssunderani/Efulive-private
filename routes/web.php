@@ -174,3 +174,5 @@ Route::get('export_inventoryout/{data}', 'ExcelController@export_inventoryout');
 Route::get('export_balance/{data}', 'ExcelController@export_balance');
 Route::get('export_bincard/{data}', 'ExcelController@export_bincard');
 Route::get('export_assetrepairing/{data}', 'ExcelController@export_assetrepairing');
+Route::get('export_disposal/{data}', 'ExcelController@export_disposal');
+Route::get('export_dispatchin/{data}', 'ExcelController@export_dispatchin');

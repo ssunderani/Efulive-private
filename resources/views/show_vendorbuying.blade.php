@@ -114,8 +114,8 @@
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $inventory['subcategory'] }}</td>
                                                 <td>{{ $inventory['vendor']->vendor_name }}</td>
-                                                <td>{{ $inventory['total_items'] }}</td>
-                                                <td>{{ $inventory['amount'] }}</td>
+                                                <td class='text-align-right'>{{ number_format($inventory['total_items'],2) }}</td>
+                                                <td class='text-align-right'>{{ number_format(round($inventory['amount']),2) }}</td>
                                             </tr>
                                         @endforeach  
                                         </tbody>

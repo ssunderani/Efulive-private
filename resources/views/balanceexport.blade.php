@@ -38,6 +38,7 @@
                                     <thead>
                                             <tr>
                                                 <th>S.No</th>
+                                                <th>Category</th>
                                                 <th>Item Category</th>
                                                 <th>IN</th>
                                                 <th>OUT</th>
@@ -50,6 +51,7 @@
                                         @foreach ($subcategories as $subcat)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
+                                                <td>{{ $subcat->category->category_name??'' }}</td>
                                                 <td>{{ $subcat->sub_cat_name }}</td>
                                                 <td>{{ ($subcat->rem+$subcat->out) }}</td>
                                                 <td>{{ $subcat->out }}</td>

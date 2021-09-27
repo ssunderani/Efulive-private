@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>bin card report</title>
+	<title>vendor buying report</title>
     <style>
     .secondary-table{
         width:100%;
@@ -58,8 +58,8 @@ $to = isset($fields['to_date'])?$fields['to_date']:null;
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $inventory['subcategory'] }}</td>
                                                 <td>{{ $inventory['vendor']->vendor_name }}</td>
-                                                <td>{{ $inventory['total_items'] }}</td>
-                                                <td>{{ $inventory['amount'] }}</td>
+                                                <td style="text-align:right">{{ number_format($inventory['total_items'],2) }}</td>
+                                                <td style="text-align:right">{{ number_format(round($inventory['amount']),2) }}</td>
                                             </tr>
                                         @endforeach 
                                         </tbody>

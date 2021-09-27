@@ -2,10 +2,10 @@
 
 namespace App\Exports;
 
-use App\Inventory;
+use App\Disposal;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-class BalanceExport implements FromCollection, WithHeadings
+class DisposalExport implements FromCollection, WithHeadings
 {
     public $record;
     public function __construct($data)
@@ -16,11 +16,14 @@ class BalanceExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Category',
-            'Item Category',
-            'IN',
-            'OUT',
-            'Balance'
+            'Sub Category',
+            'Product s#',
+            'Previous Location',
+            'Disposal Status',
+            'Purchase Date',
+            'Disposal Date',
+            'Handed Over Date',
+            'Remarks',
         ];
     }
 

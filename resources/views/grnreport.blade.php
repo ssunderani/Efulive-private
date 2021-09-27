@@ -106,7 +106,7 @@
             <tr>
                 <td style="width:60%;">
                     <p class="font-12"><b>Handed Over By:</b></p>
-                    <p class="font-12"><b>Name:</b><u> {{ $vendor }}</u></p>
+                    <p class="font-12"><b>Name:</b><u> {{ $vendor??'' }}</u></p>
                     <p class="font-12 pd-20"><b>Department/Company:</b> ----------------------------</p>
                     <p class="font-12 pd-20"><b>Signature with Date:</b> ----------------------------</p>
                 </td>

@@ -580,16 +580,16 @@ class ReportController extends Controller
         }
         if(!empty($inventories)){
             foreach($inventories as $inventory){
-                
+                if(!empty($inventory->inventory)){
                     $user = Employee::where('emp_code', $inventory->inventory->issued_to)->first();
                     if($user){
                         $inventory->user = $user;
                     }
-               
+                }
             }
         }
         $data['dispatch'] = $inventories;
-        //return $data;
+        // return $data;
         return view('show_dispatchin', $data);
     }
     public function dispatchout_report(Request $request)

@@ -74,7 +74,8 @@
                             <div class="card-body">
                             @if(empty($disposals))
                             @else
-                            <a class="btn btn-danger mb-2 float-right" href="{{ url('disposalexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mb-2 ml-1 float-right" href="{{ url('disposalexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mb-2 float-right" href="{{ url('export_disposal/'.json_encode($filters)) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
                             
                                 <div class="table-responsive">

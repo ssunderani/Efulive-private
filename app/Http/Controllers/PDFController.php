@@ -39,13 +39,12 @@ class PDFController extends Controller
         
         foreach($inv as $inv_id){
             $inventory = Inventory::find($inv_id);
-            $user = User::find($inventory->added_by);
-            //$inventory->user = $user;
+            if($inventory){
+            $user = isset($inventory->added_by)?User::find($inventory->added_by):'';
             $inventories[] = $inventory;
+            }
         }
-        
         $data = array('inventories'=>$inventories, 'user'=>$user, 'grn_date'=>$grn->created_at, 'range'=>$range);
-        //return view('grnreport', $data);
         $pdf = PDF::loadView('grnreport', $data)->setPaper('a4', 'landscape');
   
         return $pdf->download($grn->grn_no.'.pdf');
@@ -484,7 +483,7 @@ class PDFController extends Controller
             $i++;
         }
         $inventories = $array;
-        $pdf = PDF::loadView('vendorbuyingreport', ['inventories'=>$inventories])->setPaper('a4', 'landscape');
+        $pdf = PDF::loadView('vendorbuyingreport', ['inventories'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
         return $pdf->download('vendor_buying_report.pdf');
     }
     public function dispatchinexport($data)
@@ -517,12 +516,12 @@ class PDFController extends Controller
         
         if(!empty($inventories)){
             foreach($inventories as $inventory){
-                
+                if(!empty($inventory->inventory)){
                     $user = Employee::where('emp_code', $inventory->inventory->issued_to)->first();
                     if($user){
                         $inventory->user = $user;
                     }
-               
+                }
             }
         }
         $pdf = PDF::loadView('dispatchinreport', ['dispatches'=>$inventories, 'filters'=>$data])->setPaper('a4', 'landscape');
