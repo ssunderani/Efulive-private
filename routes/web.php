@@ -125,6 +125,7 @@ Route::get('/get_employee/{id}', 'EmployeeController@get_employee');
 Route::get('generate-pdf','PDFController@generatePDF');
 
 Route::get('budgetexport/{data}','PDFController@budgetexport');
+Route::get('budgetexport2/{data}','PDFController@budgetexport2');
 Route::get('itemexport/{data}','PDFController@itemexport');
 
 Route::get('/show_inventory_list', 'ReportController@show_inventory');

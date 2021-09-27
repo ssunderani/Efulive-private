@@ -1,13 +1,40 @@
 @extends("master")
 
 @section("content")
+<style>
+    .inner-table{
+        width:100%;
+        border-spacing: 0px;
+        border: none;
+    }
+    .inner-table tr th, .inner-table tr td{
+        width:33%;
+    }
+    .text-center{
+        text-align: center;
+    }
+    .text-right{
+        text-align: right;
+    }
+    </style>
 <?php
-$grand_u_d = 0;
-$grand_u_p = 0; 
-$grand_t_d = 0; 
-$grand_t_p = 0; 
-$grand_c = 0; 
-$grand_r = 0;
+// $grand_u_d = 0;
+// $grand_u_p = 0; 
+// $grand_t_d = 0; 
+// $grand_t_p = 0; 
+// $grand_c = 0; 
+// $grand_r = 0;
+ ?> 
+ <?php
+ $grand_t_d = 0; 
+ $grand_t_p = 0; 
+ $grand_qty = 0;
+ $grand_c_d = 0; 
+ $grand_c_p = 0; 
+ $grand_c_qty = 0;
+ $grand_r_d = 0; 
+ $grand_r_p = 0; 
+ $grand_r_qty = 0;
  ?> 
 <div id="layoutSidenav_content">
                 <main>
@@ -60,6 +87,7 @@ $grand_r = 0;
                         <div class="col-md-3 col-lg-3">
                             @if(empty($types))
                             @else
+                            <a class="btn btn-sm btn-danger mt-3 mb-1 ml-1 float-right" href="{{ url('budgetexport2/'.$filter) }}">Print 2 <i class="fa fa-download" aria-hidden="true"></i></a>
                             <a class="btn btn-sm btn-danger mt-3 mb-1 ml-1 float-right" href="{{ url('budgetexport/'.$filter) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
                             <a class="btn btn-sm btn-danger mt-3 mb-1 float-right" href="{{ url('export_summary/'.$filter) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
@@ -107,81 +135,112 @@ $grand_r = 0;
                             
                             <span class="text-danger">{{ $errors->first('inv_id') }}</span>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" width="100%" cellspacing="0">
+                                    
+                                    <table class="table table-bordered" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>S.No</th>
-                                                <th>Category</th>
-                                                <th>Price Unit $</th>
-                                                <th>Price Unit PKR</th>
-                                                <th>Price Total $</th>
-                                                <th>Price Total PKR</th>
-                                                <th>Consumed</th>
-                                                <th>Remaining</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th colspan="3">Total Budget</th>
+                                                <th colspan="3">Consumed</th>
+                                                <th colspan="3">Remaining</th>
                                             </tr>
                                         </thead>
                                         
                                         <tbody>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Category</th>
+                                                <th>Dollar</th>
+                                                <th>PKR</th>
+                                                <th>Quantity</th>
+                                                <th>Dollar</th>
+                                                <th>PKR</th>
+                                                <th>Quantity</th>
+                                                <th>Dollar</th>
+                                                <th>PKR</th>
+                                                <th>Quantity</th>
+                                            </tr>
                                         <?php 
                                         $i = 1;
-                                        $unit_b_d = 0;
-                                        $unit_b_p = 0;
                                         $total_b_d = 0;
                                         $total_b_p = 0;
-                                        $c = 0;
-                                        $r = 0;
+                                        $total_qty = 0;
+
+                                        $c_b_d = 0;
+                                        $c_b_p = 0;
+                                        $c_qty = 0;
+
+                                        $r_b_d = 0;
+                                        $r_b_p = 0;
+                                        $r_qty = 0;
                                         ?>
                                         @foreach ($type->categories as $budget)
                                             <tr>
-                                                <td class='text-align-right'>{{ $i++ }}</td>
+                                                <td>{{ $i++ }}</td>
                                                 <td>{{ $budget->category_name }}</td>
-                                                <td class='text-align-right'>{{ number_format($budget->unit_price_dollar,2) }}$</td>
-                                                <td class='text-align-right'>Rs{{ number_format($budget->unit_price_pkr,2) }}</td>
-                                                <td class='text-align-right'>{{ number_format($budget->total_price_dollar,2) }}$</td>
-                                                <td class='text-align-right'>Rs{{ number_format($budget->total_price_pkr,2) }}</td>
-                                                <td class='text-align-right'>{{ $budget->consumed }}</td>
-                                                <td class='text-align-right'>{{ $budget->remaining }}</td>
+                                                <td class="text-right">{{ number_format($budget->total_price_dollar,2) }}</td>
+                                                <td class="text-right">{{ number_format($budget->total_price_pkr,2)}}</td>
+                                                <td class="text-right">{{ number_format($budget->qty,2) }}</td>
+                                                <td class="text-right">{{ number_format(($budget->consumed_price_dollar),2) }}</td>
+                                                <td class="text-right">{{ number_format(($budget->consumed_price_pkr),2) }}</td>
+                                                <td class="text-right">{{ number_format($budget->consumed,2) }}</td>
+                                                <td class="text-right">{{ number_format(($budget->remaining_price_dollar),2) }}</td>
+                                                <td class="text-right">{{ number_format(($budget->remaining_price_pkr),2) }}</td>
+                                                <td class="text-right">{{ number_format($budget->remaining,2) }}</td>
                                             </tr>
                                             <?php
-                                            $unit_b_d += $budget->unit_price_dollar;
-                                            $unit_b_p += $budget->unit_price_pkr;
                                             $total_b_d += $budget->total_price_dollar;
                                             $total_b_p += $budget->total_price_pkr;
-                                            $c += $budget->consumed;
-                                            $r += $budget->remaining;
+                                            $total_qty += $budget->qty;
+                                            $c_b_d += $budget->consumed_price_dollar;
+                                            $c_b_p += $budget->consumed_price_pkr;
+                                            $c_qty += $budget->consumed;
+                                            $r_b_d += $budget->remaining_price_dollar;
+                                            $r_b_p += $budget->remaining_price_pkr;
+                                            $r_qty += $budget->remaining;
                                             ?>
                                         @endforeach 
-                                        <tr>
-                                                <th colspan='2' style="text-align:right;">Total</th>
-                                                <td class='text-align-right'>{{ number_format($unit_b_d,2) }}$</td>
-                                                <td class='text-align-right'>Rs{{ number_format($unit_b_p,2) }}</td>
-                                                <td class='text-align-right'>{{ number_format($total_b_d,2) }}$</td>
-                                                <td class='text-align-right'>Rs{{ number_format($total_b_p,2) }}</td>
-                                                <td class='text-align-right'>{{ $c }}</td>
-                                                <td class='text-align-right'>{{ $r }}</td>
-                                            </tr>
                                         </tbody>
+                                            <tr>
+                                                <th colspan='2' style="text-align:right;">Total</th>
+                                                <td class="text-right">{{ number_format($total_b_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($total_b_p,2) }}</td>
+                                                <td class="text-right">{{ number_format($total_qty,2) }}</td>
+                                                <td class="text-right">{{ number_format($c_b_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($c_b_p,2) }}</td>
+                                                <td class="text-right">{{ number_format($c_qty,2) }}</td>
+                                                <td class="text-right">{{ number_format($r_b_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($r_b_p,2) }}</td>
+                                                <td class="text-right">{{ number_format($r_qty,2) }}</td>
+                                            </tr>
 <?php
-$grand_u_d += $unit_b_d;
-$grand_u_p += $unit_b_p; 
 $grand_t_d += $total_b_d; 
 $grand_t_p += $total_b_p; 
-$grand_c += $c; 
-$grand_r += $r;
+$grand_qty += $total_qty;
+$grand_c_d += $c_b_d; 
+$grand_c_p += $c_b_p; 
+$grand_c_qty += $c_qty;
+$grand_r_d += $r_b_d; 
+$grand_r_p += $r_b_p; 
+$grand_r_qty += $r_qty;
  ?> 
-                                        @if($key == 1)
+ @if($key == 1)
                                         <tfoot>
                                             <tr>
-                                                <th colspan='2' style="text-align:right;">Grand Total</th>
-                                                <td class='text-align-right'>{{ number_format($grand_u_d,2) }}$</td>
-                                                <td class='text-align-right'>Rs{{ number_format($grand_u_p,2) }}</td>
-                                                <td class='text-align-right'>{{ number_format($grand_t_d,2) }}$</td>
-                                                <td class='text-align-right'>Rs{{ number_format($grand_t_p,2) }}</td>
-                                                <td class='text-align-right'>{{ $grand_c }}</td>
-                                                <td class='text-align-right'>{{ $grand_r }}</td>
+                                                <th colspan='2' class="text-right">Grand Total</th>
+                                                <td class="text-right">{{ number_format($grand_t_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_t_p,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_qty,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_c_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_c_p,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_c_qty,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_r_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_r_p,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_r_qty,2) }}</td>
                                             </tr>
-                                        </tfoot>
-                                        @endif
+                                            </tfoot>
+                                            @endif
                                     </table>
                                 </div>
                             </div>

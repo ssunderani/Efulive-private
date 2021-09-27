@@ -71,9 +71,9 @@
                                             <tr>
                                                 <th></th>
                                                 <th></th>
-                                                <th colspan="3">Total Budget</th>
-                                                <th colspan="3">Consumed</th>
-                                                <th colspan="3">Remaining</th>
+                                                <th colspan="2">Total Budget</th>
+                                                <th colspan="2">Consumed</th>
+                                                <th colspan="2">Remaining</th>
                                             </tr>
                                         </thead>
                                         
@@ -81,13 +81,10 @@
                                             <tr>
                                                 <th>S.No</th>
                                                 <th>Category</th>
-                                                <th>Dollar</th>
                                                 <th>PKR</th>
                                                 <th>Quantity</th>
-                                                <th>Dollar</th>
                                                 <th>PKR</th>
                                                 <th>Quantity</th>
-                                                <th>Dollar</th>
                                                 <th>PKR</th>
                                                 <th>Quantity</th>
                                             </tr>
@@ -109,13 +106,10 @@
                                             <tr>
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $budget->category_name }}</td>
-                                                <td class="text-right">{{ number_format($budget->total_price_dollar,2) }}</td>
                                                 <td class="text-right">{{ number_format($budget->total_price_pkr,2)}}</td>
                                                 <td class="text-right">{{ number_format($budget->qty,2) }}</td>
-                                                <td class="text-right">{{ number_format(($budget->consumed_price_dollar),2) }}</td>
                                                 <td class="text-right">{{ number_format(($budget->consumed_price_pkr),2) }}</td>
                                                 <td class="text-right">{{ number_format($budget->consumed,2) }}</td>
-                                                <td class="text-right">{{ number_format(($budget->remaining_price_dollar),2) }}</td>
                                                 <td class="text-right">{{ number_format(($budget->remaining_price_pkr),2) }}</td>
                                                 <td class="text-right">{{ number_format($budget->remaining,2) }}</td>
                                             </tr>
@@ -134,13 +128,10 @@
                                         </tbody>
                                             <tr>
                                                 <th colspan='2' style="text-align:right;">Total</th>
-                                                <td class="text-right">{{ number_format($total_b_d,2) }}</td>
                                                 <td class="text-right">{{ number_format($total_b_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($total_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($c_b_d,2) }}</td>
                                                 <td class="text-right">{{ number_format($c_b_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($c_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($r_b_d,2) }}</td>
                                                 <td class="text-right">{{ number_format($r_b_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($r_qty,2) }}</td>
                                             </tr>
@@ -159,13 +150,10 @@ $grand_r_qty += $r_qty;
                                         <tfoot>
                                             <tr>
                                                 <th colspan='2' class="text-right">Grand Total</th>
-                                                <td class="text-right">{{ number_format($grand_t_d,2) }}</td>
                                                 <td class="text-right">{{ number_format($grand_t_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($grand_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($grand_c_d,2) }}</td>
                                                 <td class="text-right">{{ number_format($grand_c_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($grand_c_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($grand_r_d,2) }}</td>
                                                 <td class="text-right">{{ number_format($grand_r_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($grand_r_qty,2) }}</td>
                                             </tr>
