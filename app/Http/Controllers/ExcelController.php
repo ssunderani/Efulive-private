@@ -31,6 +31,9 @@ use App\Exports\BincardExport;
 use App\Exports\AssetrepairingExport;
 use App\Exports\DisposalExport;
 use App\Exports\DispatchinExport;
+use App\Exports\DispatchoutExport;
+use App\Exports\VendorbuyingExport;
+use App\Exports\ReorderlevelExport;
 class ExcelController extends Controller
 {
     
@@ -573,14 +576,162 @@ $grand_r_t_p = 0;
                     'subcategory' => !empty($inv->subcategory)?$inv->subcategory->sub_cat_name:'',
                     'product_sn' => !empty($inv->inventory)?$inv->inventory->product_sn:'',
                     'assigned_to' => !empty($inv->user)?$inv->user->name:'',
-                    'branch' => !empty($disp->user)?$disp->user->branch:'',
-                    'br_code' => !empty($disp->user)?$disp->user->branch_id:'',
-                    'make' => !empty($disp->inventory->make)?$disp->inventory->make->make_name:'',
-                    'model' => !empty($disp->inventory->model)?$disp->inventory->model->model_name:'',
-                    'accessories' => !empty($disp->inventory)?$disp->inventory->other_accessories:''
+                    'branch' => !empty($inv->user)?$inv->user->branch:'',
+                    'br_code' => !empty($inv->user)?$inv->user->branch_id:'',
+                    'make' => !empty($inv->inventory->make)?$inv->inventory->make->make_name:'',
+                    'model' => !empty($inv->inventory->model)?$inv->inventory->model->model_name:'',
+                    'accessories' => !empty($inv->inventory)?$inv->inventory->other_accessories:''
                 );
             }
         }
         return Excel::download(new DispatchinExport(json_encode($record)), 'dispatchinreport.xlsx'); 
+    }
+    public function export_dispatchout($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', [$from, date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', [$from, date('Y-m-d', strtotime('+1 day'))])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $inventories = Dispatchout::whereBetween('dispatchout_date', ['', date('Y-m-d', $to)])
+                                        ->orderBy('id', 'desc')->get();
+            }
+            else{
+                $inventories = Dispatchout::orderBy('id', 'desc')->get();
+            }
+            $record = array();
+        if(!empty($inventories)){
+            foreach($inventories as $inv){
+                if(!empty($inv->inventory)){
+                    $user = Employee::where('emp_code', $inv->inventory->issued_to)->first();
+                    if($user){
+                        $inv->user = $user;
+                    }
+                }
+                $record[] = (object)array(
+                    'date_out' => date('d-M-Y', strtotime($inv->dispatchout_date)),
+                    'subcategory' => !empty($inv->subcategory)?$inv->subcategory->sub_cat_name:'',
+                    'product_sn' => !empty($inv->inventory)?$inv->inventory->product_sn:'',
+                    'branch' => !empty($inv->user)?$inv->user->branch:'',
+                    'br_code' => !empty($inv->user)?$inv->user->branch_id:'',
+                    'insured' => $inv->insured,
+                    'cost' => !empty($inv->inventory)?number_format($inv->inventory->item_price,2):''
+                );
+            }
+        }
+        
+        return Excel::download(new DispatchoutExport(json_encode($record)), 'dispatchoutreport.xlsx'); 
+    }
+    public function export_vendorbuying($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+        
+            if(empty($fields['subcategory_id'])){
+                $subcat = Subcategory::where('status',1)->get();
+            }
+            else{
+                $subcat = Subcategory::where('id',$fields['subcategory_id'])->get();
+            }
+            
+            $array = array();
+            $i = 0;
+            foreach($subcat as $sub){
+            
+            if(isset($fields['from_date']) && isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['from_date']);
+                unset($fields['to_date']);
+                $array[$i]['subcategory'] = $sub->sub_cat_name;
+                $array[$i]['vendor'] = Vendor::where('id', $fields['vendor_id'])->select('vendor_name')->first();
+                $array[$i]['total_items'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereBetween('updated_at', [$from, date('Y-m-d', $to)])->whereNotIn('status', [0])->count();
+                $array[$i]['amount'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereBetween('updated_at', [$from, date('Y-m-d', $to)])->whereNotIn('status', [0])->sum('item_price');
+                
+            }
+            else if(isset($fields['from_date']) && !isset($fields['to_date'])){
+                $from = $fields['from_date'];
+                unset($fields['from_date']);
+                $array[$i]['subcategory'] = $sub->sub_cat_name;
+                $array[$i]['vendor'] = Vendor::where('id', $fields['vendor_id'])->select('vendor_name')->first();
+                $array[$i]['total_items'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])->whereNotIn('status', [0])->count();
+                $array[$i]['amount'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereBetween('updated_at', [$from, date('Y-m-d', strtotime('+1 day'))])->whereNotIn('status', [0])->sum('item_price');
+                
+            }
+            else if(!isset($fields['from_d ate']) && isset($fields['to_date'])){
+                $to = strtotime($fields['to_date'].'+1 day');
+                unset($fields['to_date']);
+                $array[$i]['subcategory'] = $sub->sub_cat_name;
+                $array[$i]['vendor'] = Vendor::where('id', $fields['vendor_id'])->select('vendor_name')->first();
+                $array[$i]['total_items'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereBetween('updated_at', ['', date('Y-m-d', $to)])->whereNotIn('status', [0])->count();
+                $array[$i]['amount'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereBetween('updated_at', ['', date('Y-m-d', $to)])->whereNotIn('status', [0])->sum('item_price');
+                
+            }
+            else{
+                $array[$i]['subcategory'] = $sub->sub_cat_name;
+                $array[$i]['vendor'] = Vendor::where('id', $fields['vendor_id'])->select('vendor_name')->first();
+                $array[$i]['total_items'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereNotIn('status', [0])->count();
+                $array[$i]['amount'] = Inventory::where('subcategory_id',$sub->id)->where('vendor_id',$fields['vendor_id'])->whereNotIn('status', [0])->sum('item_price');
+            }
+            if($array[$i]['total_items'] == 0){
+                unset($array[$i]);
+            }
+            $i++;
+        }
+        $inventories = $array;
+        $record = array();
+        if(!empty($inventories)){
+            foreach($inventories as $inventory){
+                $record[] = (object)array(
+                    'subcategory' => $inventory['subcategory'],
+                    'vendor' => $inventory['vendor']->vendor_name,
+                    'total_items' => number_format($inventory['total_items'],2),
+                    'amount' => number_format(round($inventory['amount']),2),
+                );
+            }
+        }
+        return Excel::download(new VendorbuyingExport(json_encode($record)), 'vendorbuyingreport.xlsx'); 
+    }
+    public function export_reorderlevel($data){
+        date_default_timezone_set('Asia/karachi');
+        $fields = (array)json_decode($data);
+        $from = date('Y-m-d', strtotime('-3 months'));
+        $to = date('Y-m-d', strtotime('+1 day'));
+        $records = array();
+        $subcategories = Subcategory::where([[$fields]])->where('status',1)->get();
+        foreach($subcategories as $subcategory){
+            $items_in_stock = Inventory::where('subcategory_id', $subcategory->id)->where('issued_to', null)->whereNotIn('devicetype_id', [1])->count();
+            $subcategory->in_stock = $items_in_stock;
+            $subcategory->issued_count = 0;
+            $inventories = Inventory::where('subcategory_id', $subcategory->id)->whereNotNull('issued_to')->whereNotIn('devicetype_id', [1])->get();
+            foreach($inventories as $inv){
+                $subcategory->issued_count += Issue::where('inventory_id', $inv->id)->whereBetween('updated_at', [$from, $to])->count();
+            }
+        if($items_in_stock <= $subcategory->threshold){
+            $records[] = $subcategory;
+        }
+        }
+        $record = array();
+        foreach($records as $reorder){
+            $record[] = (object)array(
+                'subcategory' => $reorder->sub_cat_name,
+                'threshold' => $reorder->threshold,
+                'in_stock' => $reorder->in_stock,
+                'issued_count' => $reorder->issued_count
+            );
+        }
+        return Excel::download(new ReorderlevelExport(json_encode($record)), 'reorderlevelreport.xlsx');
     }
 }
