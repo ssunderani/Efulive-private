@@ -151,7 +151,7 @@
                                                     Item Nature
                                                 </td>                  
                                                 <td>
-                                                <select class="custom-select field_size" id="nature" name="item_nature_id">
+                                                <select class="custom-select field_size" id="nature" name="itemnature_id">
                                                     <option value="">All</option>
                                                     @foreach ($itemnatures as $itemnature)
                                                     <option value="{{ $itemnature->id }}">{{ $itemnature->itemnature_name }}</option>
