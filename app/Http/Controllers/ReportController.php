@@ -235,6 +235,7 @@ class ReportController extends Controller
         $data['employees'] = Employee::orderBy('name', 'asc')->get();
         $data['itemnatures'] = Itemnature::where('status',1)->orderBy('itemnature_name', 'asc')->get();
         $data['vendors'] = Vendor::orderBy('vendor_name', 'asc')->get();
+        $data['years'] = Year::orderBy('year', 'asc')->get();
         $data['filters'] = array();
         $depts = array();
         $departments = DB::table('employees')->select('dept_id', 'department')->orderBy('department', 'asc')->get();

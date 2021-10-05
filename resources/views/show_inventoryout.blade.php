@@ -211,7 +211,8 @@
                                             <tr>  
                                                 <td>
                                                     Users
-                                                </td>                  
+                                                </td>  
+
                                                 <td>
                                                 <select class="custom-select field_size empout" id="empout" name="issued_to">
                                                     <option value="">All</option>
@@ -220,6 +221,23 @@
                                                     @endforeach
                                                 </select>
                                                 <span class="small text-danger">{{ $errors->first('issued_to') }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>  
+                                                <td>
+                                                    Years
+                                                </td>  
+                                                                
+                                                <td>
+                                                <select class="custom-select" name="year_id" required>
+                                                    <option value="">All</option>
+                                                    @foreach ($years as $year)
+                                                    
+                                                    <option value="{{ $year->id }}">{{ $year->year }}</option>
+                                                   
+                                                    @endforeach
+                                                    </select>
+                                                <span class="small text-danger">{{ $errors->first('year_id') }}</span>
                                                 </td>
                                             </tr>
                                             
