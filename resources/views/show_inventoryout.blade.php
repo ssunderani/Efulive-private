@@ -262,6 +262,7 @@
                             <a class="btn btn-sm btn-danger mb-2 ml-1 float-right" href="{{ url('inventoryoutexport/'.json_encode($filters)) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
                             <a class="btn btn-sm btn-danger mb-2 float-right" href="{{ url('export_inventoryout/'.json_encode($filters)) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
+                            
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
@@ -276,7 +277,8 @@
                                                 <th>Issue By</th>
                                                 <th>Issue Date</th>
                                                 <th>Initial Status</th>
-                                                <th>Current Condition</th>
+                                                <th>Current Condition</th>                                                
+                                                <th>Current Consumer</th>
                                                 <th>Remarks</th>
                                             </tr>
                                         </thead>
@@ -284,6 +286,7 @@
                                         <tbody>
                                         <?php $i = 1; ?>
                                         @foreach ($inventories as $inventory)
+                                        
                                             <tr>
                                                 <td class='text-align-right'>{{ $i++ }}</td>
                                                 <td>{{ $inventory->subcategory_id?$inventory->subcategory->sub_cat_name:'' }}</td>
@@ -291,11 +294,12 @@
                                                 <td>{{ $inventory->make_id?$inventory->make->make_name:'' }}</td>
                                                 <td>{{ $inventory->model_id?$inventory->model->model_name:'' }}</td>
                                                 <td>{{ empty($inventory->user)?'':$inventory->user->name }}</td>
-                                                <td>{{ empty($inventory->location)?'':$inventory->location->location }}</td>
+                                                <td>{{ empty($inventory->user)?'':$inventory->user->department }}</td>
                                                 <td>{{ empty($inventory->issued_by)?'':$inventory->issued_by->name }}</td>
                                                 <td>{{ empty($inventory->issue_date)?'':date('d-M-Y' ,strtotime($inventory->issue_date->created_at)) }}</td>
                                                 <td>{{ empty($inventory->inventorytype)?'':$inventory->inventorytype->inventorytype_name }}</td>
                                                 <td>{{ empty($inventory->devicetype)?'':$inventory->devicetype->devicetype_name }}</td>
+                                                <td>{{ $inventory->current_consumer }}</td>
                                                 <td>{{ $inventory->remarks }}</td>
                                             </tr>
                                         @endforeach    
