@@ -229,7 +229,7 @@
                                                 </td>  
                                                                 
                                                 <td>
-                                                <select class="custom-select" name="year_id" required>
+                                                <select class="custom-select" name="year_id">
                                                     <option value="">All</option>
                                                     @foreach ($years as $year)
                                                     
