@@ -31,7 +31,7 @@ class CreateInventoriesTable extends Migration
             $table->string('itemnature_id')->nullable();
             $table->string('item_price')->nullable();
             $table->string('dollar_rate')->nullable();
-            $table->string('remarks')->nullable();
+            $table->text('remarks')->nullable();
             $table->string('delivery_challan')->nullable();
             $table->string('delivery_challan_date')->nullable();
             $table->string('invoice_number')->nullable();
