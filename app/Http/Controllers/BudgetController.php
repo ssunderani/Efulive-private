@@ -137,6 +137,16 @@ class BudgetController extends Controller
             'remarks' => $request->remarks,
             'budget_nature' => $request->budget_nature
         );
+        if($bd->qty != $request->qty){
+            $quantity = 0;
+            if($bd->qty < $request->qty){
+                $quantity = ($request->qty-$bd->qty);
+            }
+            else if($bd->qty > $request->qty){
+                $quantity = ($bd->qty-$request->qty);
+            }
+            $fields['remaining'] = ($bd->remaining+$quantity);
+        }
         }
         else{
             $fields = array(
