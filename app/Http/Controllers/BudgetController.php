@@ -139,13 +139,16 @@ class BudgetController extends Controller
         );
         if($bd->qty != $request->qty){
             $quantity = 0;
+            $rem = 0;
             if($bd->qty < $request->qty){
                 $quantity = ($request->qty-$bd->qty);
+                $rem = $bd->remaining+$quantity;
             }
             else if($bd->qty > $request->qty){
                 $quantity = ($bd->qty-$request->qty);
+                $rem = $bd->remaining-$quantity;
             }
-            $fields['remaining'] = ($bd->remaining+$quantity);
+            $fields['remaining'] = $rem;
         }
         }
         else{
