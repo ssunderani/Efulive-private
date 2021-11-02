@@ -59,7 +59,7 @@
                                 <table class="table table-borderless">
                                         <tbody>                                     
                                             <tr>
-                                            <form method="POST" action="{{ url('summary_by_year') }}">
+                                            <form method="POST" action="{{ url('summary_by_year2') }}">
                                             @csrf
                     
                                                 <td>
@@ -87,8 +87,8 @@
                         <div class="col-md-3 col-lg-3">
                             @if(empty($types))
                             @else
-                            <a class="btn btn-sm btn-danger mt-3 mb-1 ml-1 float-right" href="{{ url('budgetexport/'.$filter) }}">Print <i class="fa fa-download" aria-hidden="true"></i></a>
-                            <a class="btn btn-sm btn-danger mt-3 mb-1 float-right" href="{{ url('export_summary/'.$filter) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mt-3 mb-1 ml-1 float-right" href="{{ url('budgetexport2/'.$filter) }}">Print  <i class="fa fa-download" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-danger mt-3 mb-1 float-right" href="{{ url('export_summary2/'.$filter) }}">CSV <i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
                     </div>  
                     </div>
@@ -140,9 +140,9 @@
                                             <tr>
                                                 <th></th>
                                                 <th></th>
-                                                <th colspan="3">Total Budget</th>
-                                                <th colspan="3">Consumed</th>
-                                                <th colspan="3">Remaining</th>
+                                                <th colspan="2">Total Budget</th>
+                                                <th colspan="2">Consumed</th>
+                                                <th colspan="2">Remaining</th>
                                             </tr>
                                         </thead>
                                         
@@ -150,13 +150,10 @@
                                             <tr>
                                                 <th>S.No</th>
                                                 <th>Category</th>
-                                                <th>Dollar</th>
                                                 <th>PKR</th>
                                                 <th>Quantity</th>
-                                                <th>Dollar</th>
                                                 <th>PKR</th>
                                                 <th>Quantity</th>
-                                                <th>Dollar</th>
                                                 <th>PKR</th>
                                                 <th>Quantity</th>
                                             </tr>
@@ -178,24 +175,20 @@
                                             <tr>
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $budget->category_name }}</td>
-                                                <td class="text-right">{{ number_format($budget->total_price_dollar,2) }}</td>
+                                                
                                                 <td class="text-right">{{ number_format($budget->total_price_pkr,2)}}</td>
-                                                <td class="text-right">{{ number_format($budget->qty,2) }}</td>
-                                                <td class="text-right">{{ number_format(($budget->consumed_price_dollar),2) }}</td>
+                                                <td class="text-right">{{ number_format($budget->qty,2) }}</td>                                                
                                                 <td class="text-right">{{ number_format(($budget->consumed_price_pkr),2) }}</td>
-                                                <td class="text-right">{{ number_format($budget->consumed,2) }}</td>
-                                                <td class="text-right">{{ number_format(($budget->remaining_price_dollar),2) }}</td>
+                                                <td class="text-right">{{ number_format($budget->consumed,2) }}</td>                                                
                                                 <td class="text-right">{{ number_format(($budget->remaining_price_pkr),2) }}</td>
                                                 <td class="text-right">{{ number_format($budget->remaining,2) }}</td>
                                             </tr>
                                             <?php
-                                            $total_b_d += $budget->total_price_dollar;
+                                           
                                             $total_b_p += $budget->total_price_pkr;
                                             $total_qty += $budget->qty;
-                                            $c_b_d += $budget->consumed_price_dollar;
                                             $c_b_p += $budget->consumed_price_pkr;
                                             $c_qty += $budget->consumed;
-                                            $r_b_d += $budget->remaining_price_dollar;
                                             $r_b_p += $budget->remaining_price_pkr;
                                             $r_qty += $budget->remaining;
                                             ?>
@@ -203,13 +196,11 @@
                                         </tbody>
                                             <tr>
                                                 <th colspan='2' style="text-align:right;">Total</th>
-                                                <td class="text-right">{{ number_format($total_b_d,2) }}</td>
+                                                
                                                 <td class="text-right">{{ number_format($total_b_p,2) }}</td>
-                                                <td class="text-right">{{ number_format($total_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($c_b_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($total_qty,2) }}</td>                                                
                                                 <td class="text-right">{{ number_format($c_b_p,2) }}</td>
-                                                <td class="text-right">{{ number_format($c_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($r_b_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($c_qty,2) }}</td>                                               
                                                 <td class="text-right">{{ number_format($r_b_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($r_qty,2) }}</td>
                                             </tr>
@@ -228,13 +219,11 @@ $grand_r_qty += $r_qty;
                                         <tfoot>
                                             <tr>
                                                 <th colspan='2' class="text-right">Grand Total</th>
-                                                <td class="text-right">{{ number_format($grand_t_d,2) }}</td>
+                                               
                                                 <td class="text-right">{{ number_format($grand_t_p,2) }}</td>
-                                                <td class="text-right">{{ number_format($grand_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($grand_c_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_qty,2) }}</td>                                                
                                                 <td class="text-right">{{ number_format($grand_c_p,2) }}</td>
-                                                <td class="text-right">{{ number_format($grand_c_qty,2) }}</td>
-                                                <td class="text-right">{{ number_format($grand_r_d,2) }}</td>
+                                                <td class="text-right">{{ number_format($grand_c_qty,2) }}</td>                                               
                                                 <td class="text-right">{{ number_format($grand_r_p,2) }}</td>
                                                 <td class="text-right">{{ number_format($grand_r_qty,2) }}</td>
                                             </tr>

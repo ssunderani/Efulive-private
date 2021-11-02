@@ -118,6 +118,10 @@ class FormController extends Controller
         
         return view('summary', ['filter'=>'', 'types'=>array(), 'years'=>Year::orderBy('year', 'asc')->get()]);
     }
+    public function summary2(){
+        
+        return view('summary2', ['filter'=>'', 'types'=>array(), 'years'=>Year::orderBy('year', 'asc')->get()]);
+    }
 
     public function add_store(){
         $user = User::where('role_id',2)->orderBy('name', 'asc')->get();

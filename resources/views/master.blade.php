@@ -329,6 +329,7 @@
                                     <a class="nav-link" href="{{ url('add_budget') }}">Add Budget</a>
                                     <a class="nav-link" href="{{ url('show_budget') }}">Show Budget</a>
                                     <a class="nav-link" href="{{ url('summary') }}">Summary</a>
+                                    <a class="nav-link" href="{{ url('summary2') }}">Summary2</a>
                                     <!-- Type -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Type" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     Type

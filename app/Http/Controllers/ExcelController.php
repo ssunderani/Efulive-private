@@ -21,6 +21,7 @@ use App\Dispatchin;
 use App\Dispatchout;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BudgetExport;
+use App\Exports\BudgetExport2;
 use App\Exports\ItemsExport;
 use App\Exports\InventoryExport;
 use App\Exports\EditlogsExport;
@@ -134,6 +135,76 @@ $grand_r_t_p = 0;
         }
         $year = Year::find($data);
         return Excel::download(new BudgetExport(json_encode($record)), 'Summaryreport_'.$year->year.'.xlsx');
+    }
+
+    public function export_summary2($data) 
+    {
+        $budget = Budget::where('year_id', $data)->first();
+        $record = array();
+        if(!empty($budget)){
+$grand_u_p = 0; 
+$grand_t_p = 0;
+$grand_qty = 0; 
+$grand_c = 0; 
+$grand_r = 0;
+$grand_c_u_p = 0; 
+$grand_r_t_p = 0; 
+            $types = Type::all();
+            foreach($types as $type){
+            $unit_b_p = 0;
+            $total_b_p = 0;
+            $t_qty = 0;
+            $c = 0;
+            $r = 0;
+            $c_b_p = 0;
+            $r_b_p = 0;
+            $record[] = (object)array('','','',$type->type,'','','','');    
+            $category = Category::where('status',1)->get();
+            foreach($category as $cat){
+                $consumed_price_pkr = 0;
+                $remaining_price_pkr = 0; 
+                $fetch = Inventory::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->get();               
+                foreach($fetch as $get){
+                    $consumed_price_pkr += round($get->item_price); 
+                }
+                $cat['unit_price_pkr'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('unit_price_pkr');
+                $cat['total_price_pkr'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('total_price_pkr');
+                $cat['qty'] = Budget::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->sum('qty');
+                $cat['consumed'] = Inventory::where('category_id', $cat->id)->where('year_id', $data)->where('type_id', $type->id)->count();
+                $cat['consumed_price_pkr'] = $consumed_price_pkr;
+                $cat['remaining_price_pkr'] = ($cat->total_price_pkr-$consumed_price_pkr);
+                $cat['remaining'] = ($cat->qty-$cat->consumed);
+
+                $unit_b_p += $cat->unit_price_pkr;
+                $total_b_p += $cat->total_price_pkr;
+                $t_qty += $cat->qty;
+                $c += $cat->consumed;
+                $r += $cat->remaining;
+                $c_b_p += $cat->consumed_price_pkr;
+                $r_b_p += $cat->remaining_price_pkr;
+                
+                unset($cat->id);
+                unset($cat->threshold);
+                unset($cat->status);
+                unset($cat->created_at);
+                unset($cat->updated_at);
+                $record[] = $cat;    
+            }
+            $record[] = (object)array('Total',$unit_b_p,$total_b_p,$t_qty,$c,$c_b_p,$r_b_p,$r);   
+            $grand_u_p += $unit_b_p; 
+            $grand_t_p += $total_b_p;
+            $grand_qty += $t_qty; 
+            $grand_c += $c; 
+            $grand_r += $r;
+            $grand_c_u_p += $c_b_p; 
+            $grand_r_t_p += $r_b_p;   
+            }
+
+            $record[] = (object)array('Grand Total',$grand_u_p,$grand_t_p,$grand_qty,$grand_c,$grand_c_u_p,$grand_r_t_p,$grand_r);   
+            
+        }
+        $year = Year::find($data);
+        return Excel::download(new BudgetExport2(json_encode($record)), 'Summaryreport_'.$year->year.'.xlsx');
     }
     public function export_inventory($data){
         $fields = (array)json_decode($data);

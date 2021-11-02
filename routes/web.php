@@ -102,9 +102,11 @@ Route::get('/add_type', [FormController::class, 'add_type']);
 Route::get('/add_budget', [FormController::class, 'add_budget']);
 Route::get('/show_budget', [FormController::class, 'show_budget']);
 Route::get('/summary', [FormController::class, 'summary']);
+Route::get('/summary2', [FormController::class, 'summary2']);
 Route::get('/pkr_by_year/{id}', [FormController::class, 'pkr_by_year']);
 Route::get('/budget_by_year', 'BudgetController@budget_by_year');
 Route::post('/summary_by_year', 'BudgetController@summary_by_year');
+Route::post('/summary_by_year2', 'BudgetController@summary_by_year2');
 Route::get('/lock_budget/{id}', 'BudgetController@lock_budget');
 Route::get('/add_d_status', [FormController::class, 'add_d_status']);
 Route::get('/add_disposal', [FormController::class, 'add_disposal']);
@@ -167,6 +169,7 @@ Route::get('/reorderexport/{data}','PDFController@reorderexport');
 
 /* For Excel */
 Route::get('export_summary/{year}', 'ExcelController@export_summary');
+Route::get('export_summary2/{year}', 'ExcelController@export_summary2');
 Route::get('export_budget/{data}', 'ExcelController@export_budget');
 Route::get('export_inventory/{data}', 'ExcelController@export_inventory');
 Route::get('export_editlogs/{data}', 'ExcelController@export_editlogs');
