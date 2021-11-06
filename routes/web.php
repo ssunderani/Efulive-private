@@ -108,6 +108,8 @@ Route::get('/budget_by_year', 'BudgetController@budget_by_year');
 Route::post('/summary_by_year', 'BudgetController@summary_by_year');
 Route::post('/summary_by_year2', 'BudgetController@summary_by_year2');
 Route::get('/lock_budget/{id}', 'BudgetController@lock_budget');
+Route::get('/swapping', 'BudgetController@swapping');
+Route::post('/swap', 'BudgetController@swap');
 Route::get('/add_d_status', [FormController::class, 'add_d_status']);
 Route::get('/add_disposal', [FormController::class, 'add_disposal']);
 Route::get('/add_dispatchin', [FormController::class, 'add_dispatchin']);

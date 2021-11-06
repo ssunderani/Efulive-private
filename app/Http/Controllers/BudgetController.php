@@ -315,5 +315,22 @@ class BudgetController extends Controller
         return count($budgets)>0?$budgets:'0';
         //return view('get_budget_items', ['budgets'=>$budgets]);
     }
-    
+    public function swapping(){
+        $record = Year::all();
+        $from = array();
+        $to = array();
+        foreach($record as $val){
+            $budget = Budget::where('year_id', $val->id)->count();
+            if($budget>0){
+                $from[] = $val;
+            }
+            else{
+                $to[] = $val;
+            }
+        }
+        return view('swapping', ['swap_from'=>$from, 'swap_to'=>$to]);
+    }
+    public function swap(Request $request){
+        return $request->all();
+    }
 }
