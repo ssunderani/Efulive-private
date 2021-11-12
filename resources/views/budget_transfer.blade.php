@@ -11,11 +11,11 @@
                 </div>
             @endif
             
-            <form method="POST" action="{{ url('swap') }}">
+            <form method="POST" action="{{ url('transfered') }}">
             @csrf
             <div class="card mt-3">
                 <div class="card-header bg-primary text-white">
-                budget Swapping
+                Budget Transfer
                 </div>
                 <div class="card-body">
                 <div class="row"> 
@@ -27,6 +27,7 @@
                                 <option value="{{ $year->id }}">{{ $year->year }}</option>
                                 @endforeach
                                 </select>  
+                                <span class="small text-danger">{{ $errors->first('from_year_id') }}</span>
                     </div>
                     <div class="col-md-6 col-lg-6">      
                                 <label for="to_year_id">TO:</label>
@@ -36,11 +37,12 @@
                                 <option value="{{ $year->id }}">{{ $year->year }}</option>
                                 @endforeach
                                 </select>    
+                                <span class="small text-danger">{{ $errors->first('to_year_id') }}</span>
                     </div>
                 </div>
                 <div class="row mt-4"> 
                     <div class="col-md-12 col-lg-12"> 
-                        <button type="submit" name="swap" class="btn btn-success float-right">Swap this budget</button>
+                        <button type="submit" name="swap" class="btn btn-success float-right">Transfer this budget</button>
                     </div>
                 </div>
             </div>  

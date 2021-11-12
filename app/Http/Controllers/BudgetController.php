@@ -315,7 +315,7 @@ class BudgetController extends Controller
         return count($budgets)>0?$budgets:'0';
         //return view('get_budget_items', ['budgets'=>$budgets]);
     }
-    public function swapping(){
+    public function budget_transfer(){
         $record = Year::all();
         $from = array();
         $to = array();
@@ -328,9 +328,45 @@ class BudgetController extends Controller
                 $to[] = $val;
             }
         }
-        return view('swapping', ['swap_from'=>$from, 'swap_to'=>$to]);
+        return view('budget_transfer', ['swap_from'=>$from, 'swap_to'=>$to]);
     }
-    public function swap(Request $request){
-        return $request->all();
+    public function transfered(Request $request){
+        $validator = Validator::make($request->all(), [
+            'from_year_id' => 'required|not_in:0',
+            'to_year_id' => 'required|not_in:0'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+        $id = $request->from_year_id;
+        $to = $request->to_year_id;
+        $budget = Budget::find($id);
+        $fields = array(
+            'user_id' => $budget->user_id,
+            'category_id' => $budget->category_id,
+            'subcategory_id' => $budget->subcategory_id,
+            'type_id' => $budget->type_id,
+            'dept_id' => $budget->dept_id,
+            'dept_branch_type' => $budget->dept_branch_type,
+            'department' => $budget->department,
+            'year_id' => $to,
+            'description' => $budget->description,
+            'remarks' => $budget->remarks,
+            'unit_price_dollar' => $budget->unit_price_dollar,
+            'unit_price_pkr' => $budget->unit_price_pkr,
+            'qty' => $budget->qty,
+            'consumed' => $budget->consumed,
+            'remaining' => $budget->remaining,
+            'total_price_dollar' => $budget->total_price_dollar,
+            'total_price_pkr' => $budget->total_price_pkr,            
+            'budget_nature' => $budget->budget_nature
+        );
+        $create = Budget::create($fields);
+        if($create){
+            return redirect()->back()->with('msg', 'Budget Transferred Successfully!');
+        }
+        else{
+            return redirect()->back()->with('msg', 'Could not Transfer budget , Try Again!');
+        }
     }
 }
