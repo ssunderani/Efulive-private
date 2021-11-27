@@ -371,4 +371,60 @@ class BudgetController extends Controller
             return redirect()->back()->with('msg', 'Could not Transfer budget , Try Again!');
         }
     }
+    public function swapping(){
+       
+        $data = array();
+        $data['categories'] = Category::where('status',1)->orderBy('category_name', 'asc')->get();
+        $data['subcategories'] = Subcategory::where('status',1)->orderBy('sub_cat_name', 'asc')->get();
+        $data['types'] = Type::orderBy('type', 'asc')->get();
+        $data['years'] = Year::where('locked', null)->orderBy('year', 'asc')->get();
+        
+        return view('swapping',$data);
+
+    }
+
+    public function swapping2(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required|not_in:0',
+            'sub_cat_id' => 'required|not_in:0',
+            'from_dept' => 'required|not_in:0',
+            'to_dept' => 'required|not_in:0',            
+            'year_id' => 'required|not_in:0',            
+            'qty' => 'required'
+            
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+        $qty = $request->qty;
+        $from = Budget::where('year_id', $request->year_id)->where('category_id',$request->category_id)->where('subcategory_id',$request->sub_cat_id)->where('dept_id',$request->from_dept)->first();
+        $to = Budget::where('year_id', $request->year_id)->where('category_id',$request->category_id)->where('subcategory_id',$request->sub_cat_id)->where('dept_id',$request->to_dept)->first();
+        if($from && $to){
+            if($qty > $from->remaining){
+                return redirect()->back()->with('msg', 'Requested quantity must be less then or equal to available quantity!');
+            }
+            $from_qty = $from->qty-$qty;
+            $from_remaining = $from->remaining-$qty;
+            $to_qty = $to->qty+$qty;
+            $to_remaining = $to->remaining+$qty;
+
+            $from_fields = array('qty' => $from_qty, 'remaining' => $from_remaining);
+            $from_update = Budget::where('id',$from->id)->update($from_fields);
+
+            $to_fields = array('qty' => $to_qty, 'remaining' => $to_remaining);
+            $to_update = Budget::where('id',$to->id)->update($to_fields);
+
+            if($from_update && $to_update){
+                return redirect()->back()->with('msg', 'Budget Swapped Successfully!');
+            }
+            else{
+                return redirect()->back()->with('msg', 'Could not swap budget, Try Again!');
+            }
+        }
+        else{
+            return redirect()->back()->with('msg', 'Budget not available!');
+        }
+
+    }
 }

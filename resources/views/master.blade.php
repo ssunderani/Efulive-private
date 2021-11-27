@@ -331,6 +331,7 @@
                                     <a class="nav-link" href="{{ url('summary') }}">Summary $</a>
                                     <a class="nav-link" href="{{ url('summary2') }}">Summary PKR</a>
                                     <a class="nav-link" href="{{ url('budget_transfer') }}">Budget Versioning</a>
+                                    <a class="nav-link" href="{{ url('swapping') }}">Budget Swapping</a>
                                     <!-- Type -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Type" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     Type
@@ -548,6 +549,12 @@ $(document).ready(function(){
                     var dept_id = $('#dept_id');
                     $.each( res, function(index, value){
                         dept_id.append(
+                            $('<option></option>').val(value.DEPARTMENT_ID).html(value.DEPARTMENT)
+                        );
+                    });
+                    var from_dept = $('#from_dept');
+                    $.each( res, function(index, value){
+                        from_dept.append(
                             $('<option></option>').val(value.DEPARTMENT_ID).html(value.DEPARTMENT)
                         );
                     });
