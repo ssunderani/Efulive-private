@@ -427,4 +427,8 @@ class BudgetController extends Controller
         }
 
     }
+    public function get_budget(Request $request){
+        $from = Budget::where('year_id', $request->year_id)->where('category_id',$request->category_id)->where('subcategory_id',$request->sub_cat_id)->where('dept_id',$request->from_dept)->first();
+        return $from;
+    }
 }

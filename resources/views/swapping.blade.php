@@ -23,8 +23,8 @@
                 <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="small mb-1" for="year">Year</label>
-                                                <select class="custom-select" id="year" name="year_id">
-                                                <option value=0>Select Year here</option>
+                                                <select class="custom-select filter_budget" id="year" name="year_id">
+                                                <option value=''>Select Year here</option>
                                                 @foreach ($years as $year)
                                                 <option value="{{ $year->id }}">{{ $year->year }}</option>
                                                 @endforeach
@@ -49,8 +49,8 @@
                 <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="small mb-1" for="category">Category</label>
-                                                <select class="custom-select category" id="category" name="category_id">
-                                                    <option value=0>Select Category here</option>
+                                                <select class="custom-select category filter_budget" id="category" name="category_id">
+                                                    <option value=''>Select Category here</option>
                                                     @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                                     @endforeach
@@ -71,8 +71,8 @@
                 <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="small mb-1" for="subcategory">Sub Category</label>
-                                                <select class="custom-select subcategory" id="subcategory" name="sub_cat_id">
-                                                <option value=0>Select Sub Category here</option>
+                                                <select class="custom-select subcategory filter_budget" id="subcategory" name="sub_cat_id">
+                                                <option value=''>Select Sub Category here</option>
                                                 </select>
                                                 <span class="small text-danger">{{ $errors->first('sub_cat_id') }}</span>
                                             </div>
@@ -84,11 +84,24 @@
                     <div class="col-md-6">
                     <div class="form-group">
                         <label class="small mb-1" for="from_dept">Department/Branch</label>
-                        <select class="custom-select" id="from_dept" name="from_dept">
-                            <option value=0>Select Dept/Branch here</option>
+                        <select class="custom-select filter_budget" id="from_dept" name="from_dept">
+                            <option value=''>Select Dept/Branch here</option>
                         </select>
                         <span class="small text-danger">{{ $errors->first('from_dept') }}</span>
-                        <input type='hidden' id='dept' name='department' value=''>
+                        <div class="table-responsive">
+                        <table class="table table-borderless available_budget" style="display:none;">
+                            <tr>
+                                <th style="text-align:center;">Qty</th>
+                                <th style="text-align:center;">Consumed</th>
+                                <th style="text-align:center;">Remaining</th>
+                            </tr>
+                            <tr>
+                                <td class="available_qty" style="text-align:center;"></td>
+                                <td class="available_con" style="text-align:center;"></td>
+                                <td class="available_rem" style="text-align:center;"></td>
+                            </tr>
+                        </table>
+                        </div>
                     </div>
                 </div>
 </div>

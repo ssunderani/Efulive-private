@@ -770,5 +770,33 @@ $(".budget_items").hide();
         });    
     });
 
+    $('.filter_budget').change(function(){
+        //alert($(this).val());
+        var year = $('#year').val();
+        var category = $('#category').val();
+        var subcategory = $('#subcategory').val();
+        var from_dept = $('#from_dept').val();
+        if(year && category && subcategory && from_dept){ 
+            var fields = {
+                "_token": "{{ csrf_token() }}",
+                'year_id': year,
+                'category_id': category,
+                'sub_cat_id': subcategory,
+                'from_dept': from_dept
+            }
+            $.post("{{ url('get_budget') }}", fields, function(res){
+                if(res){
+                $(".available_qty").html(res.qty);
+                $(".available_con").html(res.consumed);
+                $(".available_rem").html(res.remaining);
+                $(".available_budget").show('slow');
+                $("#qty").attr('max', res.remaining);
+                }
+                else{
+                    alert("Selected budget does not exists!");
+                }
+            });  
+        }
+    }); 
 });
 </script> 
