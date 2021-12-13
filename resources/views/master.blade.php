@@ -798,5 +798,14 @@ $(".budget_items").hide();
             });  
         }
     }); 
+
+    $('.showdetails').click(function(){
+        var cat_id = $(this).data('cat_id');
+        var type_id = $(this).data('type_id');
+        var year_id = $('.year_id').val();
+        $.get("{{ url('budgetdetails') }}/"+cat_id+"/"+type_id+"/"+year_id, function(data){
+            $('.detail_body').html(data);
+        }); 
+    });
 });
 </script> 

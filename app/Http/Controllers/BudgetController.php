@@ -15,6 +15,7 @@ use App\Year;
 use App\Dollar;
 use App\Type;
 use App\Budgetitem as Budget;
+use App\Employee;
 class BudgetController extends Controller
 {
     public function __construct()
@@ -430,5 +431,17 @@ class BudgetController extends Controller
     public function get_budget(Request $request){
         $from = Budget::where('year_id', $request->year_id)->where('category_id',$request->category_id)->where('subcategory_id',$request->sub_cat_id)->where('dept_id',$request->from_dept)->first();
         return $from;
+    }
+    public function budgetdetails($cat_id, $type_id, $year_id){
+        // $budget = Budget::find($id);
+        //return $budget->category_id.' : '.$budget->year_id.' : '.$budget->type_id;
+        $inventories = Inventory::where('category_id', $cat_id)->where('year_id', $year_id)->where('type_id', $type_id)->get();               
+        foreach($inventories as $inv){
+            $user = Employee::where('emp_code', $inv->issued_to)->first();
+            if($user){
+                $inv['user'] = $user;
+            }
+        }
+        return view('budgetdetails', ['inventories'=>$inventories]);        
     }
 }

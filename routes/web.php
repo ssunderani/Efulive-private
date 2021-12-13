@@ -113,6 +113,7 @@ Route::post('/transfered', 'BudgetController@transfered');
 Route::get('/swapping', 'BudgetController@swapping');
 Route::post('/swapping2', 'BudgetController@swapping2');
 Route::post('/get_budget', 'BudgetController@get_budget');
+Route::get('/budgetdetails/{cat_id}/{type_id}/{year_id}', 'BudgetController@budgetdetails');
 Route::get('/add_d_status', [FormController::class, 'add_d_status']);
 Route::get('/add_disposal', [FormController::class, 'add_disposal']);
 Route::get('/add_dispatchin', [FormController::class, 'add_dispatchin']);

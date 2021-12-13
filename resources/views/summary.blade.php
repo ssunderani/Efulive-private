@@ -63,7 +63,7 @@
                                             @csrf
                     
                                                 <td>
-                                                    <select class="custom-select" name="year_id" required>
+                                                    <select class="custom-select year_id" name="year_id" required>
                                                     <option value=0>Select Year here</option>
                                                     @foreach ($years as $year)
                                                     @if($year->id == $filter)
@@ -176,7 +176,14 @@
                                         ?>
                                         @foreach ($type->categories as $budget)
                                             <tr>
-                                                <td>{{ $i++ }}</td>
+                                                <td>
+                                                <span style="float:right;">{{ $i++ }}</span>
+                                                <a style="float:left; position:absolute;" data-cat_id="{{ $budget->id }}" data-type_id="{{ $type->id }}" class="showdetails" data-toggle="modal" data-target="#budgetdetails">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>
+</a>
+                                                </td>
                                                 <td>{{ $budget->category_name }}</td>
                                                 <td class="text-right">{{ number_format($budget->total_price_dollar,2) }}</td>
                                                 <td class="text-right">{{ number_format($budget->total_price_pkr,2)}}</td>
@@ -261,5 +268,39 @@ $grand_r_qty += $r_qty;
                     </div>
                 </footer>
             </div>
-           
+<!-- Modal -->
+<div class="modal fade" id="budgetdetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Budget Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Product S#</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Purchase Date</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Dollar Rate</th>
+                            <th>Issued</th>
+                            <th>Created at</th>
+                        </tr>
+                    </thead>
+                    <tbody class="detail_body">  
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>           
 @endsection
