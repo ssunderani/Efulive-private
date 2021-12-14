@@ -62,7 +62,17 @@
                                     <a class="nav-link" href="{{ url('pending_gins') }}">Pending GINs</a>
                                     <a class="nav-link" href="{{ url('transfer_inventory') }}">Transfer Inventory</a>
                                     <a class="nav-link" href="{{ url('return_inventory') }}">Return Inventory</a>
-                                    <a class="nav-link" href="{{ url('repair') }}">Asset Repairing</a>
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#repairing" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                     Asset Repairing
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="repairing" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{ url('repair') }}"> Add Asset Repairing</a>
+                                            <!-- <a class="nav-link" href="{{ url('add_disposal') }}">Repairing</a> -->
+                                        <a class="nav-link" href="{{ url('repair_items') }}">List Repairing</a>
+                                        </nav>
+                                    </div>
                                     <!-- Disposal -->
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dispose" aria-expanded="false" aria-controls="pagesCollapseAuth">
                                     Asset Disposal

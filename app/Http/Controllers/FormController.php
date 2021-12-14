@@ -455,6 +455,44 @@ class FormController extends Controller
             return redirect()->back()->with('msg', 'Could not add repairing asset, Try Again!');
         }
     }
+    public function repair_items(){
+        $repairing_items =  Repairing::all();
+        $category = Category::all();
+        return view('repairing_items',['repairing_items'=> $repairing_items, 'categories'=> $category]);
+    }
+    public function edit_repair_items($id){
+        $repairing_item = Repairing::find($id);
+        $category = Category::all();
+        return view('edit_repair_items',['categories'=>$category, 'repairing_item'=>$repairing_item]);
+    }
+    public function update_asset_repair(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'item_id' => 'required',
+            'date' => 'required',
+            'actual_price_value' => 'required',
+            'price_value' => 'required',
+            'category_id' => 'required',
+            'subcategory_id' => 'required',  
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+        $update = Repairing::where('id',$id)->update([
+            'category_id'       => $request->category_id,
+            'subcategory_id'    => $request->subcategory_id,
+            'item_id'           => $request->item_id,
+            'date'              => $request->date,
+            'remarks'           => $request->remarks,
+            'actual_price_value'=> str_replace(",", "", $request->actual_price_value),
+            'price_value'       => str_replace(",", "", $request->price_value)
+        ]);
+        if($update){
+            return redirect()->back()->with('msg', 'Asset Repair Updated Successfully!');
+        }
+        else{
+            return redirect()->back()->with('msg', 'Could not update asset repair, Try Again!');
+        }
+    }
     public function pendings()
     {
         $inventory = Inventory::where('status', 0)->orderBy('id', 'desc')->get();
